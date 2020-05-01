@@ -41,7 +41,7 @@ select {
 .slider {
 
   /*  width: 700px;*/
-    height: 220px;
+    height: 240px;
     display: flex;
     overflow-x: auto;
 

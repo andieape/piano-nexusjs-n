@@ -219,7 +219,7 @@ var pianO = new Tone.Sampler({
     'G#6': 'Gs6.[mp3|ogg]'*/
 },
  {
-    'baseUrl' : '/blob/master/samples/salamander/',
+    'baseUrl' : './samples/salamander/',
     "envelope" : {
         "attack" : 0,
         "decay" : 0,

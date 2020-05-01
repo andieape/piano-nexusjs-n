@@ -300,7 +300,7 @@ document.addEventListener("keydown", (e) => {
     
       
        if (e.keyCode >= 48 && e.keyCode <= 90)  {
-       pianO.triggerAttackRelease(Tone.Frequency(keyMap[e.key], "midi").toNote(), 7); 
+       pianO.triggerAttackRelease(Tone.Frequency(keyMap[e.key], "midi").toNote(), 4); 
        e.preventDefault();
        pressed = true;
        animateKey('key_'+ keyMap[e.key]);

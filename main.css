@@ -88,7 +88,7 @@ select {
     fill: rgb(255,0,0);
 }
 
-h1{
+h1, h3{
     text-align: center;
     color: whitesmoke;
     text-shadow: black 1px 0 5px;

@@ -140,7 +140,7 @@ var pianO = new Tone.Sampler({
     'G#5': 'Gs5.[mp3|ogg]',
     'G#6': 'Gs6.[mp3|ogg]'
 }, {
-    'baseUrl' : '/samples/piano/'
+    'baseUrl' : './samples/piano/'
 });
 
 /* KILLING NOISES HERE */

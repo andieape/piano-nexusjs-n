@@ -1,4 +1,4 @@
-NProgress.start();
+//NProgress.start();
 
 
 var samples = {
@@ -74,9 +74,10 @@ Tone.Buffer.on('error', function() {
 })*/
 
 
-document.querySelector(".container").style.display = 'block';
-document.querySelector("#loading").style.display = 'none';
 
+//document.querySelector("#loading").style.display = 'none';
+//window.onload = NProgress.done();
+window.onload = document.querySelector(".container").style.display = 'block';
 // create Nexus UI //
 Nexus.colors.accent = "#f00"
 
@@ -94,7 +95,7 @@ var buttons = new Nexus.Piano('#Keyboard', {
 
 
 
-Tone.context.latencyHint = 'balanced';
+Tone.context.latencyHint = 'interactive';
 
 var pianO = new Tone.Sampler({
 
@@ -219,11 +220,11 @@ var pianO = new Tone.Sampler({
     'G#6': 'Gs6.[mp3|ogg]'*/
 },
  {
-    'baseUrl' : './samples/salamander/',
+    'baseUrl' : './samples/salamander/',    
     "envelope" : {
         "attack" : 0,
         "decay" : 0,
-        "sustain" : 10,
+        "sustain" : 1,
         "release" : 10
       },
       "filterEnvelope" : {
@@ -239,21 +240,21 @@ var comp = new Tone.Compressor(-30, 3);
 
 /* SOME OPTIONAL FUN HERE */
 
-var reverb = new Tone.Freeverb(0.1, 1000);
-var delay  = new Tone.PingPongDelay('32n', 0.1);
+//var reverb = new Tone.Freeverb(0.1, 1000);
+//var delay  = new Tone.PingPongDelay('32n', 0.1);
 //var distortion  = new Tone.Distortion(0.2);
 //pianO.connect(delay);
 
-reverb.toMaster();
+//reverb.toMaster();
 //pianO.connect(distortion);
 //distortion.connect(piano_gain);
-pianO.connect(reverb);
+//pianO.connect(reverb);
 //delay.toMaster();
 
 /* PIANO SAMPLER TO GAIN, GAIN TO MASTER */ 
 pianO.connect(piano_gain);
 piano_gain.connect(comp);
-piano_gain.toMaster();
+comp.toMaster();
 //comp.toMaster();
 
 
@@ -264,7 +265,7 @@ buttons.on('change', function(note) {
     
     console.log(Tone.Frequency(note.note).toNote());
     if (note.state === true) {
-        pianO.triggerAttackRelease(Tone.Frequency(note.note, 'midi').toNote(), 3.5);
+        pianO.triggerAttackRelease(Tone.Frequency(note.note, 'midi').toNote(), 1.3);
         
     } else if (note.state === false) {
         
@@ -287,7 +288,7 @@ function animateKey(id) {
     if (pressed){
         document.getElementById(id).classList.toggle("pressed");
     } else if (!pressed){
-        document.getElementById(id).classList.toggle("pressed");
+        document.getElementById(id).classList.remove("pressed");
     }
     
 }
@@ -299,7 +300,7 @@ document.addEventListener("keydown", (e) => {
     
       
        if (e.keyCode >= 48 && e.keyCode <= 90)  {
-        pianO.triggerAttackRelease(Tone.Frequency(keyMap[e.key], "midi").toNote(), 3.5); 
+       pianO.triggerAttackRelease(Tone.Frequency(keyMap[e.key], "midi").toNote(), 7); 
        e.preventDefault();
        pressed = true;
        animateKey('key_'+ keyMap[e.key]);
@@ -311,11 +312,14 @@ document.addEventListener("keydown", (e) => {
     
 });
 
+
+
+
 document.addEventListener("keyup", (e) => {      
         
     console.log(e.key);
     if (e.keyCode >= 48 && e.keyCode <= 90)  {  
-        //pianO.triggerRelease(Tone.Frequency(keyMap[e.key], "midi").toNote());    
+    pianO.triggerRelease(Tone.Frequency(keyMap[e.key], "midi").toNote());    
      pressed = false;  
      animateKey('key_'+ keyMap[e.key]);  
         e.preventDefault();      

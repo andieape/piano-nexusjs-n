@@ -170,9 +170,9 @@ buttons.on('change', function(note) {
     
     console.log(Tone.Frequency(note.note).toNote());
     if (note.state === true) {
-        current.triggerAttackRelease(Tone.Frequency(note.note).toNote(), 1);
+        current.triggerAttackRelease(Tone.Frequency(note.note, 'midi').toNote(), 1);
     } else if (note.state === false) {
-        current.triggerRelease(Tone.Frequency(note.note).toNote());
+        current.triggerRelease(Tone.Frequency(note.note, 'midi').toNote());
     }
 });
 
@@ -203,7 +203,7 @@ document.addEventListener("keydown", (e) => {
     
       
        if (e.keyCode >= 48 && e.keyCode <= 90)  {
-        current.triggerAttackRelease(Tone.Frequency(keyMap[e.key]).toNote(), 2.5); 
+        current.triggerAttackRelease(Tone.Frequency(keyMap[e.key], 'midi').toNote(), 2.5); 
        e.preventDefault();
        pressed = true;
        animateKey('key_'+ keyMap[e.key]);

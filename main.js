@@ -175,7 +175,7 @@ var pianO = new Tone.Sampler({
     'G#6': 'Gs6.[mp3|ogg]'*/
 },
  {
-    'baseUrl' : '/blob/master/samples/salamander/',
+    'baseUrl' : 'http://github.com/andieape/piano-nexusjs-n/tree/master/samples/salamander/',
     "envelope" : {
         "attack" : 0,
         "decay" : 0,

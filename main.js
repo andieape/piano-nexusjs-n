@@ -215,11 +215,11 @@ var pianO = new Tone.Sampler({
     'G#2': 'Gs2.[mp3|ogg]',
     'G#3': 'Gs3.[mp3|ogg]',
     'G#4': 'Gs4.[mp3|ogg]',
-    'G#5': 'Gs5.[mp3|ogg]',
+    'G#5': 'Gs5.[mp3|ogg]',a
     'G#6': 'Gs6.[mp3|ogg]'*/
 },
  {
-    'baseUrl' : '/samples/salamander/',
+    'baseUrl' : '/blob/master/samples/salamander/',
     "envelope" : {
         "attack" : 0,
         "decay" : 0,

@@ -140,7 +140,7 @@ var pianO = new Tone.Sampler({
     'G#5': 'Gs5.[mp3|ogg]',
     'G#6': 'Gs6.[mp3|ogg]'
 }, {
-    'baseUrl' : '/blob/master/samples/piano/'
+    'baseUrl' : 'https://github.com/andieape/piano-nexusjs-n/tree/master/samples/piano/'
 });
 
 /* KILLING NOISES HERE */

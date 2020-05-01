@@ -3,8 +3,7 @@ NProgress.start();
 
 var samples = SampleLibrary.load({
     instruments: ['piano'],
-    baseUrl: "./samples/",
-    ext: ".mp3"
+    baseUrl: "./samples/"
 })
 
 

@@ -3,8 +3,7 @@ NProgress.start();
 
 var samples = SampleLibrary.load({
     instruments: ['piano'],
-    baseUrl: "./samples/",
-    ext: ".mp3"
+    baseUrl: "./samples/"
 })
 
 
@@ -169,11 +168,11 @@ piano_gain.toMaster();
 
 buttons.on('change', function(note) {
     
-    console.log(Tone.Frequency(note.note, "midi").toNote());
+    console.log(Tone.Frequency(note.note).toNote());
     if (note.state === true) {
-        pianO.triggerAttackRelease(Tone.Frequency(note.note, "midi").toNote(), 1);
+        pianO.triggerAttackRelease(Tone.Frequency(note.note).toNote(), 1);
     } else if (note.state === false) {
-        current.triggerRelease(Tone.Frequency(note.note, "midi").toNote());
+        current.triggerRelease(Tone.Frequency(note.note).toNote());
     }
 });
 
@@ -204,7 +203,7 @@ document.addEventListener("keydown", (e) => {
     
       
        if (e.keyCode >= 48 && e.keyCode <= 90)  {
-        pianO.triggerAttackRelease(Tone.Frequency(keyMap[e.key], "midi").toNote(), 2.5); 
+        pianO.triggerAttackRelease(Tone.Frequency(keyMap[e.key]).toNote(), 2.5); 
        e.preventDefault();
        pressed = true;
        animateKey('key_'+ keyMap[e.key]);
@@ -220,7 +219,7 @@ document.addEventListener("keyup", (e) => {
         
     console.log(e.key);
     if (e.keyCode >= 48 && e.keyCode <= 90)  {  
-     //   current.triggerRelease(Tone.Frequency(keyMap[e.key], "midi").toNote());    
+     //   current.triggerRelease(Tone.Frequency(keyMap[e.key]).toNote());    
      pressed = false;  
      animateKey('key_'+ keyMap[e.key]);  
         e.preventDefault();      

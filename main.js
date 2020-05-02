@@ -98,39 +98,9 @@ var buttons = new Nexus.Piano('#Keyboard', {
 Tone.context.latencyHint = 'interactive';
 
 var pianO = new Tone.Sampler({
+	
 
-        'A0' : 'A0.[mp3|ogg]',
-        'C1' : 'C1.[mp3|ogg]',
-        'D#1' : 'Ds1.[mp3|ogg]',
-        'F#1' : 'Fs1.[mp3|ogg]',
-        'A1' : 'A1.[mp3|ogg]',
-        'C2' : 'C2.[mp3|ogg]',
-        'D#2' : 'Ds2.[mp3|ogg]',
-        'F#2' : 'Fs2.[mp3|ogg]',
-        'A2' : 'A2.[mp3|ogg]',
-        'C3' : 'C3.[mp3|ogg]',
-        'D#3' : 'Ds3.[mp3|ogg]',
-        'F#3' : 'Fs3.[mp3|ogg]',
-        'A3' : 'A3.[mp3|ogg]',
-        'C4' : 'C4.[mp3|ogg]',
-        'D#4' : 'Ds4.[mp3|ogg]',
-        'F#4' : 'Fs4.[mp3|ogg]',
-        'A4' : 'A4.[mp3|ogg]',
-        'C5' : 'C5.[mp3|ogg]',
-        'D#5' : 'Ds5.[mp3|ogg]',
-        'F#5' : 'Fs5.[mp3|ogg]',
-        'A5' : 'A5.[mp3|ogg]',
-        'C6' : 'C6.[mp3|ogg]',
-        'D#6' : 'Ds6.[mp3|ogg]',
-        'F#6' : 'Fs6.[mp3|ogg]',
-        'A6' : 'A6.[mp3|ogg]',
-        'C7' : 'C7.[mp3|ogg]',
-        'D#7' : 'Ds7.[mp3|ogg]',
-        'F#7' : 'Fs7.[mp3|ogg]',
-        'A7' : 'A7.[mp3|ogg]',
-        'C8' : 'C8.[mp3|ogg]'
-
-    /* old
+    /* old */
     'A0': 'A0.[mp3|ogg]',
     'A1': 'A1.[mp3|ogg]',
     'A2': 'A2.[mp3|ogg]',
@@ -140,7 +110,7 @@ var pianO = new Tone.Sampler({
     'A6': 'A6.[mp3|ogg]',
     
     /*-----------old------*/
-   /* 'A#0': 'As0.[mp3|ogg]',
+    'A#0': 'As0.[mp3|ogg]',
     'A#1': 'As1.[mp3|ogg]',
     'A#2': 'As2.[mp3|ogg]',
     'A#3': 'As3.[mp3|ogg]',
@@ -216,26 +186,20 @@ var pianO = new Tone.Sampler({
     'G#2': 'Gs2.[mp3|ogg]',
     'G#3': 'Gs3.[mp3|ogg]',
     'G#4': 'Gs4.[mp3|ogg]',
-    'G#5': 'Gs5.[mp3|ogg]',a
-    'G#6': 'Gs6.[mp3|ogg]'*/
+    'G#5': 'Gs5.[mp3|ogg]',
+    'G#6': 'Gs6.[mp3|ogg]'
 },
  {
-    'baseUrl' : './samples/piano/',    
-    "envelope" : {
-        "attack" : 0,
-        "decay" : 0,
-        "sustain" : 1,
-        "release" : 10
-      },
-      "filterEnvelope" : {
-        "min" : 20000,
-        //or...
-        "release" : 10
-      }
-},);
+    'baseUrl' : './samples/piano/',
+    curve: "exponential",
+    attack: 0,
+    release: 3,
+    sustain: 1,
+    decay: 3    
+});
 
 /* KILLING NOISES HERE */
-const piano_gain = new Tone.Gain(0.4);
+const piano_gain = new Tone.Gain(0.5);
 var comp = new Tone.Compressor({
         ratio : 4 ,
         threshold : -20 ,
@@ -258,11 +222,11 @@ var comp = new Tone.Compressor({
 //delay.toMaster();
 
 /* PIANO SAMPLER TO GAIN, GAIN TO MASTER */ 
-pianO.connect(piano_gain);
-//pianO.volume.value = -10;
+//pianO.connect(piano_gain);
+pianO.volume.value = -10;
 //piano_gain.connect(comp);
-//pianO.toMaster();
-piano_gain.toMaster();
+pianO.toMaster();
+//piano_gain.toMaster();
 //comp.toMaster();
 
 
@@ -273,7 +237,7 @@ buttons.on('change', function(note) {
     
     console.log(Tone.Frequency(note.note).toNote());
     if (note.state === true) {
-        pianO.triggerAttackRelease(Tone.Frequency(note.note, 'midi').toNote(), 4);
+        pianO.triggerAttack(Tone.Frequency(note.note, 'midi').toNote());
         
     } else if (note.state === false) {
         
@@ -305,23 +269,14 @@ function playInput(buttons){
 document.addEventListener("keydown", (e) => {      
     if (e.repeat) { return };
 
-    
-      
        if (e.keyCode >= 48 && e.keyCode <= 90)  {
-       pianO.triggerAttackRelease(Tone.Frequency(keyMap[e.key], "midi").toNote(), 4); 
+       pianO.triggerAttack(Tone.Frequency(keyMap[e.key], "midi").toNote()); 
        e.preventDefault();
        pressed = true;
        animateKey('key_'+ keyMap[e.key]);
        
-        }           
-      
-      
-
-    
+        }    
 });
-
-
-
 
 document.addEventListener("keyup", (e) => {      
         
@@ -332,9 +287,9 @@ document.addEventListener("keyup", (e) => {
      animateKey('key_'+ keyMap[e.key]);  
         e.preventDefault();      
     }
-
-
 });
+
+
 }
 
 playInput();
@@ -376,6 +331,7 @@ $(window).on('load', function(){
     var keyB = $('#Keyboard').find('rect');
     for (var i=0; i < keyB.length; i++){
         var key = keyB[i];
+      
         if (key){
             key.setAttribute('id', 'key_'+ keyIds[i]);            
        

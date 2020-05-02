@@ -95,7 +95,7 @@ var buttons = new Nexus.Piano('#Keyboard', {
 
 
 
-Tone.context.latencyHint = 'balanced';
+Tone.context.latencyHint = 'interactive';
 
 var pianO = new Tone.Sampler({
 
@@ -235,7 +235,7 @@ var pianO = new Tone.Sampler({
 },);
 
 /* KILLING NOISES HERE */
-const piano_gain = new Tone.Gain(0.5);
+const piano_gain = new Tone.Gain(0.4);
 var comp = new Tone.Compressor({
         ratio : 4 ,
         threshold : -20 ,
@@ -258,11 +258,11 @@ var comp = new Tone.Compressor({
 //delay.toMaster();
 
 /* PIANO SAMPLER TO GAIN, GAIN TO MASTER */ 
-//pianO.connect(piano_gain);
-pianO.volume.value = -10;
+pianO.connect(piano_gain);
+//pianO.volume.value = -10;
 //piano_gain.connect(comp);
-pianO.toMaster();
-//piano_gain.toMaster();
+//pianO.toMaster();
+piano_gain.toMaster();
 //comp.toMaster();
 
 

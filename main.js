@@ -209,7 +209,9 @@ var pianO = new Tone.Sampler({
 });
 
 /* KILLING NOISES HERE */
+/*
 const piano_gain = new Tone.Gain(0.5);
+
 var comp = new Tone.Compressor({
         ratio : 4 ,
         threshold : -20 ,
@@ -217,7 +219,7 @@ var comp = new Tone.Compressor({
         attack : 0.003 ,
         knee : 30
     });
-
+*/
 /* SOME OPTIONAL FUN HERE */
 
 //var reverb = new Tone.Freeverb(0.1, 1000);

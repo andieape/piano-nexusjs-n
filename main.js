@@ -75,7 +75,7 @@ Tone.Buffer.on('error', function() {
 
 
 
-
+document.querySelector("#loading").style.display = 'none';
 window.onload = NProgress.done();
 window.onload = document.querySelector(".container").style.display = 'block';
 // create Nexus UI //
@@ -259,8 +259,8 @@ var comp = new Tone.Compressor({
 
 /* PIANO SAMPLER TO GAIN, GAIN TO MASTER */ 
 pianO.connect(piano_gain);
-piano_gain.connect(comp);
-comp.toMaster();
+//piano_gain.connect(comp);
+piano_gain.toMaster();
 //comp.toMaster();
 
 
@@ -271,11 +271,11 @@ buttons.on('change', function(note) {
     
     console.log(Tone.Frequency(note.note).toNote());
     if (note.state === true) {
-        pianO.triggerAttackRelease(Tone.Frequency(note.note, 'midi').toNote(), 1.3);
+        pianO.triggerAttackRelease(Tone.Frequency(note.note, 'midi').toNote(), 4);
         
     } else if (note.state === false) {
         
-       // pianO.triggerRelease(Tone.Frequency(note.note).toNote());
+        pianO.triggerRelease(Tone.Frequency(note.note).toNote());
     }
 });
 

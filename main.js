@@ -95,7 +95,7 @@ var buttons = new Nexus.Piano('#Keyboard', {
 
 
 
-Tone.context.latencyHint = 'interactive';
+Tone.context.latencyHint = 'balanced';
 
 var pianO = new Tone.Sampler({
 

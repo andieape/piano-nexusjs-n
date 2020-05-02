@@ -258,7 +258,7 @@ var comp = new Tone.Compressor({
 //delay.toMaster();
 
 /* PIANO SAMPLER TO GAIN, GAIN TO MASTER */ 
-pianO.connect(piano_gain);
+//pianO.connect(piano_gain);
 pianO.volume.value = -10;
 //piano_gain.connect(comp);
 pianO.toMaster();

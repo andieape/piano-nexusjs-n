@@ -1,4 +1,4 @@
-//NProgress.start();
+NProgress.start();
 
 
 /*var samples = {
@@ -259,8 +259,10 @@ var comp = new Tone.Compressor({
 
 /* PIANO SAMPLER TO GAIN, GAIN TO MASTER */ 
 pianO.connect(piano_gain);
+pianO.volume.value = -10;
 //piano_gain.connect(comp);
-piano_gain.toMaster();
+pianO.toMaster();
+//piano_gain.toMaster();
 //comp.toMaster();
 
 

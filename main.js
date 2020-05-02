@@ -75,7 +75,7 @@ Tone.Buffer.on('error', function() {
 
 
 
-document.querySelector("#loading").style.display = 'none';
+
 window.onload = NProgress.done();
 window.onload = document.querySelector(".container").style.display = 'block';
 // create Nexus UI //

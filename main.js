@@ -1,7 +1,7 @@
 //NProgress.start();
 
 
-var samples = {
+/*var samples = {
 
     'A0' : 'A0.[mp3|ogg]',
     'C1' : 'C1.[mp3|ogg]',
@@ -34,9 +34,9 @@ var samples = {
     'A7' : 'A7.[mp3|ogg]',
     'C8' : 'C8.[mp3|ogg]'
     
-}
+}*/
 // load samples //
-/*
+
 var samples = SampleLibrary.load({
     instruments: ['piano'],
     baseUrl: "./samples/"
@@ -71,12 +71,12 @@ Tone.Buffer.on('load', function() {
 
 Tone.Buffer.on('error', function() {
     document.querySelector("#loading").innerHTML = "I'm sorry, there has been an error loading the samples. This demo works best on on the most up-to-date version of Chrome.";
-})*/
+})
 
 
 
-//document.querySelector("#loading").style.display = 'none';
-//window.onload = NProgress.done();
+document.querySelector("#loading").style.display = 'none';
+window.onload = NProgress.done();
 window.onload = document.querySelector(".container").style.display = 'block';
 // create Nexus UI //
 Nexus.colors.accent = "#f00"
@@ -220,7 +220,7 @@ var pianO = new Tone.Sampler({
     'G#6': 'Gs6.[mp3|ogg]'*/
 },
  {
-    'baseUrl' : './samples/salamander/',    
+    'baseUrl' : './samples/piano/',    
     "envelope" : {
         "attack" : 0,
         "decay" : 0,
@@ -235,8 +235,14 @@ var pianO = new Tone.Sampler({
 },);
 
 /* KILLING NOISES HERE */
-const piano_gain = new Tone.Gain(0.7);
-var comp = new Tone.Compressor(-30, 3);
+const piano_gain = new Tone.Gain(0.5);
+var comp = new Tone.Compressor({
+        ratio : 4 ,
+        threshold : -20 ,
+        release : 0.20 ,
+        attack : 0.003 ,
+        knee : 30
+    });
 
 /* SOME OPTIONAL FUN HERE */
 
@@ -319,7 +325,7 @@ document.addEventListener("keyup", (e) => {
         
     console.log(e.key);
     if (e.keyCode >= 48 && e.keyCode <= 90)  {  
-    pianO.triggerRelease(Tone.Frequency(keyMap[e.key], "midi").toNote());    
+        pianO.triggerRelease(Tone.Frequency(keyMap[e.key], "midi").toNote());    
      pressed = false;  
      animateKey('key_'+ keyMap[e.key]);  
         e.preventDefault();      

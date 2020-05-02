@@ -1,8 +1,9 @@
 var SampleLibrary = {
     minify: false,
     ext: '.[mp3|ogg]', // use setExt to change the extensions on all files // do not change this variable //
-    baseUrl: '/wp-content/themes/generatepress/js/piano-rest/samples/',
-    list: ['bass-electric','bassoon','cello','clarinet','contrabass','flute','french-horn','guitar-acoustic','guitar-electric','guitar-nylon', 'harmonium','harp','organ','piano','saxophone','trombone','trumpet','tuba','violin','xylophone'],
+    baseUrl: './samples/',
+    //list: ['bass-electric','bassoon','cello','clarinet','contrabass','flute','french-horn','guitar-acoustic','guitar-electric','guitar-nylon', 'harmonium','harp','organ','piano','saxophone','trombone','trumpet','tuba','violin','xylophone'],
+    list: ['piano'],
     onload: null,
   
     setExt: function (newExt) {
@@ -73,7 +74,7 @@ var SampleLibrary = {
 
                 )
             }
-
+            
             return rt
 
             // if a single instrument name is passed...

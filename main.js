@@ -236,10 +236,10 @@ var pianO = new Tone.Sampler({
 },
  {
     'baseUrl' : './samples/piano/',
-    curve: "linear",
+    curve: "exponential",
     attack: 0,
     release: 2,
-    sustain: 1,
+    sustain: 2,
     decay: 1    
 });
 

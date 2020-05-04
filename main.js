@@ -157,12 +157,6 @@ var notesBuffer = Object.values(samples);
 window.onload = NProgress.done();
 document.querySelector(".container").style.display = 'block';
 // create Nexus UI //
-Nexus.colors.accent = "transparent";
-
-Nexus.colors.light = "url('#grad-white')";
-Nexus.colors.dark = "url('#grad-black')";
-Nexus.colors.mediumLight = "transparent";
-
 
 
 

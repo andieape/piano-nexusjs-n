@@ -265,7 +265,7 @@ var pianO = new Tone.Sampler({
     //curve: "linear",
     curve: 'exponential',
     attack: 0,
-    release: 2,
+    release: 3,
     sustain: 2,
     decay: 1    
 });

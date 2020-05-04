@@ -244,7 +244,7 @@ var pianO = new Tone.Sampler({
 });
 
 /* KILLING NOISES HERE */
-const piano_gain = new Tone.Gain(0.2);
+const piano_gain = new Tone.Gain(0.4);
 /*var comp = new Tone.Compressor({
         ratio : 4 ,
         threshold : -20 ,

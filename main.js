@@ -98,7 +98,7 @@ var samples = {
 }
 
 
-var baseUrl = './samples/';
+var baseUrl = './samples/piano/';
 
 var notesBuffer = Object.values(samples);
 
@@ -107,7 +107,7 @@ var notesBuffer = Object.values(samples);
 //    var la = new Tone.BufferSource(baseUrl);
 
 
-    var buffer = new Tone.Buffer("./wp-content/themes/twentyfourteen-child/js/new piano/samples/piano/Gs6.[mp3|ogg]", function(){
+    var buffer = new Tone.Buffer("./samples/piano/Gs6.[mp3|ogg]", function(){
         //the buffer is now available.
         
         
@@ -267,7 +267,7 @@ var pianO = new Tone.Sampler({
     'G#6': 'Gs6.[mp3|ogg]'
 },
  {
-    baseUrl: "./samples/",
+    baseUrl: "./samples/piano/",
     //curve: "linear",
     curve: 'exponential',
     attack: 0,

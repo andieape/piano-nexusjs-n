@@ -20,6 +20,10 @@ body {
 
 }
 
+svg {
+    border-radius: 2px 2px 10px 10px;
+}
+
 select {
     visibility: hidden;
 }

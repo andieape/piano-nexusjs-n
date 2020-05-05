@@ -1,3 +1,14 @@
+//import Loader from './loader.js';
+/*
+const loader = new Loader({
+    src: 'cdn.segment.com/analytics.js',
+    global: 'Segment',
+})
+
+// scriptToLoad will now be a reference to `window.Segment`
+const scriptToLoad = await loader.load()*/
+
+StartAudioContext(Tone.context).then(function(){
     //started
     
 
@@ -109,45 +120,17 @@ var notesBuffer = Object.values(samples);
 
     var buffer = new Tone.Buffer("./samples/piano/Gs6.[mp3|ogg]", function(){
         //the buffer is now available.
-        
+        console.log('ready!');
         
     });
 
 
     Tone.Buffer.on('load', function() {
-     
+        console.log('a');     
 
-        
-                var song = 's q a a w d'
-                var songPlay = song.split(" ");
-                var notesArr = [];
-
-                for (var z = 0; z < songPlay.length; z++) {
-                    
-                    var note = songPlay[z];       
-                    notesArr.push(Tone.Frequency(keyMap[note], 'midi').toNote());
-                        
-                    
-                }
                 
 
 
-
-               var part = new Tone.Part(function(time, note){
-                //the notes given as the second element in the array
-                //will be passed in as the second argument
-                pianO.triggerAttackRelease(note, "8n", time);
-            }, [[0, "C2"], ["0:1:0","C3"], ["0:3:2", "G2"]]);
-
-                var seq = new Tone.Sequence(function(time, note){
-                    pianO.triggerAttack(note, "8n", time);
-                //straight quater notes
-                }, notesArr, "4n");
-                part.humanize = true;
-                seq.loop = false;
-                part.start(0);
-                Tone.Transport.start();
-              //  seq.stop(notesArr.length);
 
     });
 /*
@@ -157,6 +140,12 @@ var notesBuffer = Object.values(samples);
 window.onload = NProgress.done();
 document.querySelector(".container").style.display = 'block';
 // create Nexus UI //
+Nexus.colors.accent = "transparent";
+
+//Nexus.colors.light = "url('#grad-white')";
+//Nexus.colors.dark = "url('#grad-black')";
+//Nexus.colors.mediumLight = "transparent";
+
 
 
 
@@ -261,12 +250,11 @@ var pianO = new Tone.Sampler({
     'G#6': 'Gs6.[mp3|ogg]'
 },
  {
-    baseUrl: "./samples/piano/",
-    //curve: "linear",
-    curve: 'exponential',
+    'baseUrl' : './samples/piano/',
+    curve: "linear",
     attack: 0,
-    release: 3,
-    sustain: 2,
+    release: 2,
+    sustain: 1,
     decay: 1    
 });
 
@@ -299,16 +287,23 @@ var pianO = new Tone.Sampler({
 //piano_gain.connect(comp);
 //pianO.toMaster();
 //comp.toMaster();
-
-const piano_gain = new Tone.Gain(0.4);
+/*
+vol = 5;
+vol.toMaster();
+const piano_gain = new Tone.Gain(0.5);
 pianO.connect(piano_gain);
-piano_gain.toMaster();
+piano_gain.connect(vol);
+vol.toMaster();*/
+var vol = new Tone.Volume(-7);
+pianO.chain(vol, Tone.Master);
+
 
 
 
 
 buttons.on('change', function(note) {
     
+    console.log(Tone.Frequency(note.note).toNote());
     if (note.state === true) {
         pianO.triggerAttack(Tone.Frequency(note.note, 'midi').toNote());
         
@@ -354,6 +349,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 document.addEventListener("keyup", (e) => {              
+    console.log(e.key);
     if (e.keyCode >= 48 && e.keyCode <= 90)  {  
         pianO.triggerRelease(Tone.Frequency(keyMap[e.key], "midi").toNote());    
      pressed = false;  
@@ -368,43 +364,72 @@ document.addEventListener("keyup", (e) => {
 playInput();
 
 /* RESIZER --- DON'T USE YET */
-/*
 
+/*
 var x = window.matchMedia("(max-width: 700px)");
 resizePiano(x);
 x.addListener(resizePiano);
 
 function resizePiano(x) {
 	if (x.matches) {
-        buttons.resize(1200, 212);
+        buttons.resize(1200, 150);
 		Tone.context.lookAhead = 0.1;
     } else {
        // buttons.resize(1000, 150);
 		Tone.context.lookAhead = 0;
     }
-}
+}*/
 
-*/
+
 /* Setting IDs for keys*/
 
 //reordering the obj to set the ids
-var keyIds = Object.values(keyMap).sort(function(a, b){return a-b});;
+var keyIds = Object.values(keyMap).sort(function(a, b){return a-b});
+//var keyNames = Object.keys(keyMap).sort(function(a, b){return a-b});
 
 
 
+buttons.on('hover', function(){
+    console.log($(this));
+})     
+
+window.onload = function(){
+    
+    var keyB = document.querySelectorAll('rect');
+    var keySpan = document.querySelector("#Keyboard").getElementsByTagName('span');
 
 
-$(window).on('load', function(){
-    console.log('ready');
-    var keyB = $('#Keyboard').find('rect');
+   // labelTarget.remove();
+  
+  
     for (var i=0; i < keyB.length; i++){
         var key = keyB[i];
-      
+        var span = keySpan[i];
+
+       
+        
         if (key){
-            key.setAttribute('id', 'key_'+ keyIds[i]);            
-       
-        }       
-       
+            key.setAttribute('id', 'key_'+ keyIds[i]);
+              //    $('<label>'+ keyIds[i] +'<label>').appendTo(labelTarget[i]).css('position: absolute');
+            if (key.getAttribute('fill') === "url('#grad-black')") {
+  //              key.classList.add('key-black');
+    //            span.classList.add('key-span-black');
+
+            } else {
+      //          key.classList.add('key-white');
+        //        span.classList.add('key-span-white');
+            }
+                
+        }              
     }
-  
+}
+
+//go!
+
+
+
+
+
+
 });
+

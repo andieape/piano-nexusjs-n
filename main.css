@@ -61,7 +61,7 @@ select {
       
         margin: 0px;
         width: 90vw !important;
-        height: 230px;
+        height: 240px;
         display: flex;
         overflow-x: auto;    
         -webkit-overflow-scrolling: touch;

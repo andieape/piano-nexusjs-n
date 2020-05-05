@@ -89,7 +89,7 @@ select {
 }
 
 .pressed {
-    fill: 'red';
+    fill: rgb(255,0,0);
 }
 
 h1, h3{

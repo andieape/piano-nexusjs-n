@@ -312,6 +312,31 @@ buttons.on('change', function(note) {
         pianO.triggerRelease(Tone.Frequency(note.note, "midi").toNote());
     }
 });
+	
+	
+	
+	var sustainButton = document.getElementById('sustain-button');
+
+var sustClicked = false;
+
+sustainButton.addEventListener('click', function(e){
+    if(e.repeat){return};
+    sustainButton.classList.toggle('clicked');
+    if (!sustClicked){
+        sustainButton.textContent = 'SUSTAIN OFF';
+        sustClicked = true;
+        console.log(sustClicked);
+        pianO.release = 0.4;
+
+    } else {
+        
+        sustainButton.textContent = 'SUSTAIN ON';
+        sustClicked = false;
+        console.log(sustClicked);
+        pianO.release = 5;
+    }
+    console.log('lalala');
+});
 
 
 

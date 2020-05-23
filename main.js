@@ -678,6 +678,13 @@ $('.piano-menu__played-copy').on('click', function() {
 
 //go!
 
+buttons.on('hover', function(){
+    console.log($(this));
+})     
+
+
+//go!
+
 
 
 

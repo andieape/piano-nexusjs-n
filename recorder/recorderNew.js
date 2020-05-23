@@ -14,12 +14,12 @@ var audioContext; //new audio context to help us record
 
 
 
-
+/*
 var encodingTypeSelect = document.getElementById("encodingTypeSelect");
 var recordButton = document.getElementById("recordButton");
 var stopButton = document.getElementById("stopButton");
 var recordButtonNew = document.getElementById('recordButtonNew');
-
+*/
 //add events to those 2 buttons
 /*
 recordButton.addEventListener("click", startRecording);

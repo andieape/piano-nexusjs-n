@@ -25,7 +25,7 @@ End of comment */
   font-weight: 500;
   font-style: normal;
   unicode-range: U+000-5FF;
-  src: local("SpartanMB"), url("/fonts/Spartan-Medium.woff2") format("woff2"), url("/fonts/Spartan-Medium.woff") format("woff"), url("/fonts/Spartan-Medium.ttf") format("ttf"), url("/fonts/Spartan-Medium.eot") format("eot");
+  src: local("SpartanMB"), url("fonts/Spartan-Medium.woff2") format("woff2"), url("fonts/Spartan-Medium.woff") format("woff"), url("fonts/Spartan-Medium.ttf") format("ttf"), url("fonts/Spartan-Medium.eot") format("eot");
   font-display: swap;
 }
 
@@ -34,7 +34,7 @@ End of comment */
   font-weight: 700;
   font-style: normal;
   unicode-range: U+000-5FF;
-  src: local("SpartanMB"), url("/fonts/Spartan-Bold.woff2") format("woff2"), url("/fonts/Spartan-Bold.woff") format("woff"), url("/fonts/Spartan-Bold.ttf") format("ttf"), url("/fonts/Spartan-Bold.eot") format("eot");
+  src: local("SpartanMB"), url("fonts/Spartan-Bold.woff2") format("woff2"), url("fonts/Spartan-Bold.woff") format("woff"), url("fonts/Spartan-Bold.ttf") format("ttf"), url("fonts/Spartan-Bold.eot") format("eot");
   font-display: swap;
 }
 
@@ -43,7 +43,7 @@ End of comment */
   font-weight: 800;
   font-style: normal;
   unicode-range: U+000-5FF;
-  src: local("SpartanMB"), url("/fonts/Spartan-Black.woff2") format("woff2"), url("/fonts/Spartan-Black.woff") format("woff"), url("/fonts/Spartan-Black.ttf") format("ttf"), url("/fonts/Spartan-Black.eot") format("eot");
+  src: local("SpartanMB"), url("fonts/Spartan-Black.woff2") format("woff2"), url("fonts/Spartan-Black.woff") format("woff"), url("fonts/Spartan-Black.ttf") format("ttf"), url("fonts/Spartan-Black.eot") format("eot");
   font-display: swap;
 }
 
@@ -52,7 +52,7 @@ End of comment */
   font-weight: 400;
   font-style: normal;
   unicode-range: U+000-5FF;
-  src: local("PlayfairDisplay-Italic"), url("/fonts/PlayfairDisplay-Italic.woff2") format("woff2"), url("/fonts/PlayfairDisplay-Italic.woff") format("woff"), url("/fonts/PlayfairDisplay-Italic.ttf") format("ttf"), url("/fonts/PlayfairDisplay-Italic.eot") format("eot");
+  src: local("PlayfairDisplay-Italic"), url("fonts/PlayfairDisplay-Italic.woff2") format("woff2"), url("fonts/PlayfairDisplay-Italic.woff") format("woff"), url("fonts/PlayfairDisplay-Italic.ttf") format("ttf"), url("fonts/PlayfairDisplay-Italic.eot") format("eot");
   font-display: swap;
 }
 
@@ -61,7 +61,7 @@ End of comment */
   font-weight: 500;
   font-style: normal;
   unicode-range: U+000-5FF;
-  src: local("RobotoMono-Medium"), url("/fonts/RobotoMono-Medium.woff2") format("woff2"), url("/fonts/RobotoMono-Medium.woff") format("woff"), url("/fonts/RobotoMono-Medium.ttf") format("ttf"), url("/fonts/RobotoMono-Medium.eot") format("eot");
+  src: local("RobotoMono-Medium"), url("fonts/RobotoMono-Medium.woff2") format("woff2"), url("fonts/RobotoMono-Medium.woff") format("woff"), url("fonts/RobotoMono-Medium.ttf") format("ttf"), url("fonts/RobotoMono-Medium.eot") format("eot");
   font-display: swap;
 }
 

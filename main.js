@@ -12,7 +12,7 @@ window.onload = NProgress.done();
 $('.loading').addClass('loading-progress');
 setTimeout(function() {
     $('.loading').addClass('loaded');
-}, 7000)
+}, 3000)
 //document.querySelector(".container").style.display = 'block';
 //document.querySelector(".piano-menu__search").classList.add('active');
 

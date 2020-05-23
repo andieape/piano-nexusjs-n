@@ -8105,17 +8105,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.bufferLength = this.analysers[0].frequencyBinCount;
 	    this.dataArray = new Float32Array(this.bufferLength);
 	
-	    /*
+/*
 	        // add linear gradient
-	        var grd = canvasCtx.createLinearGradient(0, 0, 0, canvas.height);
+	        var grd = this.context.createLinearGradient(0, 0, 0, canvas.height);
 	        // light blue
 	        grd.addColorStop(0, '#000');
 	        grd.addColorStop(0.2, '#bbb');
 	        grd.addColorStop(0.4, '#d18');
 	        // dark blue
 	        grd.addColorStop(1, '#d18');
-	        canvasCtx.fillStyle = grd; */
-	
+	      //  this.canvas.element.fillStyle = grd; 
+*/	
 	    this.active = true;
 	
 	    this.db = -Infinity;

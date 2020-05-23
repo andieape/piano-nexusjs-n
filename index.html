@@ -7,8 +7,14 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
    
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>   
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js" integrity="sha256-lrZTgsdM1iVdRigETFOU8u8/BmLX1ysQ8bzrULbuVFU="
+    crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="mainv2.css">
  
     <link rel="stylesheet" href="nprogress.css" type="text/css" />
   
@@ -18,29 +24,375 @@
 </head>
 
 <body>
-    <div id='loading'>LOADING</div>
-    <div id="particle-container"></div>
-    <div id="content">
+ 
+    <!--
+    <div id="loading-scr">
+        <div class="load-wrap">
+        <img id="loading-logo" style="margin: 0px auto;" src="./assets/piano-logo.png"/>
+        </div>
+    </div> -->
+    <div id="piano-content" class='piano-content'>
+
+        <div id="loading-scr" class="loading">
+            <div class="loading__container">
+                <div class="loading__icons">
+                    <img src="../img/logo-orange.svg" alt="">
+                </div>
+                <p class="loading__title">VIRTUAL PIANO IS THE WORLD’S FIRST AND MOST LOVED ONLINE PIANO KEYBOARD</p>
+                <p class="loading__description">Enabling you to <span>play the piano instantly</span>. Become an online pianist and <span>create your own extraordinary music!</span></p>
+                <span class="loading__pros">QUICK. EASY. ENJOYABLE.</span>
+            </div>
+        </div>
         
-        <div class="container" style='display: none;'>
-            <h1> Piano Demo </h1>
+        <div class="container">
             
-            <div id="Selector"></div>
+            <p>
+                <button id='sustain-button' class='sustain-button'>Sustain</button>
+                <button id='piano-switch' class='sustain-button'>Piano 1</button>
+                
+                <select id='song-search' style='width: 200px;'>
+                                    <button id='piano-switch' class='sustain-button'>Piano 1</button>
+
+                    <option value='0'>Select a Song</option>                
+                    
+                </select>
+
+                <input id='song-search-new'></input>
+                <button id='key-assist-btn' class='sustain-button' style="display: block;margin: 14px auto;">Key Assist ON</button>
+
+        
+            </p>
+            <div class='song_wrapper'>
+                <h4 id='song_title'></h4>
+                <p id='song_text'></p> 
+               
+            </div>
+            <button id='play-sheet-btn' class='sustain-button' style="visibility: hidden; display:block; margin: 14px auto;">Play</button>
+
             <br/>
-            <div class='slider'>
-            <div id="Keyboard"></div>
-    </div>
+            <div id='piano-body' class='piano-body'>
+                <div id='menu-div' class="piano-menu">
+                    <div class="piano-menu__top">
+                        <div class="piano-menu__speaker"></div>
+                        <div class="piano-menu__panel">
+                            <div class="piano-menu__search">
+                                <div>
+                                    <h3>Select song</h3>
+                                    <div class="piano-menu__search-box">
+                                        <input id="search-input" type="text" placeholder="Search music sheets to play…">
+                                        <ul id="search-result" class="piano-menu__search-results">
+                                           
+                                        </ul>
+                                        <span class="close"></span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3>Just play</h3>
+                                    <p>USE YOUR COMPUTER KEYBOARD TO PLAY YOUR CHOSEN SONG</p>
+                                </div>
+                            </div>
+    
+                            <div class="piano-menu__song">
+                                <div class="piano-menu__song-wrapper">
+                                    <div class="piano-menu__song-info">
+                                        <h4 id="song-info"></h4>
+                                        <div>
+                                            <button class="play-btn" id="play-btn">Play</button>
+                                            <button class="restart-btn" id="restart-btn">Restart</button>
+                                            <button class="autoplay-btn" id="autoplay-btn">Auto Play</button>
+                                            <span class="close"></span>
+                                        </div>
+                                    </div>
+                                    <div id="song-pattern" class="piano-menu__song-pattern">
+                                        
+
+                                    </div>
+                                    <div class="piano-menu__song-start">
+                                        <h3>Start now</h3>
+                                        <p>Press the highlighted letter on your computer keyboard to begin</p>
+                                    </div>
+                                </div>
+                                <div class="stats-toggle"><span></span></div>
+                                <div class="piano-menu__song-stats">
+                                    
+                                    <ul>
+                                        <li><span>Accuracy Score</span><span>- - -</span></li>
+                                        <li><span>Song Level</span><span>4</span></li>
+                                        <li><span>Time Spent</span><span>00:00</span></li>
+                                        <li><span>Pianist Rating</span><span>- - - -</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+    
+    
+                            <div class="piano-menu__played">
+                                <div class="piano-menu__chord">
+                                    <span id="piano-chord"></span>
+                                    <span id="piano-key"></span>
+                                </div>
+                                <p class="piano-menu__history" id="piano-key-history">
+                                    
+                                </p>
+                                <div class="piano-menu__played-functions">
+                                    <span class="piano-menu__played-back">
+                                       <svg id="home" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15">
+                                         <g>
+                                           <g>
+                                             <path d="M14.748,18.9l-6.73-6.022a.776.776,0,0,0-1.036,0L.252,18.9a.741.741,0,0,0-.2.831.764.764,0,0,0,.717.482H1.845v6.033a.437.437,0,0,0,.441.433H5.975a.437.437,0,0,0,.441-.433V22.579H8.584v3.663a.437.437,0,0,0,.441.433h3.689a.437.437,0,0,0,.441-.433V20.209H14.23a.764.764,0,0,0,.717-.482A.742.742,0,0,0,14.748,18.9Z" transform="translate(0 -13)" fill="#4e4e4e"/>
+                                           </g>
+                                         </g>
+                                         
+                                       </svg>
+    
+                                    </span>
+                                    <span class="piano-menu__played-copy">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 17">
+                                          <path d="M5.363,115.556a2.608,2.608,0,0,1-2.605-2.605v-6.283H1.686A1.687,1.687,0,0,0,0,108.354v8.275a1.687,1.687,0,0,0,1.686,1.686H9.347a1.687,1.687,0,0,0,1.686-1.686v-1.073Zm0,0" transform="translate(1.5 -103.5)" fill="#4e4e4e"/>
+                                          <path d="M137.807,1.686A1.685,1.685,0,0,0,136.121,0h-6.436A1.685,1.685,0,0,0,128,1.686V9.347a1.685,1.685,0,0,0,1.686,1.686h6.436a1.685,1.685,0,0,0,1.686-1.686Zm0,0" transform="translate(-122 -0.6)" fill="#4e4e4e"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+    
+                        
+                        <div class="piano-menu__speaker right"></div>
+                    </div>
+                    <div class="piano-menu__bottom">
+                        <ul>
+                            <li>
+                                <a class="piano-menu__bottom-btn record-btn orange" href="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13">
+                                        <g>
+                                          <path d="M109.916,106.667a3.25,3.25,0,1,0,3.25,3.25A3.251,3.251,0,0,0,109.916,106.667Z" transform="translate(-103.416 -103.417)" fill="#e01e17"/>
+                                          <path d="M6.5,0A6.5,6.5,0,1,0,13,6.5,6.5,6.5,0,0,0,6.5,0Zm0,11.7a5.2,5.2,0,1,1,5.2-5.2A5.2,5.2,0,0,1,6.5,11.7Z" fill="#e01e17"/>
+                                        </g>
+                                    </svg>Record
+                                </a>
+                                <div class="submenu record">
+                                    <span class="close"></span>
+                                    <div class="record__play">
+                                        <span class="record__play-btn"></span>
+                                        <input type="range" min="0" max="100" id="record" value="0">
+                                        <div class="record__time">
+                                            <span>00:00</span>
+                                            <span>-00:30</span>
+                                        </div>
+                                    </div>
+                                    <a href="" class="record__link download">Download</a>
+                                    <a href="" class="record__link soundcloud">Upload to Soundcloud</a>
+                                    <a href="" class="record__link social">Share on social media</a>
+                                    
+                                </div>
+                            </li>
+                            <li><a class="piano-menu__bottom-btn assist-btn" href="">Key assist</a></li>
+                            <li>
+                                <a class="piano-menu__bottom-btn metronome-btn" href="">Metronome</a>
+                                <div class="submenu metronome">
+                                    <div class="close"></div>
+                                    <div class="metronome__menu">
+                                        <span class="metronome__play"></span>
+                                        <div>
+                                            <span class="metronome__bpm">50</span>
+                                            <p>beats<br> per<br> minute</p>
+                                        </div>
+                                    </div>
+                                    <div class="metronome__range">
+                                        <span>–</span>
+                                        <input type="range">
+                                        <span>+</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="piano-menu__bottom-btn sound-btn" href="">Sound</a>
+                                <div class="submenu sound">
+                                    <span class="close"></span>
+                                    <label class="sustain">
+                                        <input type="checkbox" checked>
+                                        <span class="sustain__slide sound-input"><span>Sustain</span></span>
+                                    </label>
+                                    <div class="transpose">
+                                        <div class="sound-input">
+                                            <span class="transpose__sign">–</span>
+                                            <div class="transpose__value">
+                                                <span>0</span> transpose
+                                            </div>
+                                            <span class="transpose__sign increment">+</span>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="type">
+                                        <div class="sound-input">
+                                            <div class="type__current">CLASSICAL PIANO</div>
+                                            <select name="piano-type" hidden>
+                                                <option value="CLASSICAL PIANO">CLASSICAL PIANO</option>
+                                                <option value="GRAND CLASSICAL PIANO">GRAND CLASSICAL PIANO</option>
+                                            </select>
+                                            <ul class="type__custom">
+                                                <li class="active">CLASSICAL PIANO</li>
+                                                <li>GRAND CLASSICAL PIANO</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="volume">
+                                        <div class="volume__range sound-input">
+                                            Volume
+                                            <input type="range">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="piano-menu__bottom-btn styles-btn" href="">Styles</a>
+                                <div class="submenu sound">
+                                    <span class="close"></span>
+                                    <div class="type bg">
+                                        <div class="sound-input">
+                                            <div class="type__current">Background</div>
+                                        </div>
+                                    </div>
+                                    <div class="type theme">
+                                        <div class="sound-input">
+                                            <div class="type__current">Default theme</div>
+                                            <select name="piano-type" hidden>
+                                                <option value="Default Theme">Default Theme</option>
+                                                <option value="SPRING">SPRING</option>
+                                                <option value="SUMMER">SUMMER</option>
+                                                <option value="AUTUMN">AUTUMN</option>
+                                                <option value="WINTER">WINTER</option>
+                                            </select>
+                                            <ul class="type__custom">
+                                                <li class="active">DEFAULT THEME</li>
+                                                <li>SPRING</li>
+                                                <li>SUMMER</li>
+                                                <li>AUTUMN</li>
+                                                <li>WINTER</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </li>
+                            <li>
+                                <a class="piano-menu__bottom-btn save-btn" href="">Save</a>
+                                <div class="submenu save">
+                                    <span class="close"></span>
+                                    <h4>SAVE SETTINGS / PERFORMANCES</h4>
+                                    <div class="save__login">
+                                        <h5>Login</h5>
+                                        <p>To save your settings or performance, you need to be logged in:</p>
+                                        <input type="text" name="username" placeholder="username">
+                                        <input type="password" name="password" placeholder="Password">
+                                        <button class="btn">LOGIN</button>
+                                        <span class="save__forgot">Forgot Password</span>
+                                    </div>
+                                    <div>
+                                        <h5>Register</h5>
+                                        <p>Don’t have an account, register below:</p>
+                                        <button class="btn">Register</button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="menu-div-low"></div>
+                <div class='slider'>                    
+                    <div id="Keyboard"></div>                
+                </div>
+    
+            </div>
+    <svg>
+        <defs>
+
+        
+            <linearGradient id="grad-bla2ck" x1="50%" y1="0%" x2="50%" y2="100%" >
+                <stop offset="0%" style="stop-color:rgb(0,0,0);stop-opacity:1" />
+                <stop offset="10%" style="stop-color:rgb(0,0,0);stop-opacity:1" />
+                <stop offset="85%" style="stop-color:rgb(86,86,86);stop-opacity:1" />
+                <stop offset="90%" style="stop-color:rgb(0,0,0);stop-opacity:1" />
+                <stop offset="100%" style="stop-color:rgb(0,0,0);stop-opacity:1" />
+            </linearGradient>
+
+            <linearGradient id='grad-white-hover' xmlns="http://www.w3.org/2000/svg" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+                <stop offset="0" stop-color="#b5b5b5"/>
+                <stop offset="0.015" stop-color="#fff"/>
+                <stop offset="0.892" stop-color="#dbdbdb"/>
+                <stop offset="0.913" stop-color="#f4f4f4"/>
+                <stop offset="0.922" stop-color="#e0e0e0"/>
+                <stop offset="0.965" stop-color="#faf8f8"/>
+                <stop offset="0.974" stop-color="#fff"/>
+                <stop offset="1" stop-color="#fff"/>
+              </linearGradient>
+
+
+
+            <linearGradient id='grad-black-hover' xmlns="http://www.w3.org/2000/svg" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+                <stop offset="0" stop-color="#383838"/>
+                <stop offset="0.025"/>
+                <stop offset="0.039" stop-color="#121212"/>
+                <stop offset="0.133" stop-color="#272727"/>
+                <stop offset="0.852" stop-color="#343434"/>
+                <stop offset="0.877" stop-color="#141414"/>
+                <stop offset="0.887" stop-color="#343434"/>
+                <stop offset="0.916" stop-color="#2b2b2b"/>
+                <stop offset="1"/>
+              </linearGradient>
+
+
+            <linearGradient id="grad-white" xmlns="http://www.w3.org/2000/svg" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+                <stop offset="0" stop-color="#b5b5b5"/>
+                <stop offset="0.015" stop-color="#fff"/>
+                <stop offset="0.892" stop-color="#fff"/>
+                <stop offset="0.913" stop-color="#f4f4f4"/>
+                <stop offset="0.922" stop-color="#e0e0e0"/>
+                <stop offset="0.965" stop-color="#faf8f8"/>
+                <stop offset="0.974" stop-color="#fff"/>
+                <stop offset="1" stop-color="#fff"/>
+              </linearGradient>
+
+
+              <linearGradient id="grad-black" xmlns="http://www.w3.org/2000/svg" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+                <stop offset="0" stop-color="#383838"/>
+                <stop offset="0.025"/>
+                <stop offset="0.039" stop-color="#121212"/>
+                <stop offset="0.094" stop-color="#272727"/>
+                <stop offset="0.852" stop-color="#585858"/>
+                <stop offset="0.877" stop-color="#141414"/>
+                <stop offset="0.887" stop-color="#343434"/>
+                <stop offset="0.921" stop-color="#2b2b2b"/>
+                <stop offset="1"/>
+              </linearGradient>  
+
+        </defs>
+     
+      
+    </svg>
 </div>
 
       
 
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/tone-piano@0.0.12/build/Piano.min.js"></script>
+    <script type="text/javascript" src="StartAudioContext.js"></script>
     <script type="text/javascript" src="external-js/nprogress.js"></script> 
     <script type="text/javascript" src="external-js/NexusUI.js" ></script>
     <script type="text/javascript" src="external-js/Tone.js" ></script>
-    <script type="text/javascript" src="piano.js" ></script>
-    <script type="text/javascript" src="main.js" ></script>
+    <script type="text/javascript" src="loadingScreen.js" ></script>
+    <script type="text/javascript" src="sheetPlay.js"></script>
+    <script type="text/javascript" src="songSearch.js"></script>
+  
+    
+    <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src='recorder/recorderNew.js'></script>
+    <script type="text/javascript" src='recorder/WebAudioRecorder.min.js'></script>
+    
+
+<!--    <script type="text/javascript" src="../wp-content/themes/generatepress_child/js-dev/recorder/recorderNew.js" type="module"></script> -->
+<!--    <script type="text/javascript" src="../wp-content/themes/generatepress_child/js-dev/recorder/WebAudioRecorder.min.js" type="module"></script> -->
+
 
   
 

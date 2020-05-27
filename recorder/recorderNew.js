@@ -28,81 +28,7 @@ recordButtonNew.addEventListener('click', startRecordingNew);
 */
 
 
-function startRecording() {
-	console.log("startRecording() called");
-    
-//	console.log(audioContext1); 
-	navigator.mediaDevices.getDisplayMedia({ video:true, audio: { sampleRate: 44100, audioBitsPerSecond: 320000} }).then(function(stream) {
-		
-		/*
-			create an audio context after getDisplayMedia is called
-			sampleRate might change after  getDisplayMedia is called, like it does on macOS when recording through AirPods
-			the sampleRate defaults to the one set in your OS for your playback device
-		*/
-		audioContext = new AudioContext({  			
-			sampleRate: 44100
-		});
-		
-		
-		
-		//assign to gumStream for later use
-		gumStream = stream;
-		
-		
-		/* use the stream */
-		input = audioContext.createMediaStreamSource(gumStream);
-		console.log(input);
-		
-		
-	
-      
-		//get the encoding 
-		
-		encodingType = encodingTypeSelect.options[encodingTypeSelect.selectedIndex].value;
-		
-		//disable the encoding selector
-        
-       
-		
-		recorder = new WebAudioRecorder(input, {
-		  workerDir: "js/", // must end with slash
-		  encoding: encodingType,
-		  numChannels:2, //2 is the default, mp3 encoding supports only 2
-		  onEncoderLoading: function(recorder, encoding) {
-	
-		  },
-		  onEncoderLoaded: function(recorder, encoding) {
 
-		  }
-		});
-
-		recorder.onComplete = function(recorder, blob) { 
-			
-			createDownloadLink(blob,recorder.encoding);
-			
-		}
-
-		recorder.setOptions({
-		  timeLimit:300,
-		  encodeAfterRecord:encodeAfterRecord,
-	      ogg: {quality: 0.9},
-	      mp3: {bitRate: 320}
-	    });
-
-		//start the recording process
-		recorder.startRecording();
-
-	//	 __log("Recording started");
-
-	}).catch(function(err) {
-	  	
-    
-
-	});
-
-	
-   
-}
 
 if(navigator.userAgent.indexOf("Chrome") != -1 ){
 	console.log(navigator.userAgent);
@@ -155,20 +81,30 @@ function startRecordingNew() {
 		}
 
 		recorder.setOptions({
-		  timeLimit:300,
+		  timeLimit:3,
 		  encodeAfterRecord:encodeAfterRecord,
 	      ogg: {quality: 0.9},
 	      mp3: {bitRate: 320}
-	    });
+		});
+		
+		recorder.onTimeout = function(recorder) { 
+					
+			
+
+			if ($('.record-btn').hasClass('recording')) {
+                $('.record-btn').removeClass('recording').addClass('opened');
+                $('.record-btn').next().addClass('active')
+                console.log('stopped')
+                stopRecording();
+            } else if ($('.record').hasClass('active')) {
+                $('.record-btn').removeClass('opened active');
+                $('.record-btn').next().removeClass('active');
+		 }
+		} 
 
 		//start the recording process
 		recorder.startRecording();
-		console.log('started!')
-
-
-
-	
-   
+		console.log('started!')   
 }
 
 

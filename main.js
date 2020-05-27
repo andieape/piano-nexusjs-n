@@ -130,7 +130,7 @@ var pianO2 = new Tone.Sampler({
 pianO = pianO1;
 
 /* PIANO SWITCHER */
-
+/*
 var pianoSwitch = document.getElementById('piano-switch');
 
 var switchClicked = false;
@@ -151,6 +151,7 @@ pianoSwitch.addEventListener('click', function(e){
         
     }    
 });
+*/
 
 var vol1 = new Tone.Volume(-10);
 var vol2 = new Tone.Volume(-10);
@@ -165,7 +166,7 @@ var keyMap = {
     '1': 24,'!': 25,'2': 26,'@': 27,'3': 28,'4': 29,'$': 30,'5': 31,'%': 32,'6': 33,'^': 34,'7': 35,'8': 36,'*': 37,'9': 38,'(': 39,'0': 40,'q': 41,'Q': 42,'w': 43,'W': 44,'e': 45,'E': 46,'r': 47,'t': 48,'T': 49,'y': 50,'Y': 51,'u': 52,'i': 53,'I': 54,'o': 55,'O': 56,'p': 57,'P': 58,'a': 59,'s': 60,'S': 61,'d': 62,'D': 63,'f': 64,'g': 65,'G': 66,'h': 67,'H': 68,'j': 69,'J': 70,'k': 71,'l': 72,'L': 73,'z': 74,'Z': 75,'x': 76,'c': 77,'C': 78,'v': 79,'V': 80,'b': 81,'B': 82,'n': 83,'m': 84
     };
 
-
+/*
 var sustainButton = document.getElementById('sustain-button');
 
 var sustClicked = false;
@@ -188,7 +189,7 @@ sustainButton.addEventListener('click', function(e){
     
 });
 
-
+*/
 
     /*Press key animation*/
 
@@ -214,9 +215,9 @@ sustainButton.addEventListener('click', function(e){
             pianO.triggerAttack(Tone.Frequency(note.note, "midi").toNote());
             
         } else if (note.state === false) {
-            if (sustClicked){
+         /*   if (sustClicked){
                 pianO.triggerRelease(Tone.Frequency(note.note, "midi").toNote());    
-            }       
+            } */      
         }
     
         if(!$('.piano-menu__song-start').hasClass('hidden')){
@@ -245,24 +246,44 @@ sustainButton.addEventListener('click', function(e){
     document.addEventListener("keyup", (e) => {      
               
        
-        if (e.keyCode >= 48 && e.keyCode <= 90)  {  
-             if (sustClicked){
+        if ((e.keyCode >= 48 && e.keyCode <= 90))  {  
+           /*  if (sustClicked){
                 pianO.triggerRelease(Tone.Frequency(keyMap[e.key], "midi").toNote());    
             }
-         
+*/         
          pressed = false;  
          animateKey('key_'+ keyMap[e.key]);
+
+
+            if ($('.piano-menu__played').hasClass('active')){                
+            
     
             $('#piano-chord').html(Tone.Frequency(keyMap[e.key], "midi").toNote());
             $('#piano-key').html(e.key);
-            $('#piano-key-history').append(e.key);        
-    
-        } else if (e.keyCode == 32){
-            e.preventDefault();
-            $('#piano-key-history').append(" "); 
+            $('#piano-key-history').append('<span>'+e.key+'</span>');
+            
+            var scrollHistory = document.getElementById('piano-key-history').lastChild;
+            scrollHistory.scrollIntoView();
+            
+            }
+
+        
+
+            
+
+        } else if ((e.key == "|" || e.key == '[' || e.key == ']' || e.keyCode == 32 ) && $('.piano-menu__played').hasClass('active')){ 
+            
+            
+                e.preventDefault();
+                $('#piano-key-history').append('<span>'+e.key+'</span>'); 
+               
+           
+
         } else if (e.keyCode == 13){
             e.preventDefault();
             $('#piano-key-history').append("<br>"); 
+        } else {
+            return;
         }
     
         if (!$('.piano-menu__search-box').hasClass('active') && $('.piano-menu__search').hasClass('active')) {
@@ -438,13 +459,14 @@ sustainButton.addEventListener('click', function(e){
     
                 if (!$(this).hasClass('opened')) {
                     $('.submenu').removeClass('active');
-                    setTimeout(function() {
-                        var classAttr = $('.submenu.dragged').attr('class').split(' ')[1];
+                   /* setTimeout(function() {
+                       var classAttr = $('.submenu.dragged').attr('class').split(' ')[1];
                         var menu = $('.' + classAttr).removeClass('dragged').attr('style', '').detach();
                         $('a[data-menu="' + classAttr + '"]').after(menu);
-                    }, 400);
+                        
+                    }, 400);*/
                     
-    
+                    console.log('a)))')
                     $(this).addClass('opened').parent().siblings().find('.piano-menu__bottom-btn').removeClass('opened');
                     $(this).next().addClass('active');
                 } else {  
@@ -485,20 +507,20 @@ sustainButton.addEventListener('click', function(e){
             $(this).toggleClass('played');
             var audio = document.getElementById('audio_record');
 
-            setInterval(() => {
+            let playTimer = setInterval(() => {
                 $('#record').val(audio.currentTime);
             }, 10);
             $('#record').attr('step', '0.1');
             $('#record').attr('max', audio.duration);
 
             if (audio.currentTime == audio.duration){
-                clearInterval();
+                clearInterval(playTimer);
             }
            
             
             if (!$(this).hasClass('played')){
                 audio.pause();
-                clearInterval();
+                clearInterval(playTimer);
             } else {
                 audio.play();
             }
@@ -521,14 +543,16 @@ sustainButton.addEventListener('click', function(e){
             });
             
             
-                var dragBlocks = document.querySelectorAll('.submenu');
+         var dragBlocks = document.querySelectorAll('.submenu');
         dragBlocks.forEach((el) => {
+            console.log(el);
             el.onmousedown = function(event) {
               if (event.target.classList.contains('submenu')) {
                 let shiftX = event.clientX - el.getBoundingClientRect().left;
                 let shiftY = event.clientY - el.getBoundingClientRect().top;
     
-                $(el).addClass('dragged');
+                //$(el).addClass('dragged');
+                el.classList.add('dragged');
                 el.style.position = 'absolute';
                 el.style.zIndex = 1000;
                 el.style.transition = '0s';
@@ -670,22 +694,17 @@ sustainButton.addEventListener('click', function(e){
       };    
 
 $('.piano-menu__played-copy').on('click', function() {
-    var str = document.getElementById('piano-key-history').innerHTML;
+//    var str = document.getElementById('piano-key-history').innerHTML;
+var str = document.getElementById('piano-key-history').textContent;
     copyToClipboard(str);
 })
 
 
-
 //go!
 
-buttons.on('hover', function(){
-    console.log($(this));
-})     
-
+  
 
 //go!
-
-
 
 
 

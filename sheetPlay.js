@@ -46,20 +46,28 @@ function pianoPlay() {
         songArr[count].classList.add('active');
     } else {
         count++
-        songArr[count].classList.add('active');
-        
+        songArr[count].classList.add('active');        
     }
+
+
+    buttons.on('change', function (note) {
+      
+        console.log(note);
+        
+    })
+      
+    
 
     document.addEventListener('keydown', function(e){
 
-        
-
         if (e.repeat){return}
         if (e.keyCode >= 48 && e.keyCode <= 90) {
+            
+
             e.stopImmediatePropagation()
-            var key =  songArr[count]; 
-           
-            if (count <= songArr.length-1){           
+            var key =  songArr[count];    
+                    
+            if (count <= songArr.length-1){          
     
             songArr[count].classList.remove('active');
     
@@ -70,11 +78,9 @@ function pianoPlay() {
             } else {
                 
                 songArr[count].classList.add('wrong');
-            }
-            
+            }            
     
             count++
-            countSc++
     
                 //except last note
                 if (count <= songArr.length-1 && songArr[count].classList[0] != 'skip'){
@@ -88,45 +94,25 @@ function pianoPlay() {
             } else {            
                 //handle the song end here
                 console.log('song end');
-            } 
-            
-            if (songText.find('span.active').prev().is('br')){
-
-                scrollSong(lastNote, songText);
-               
-            } else if (songText.find('span.active').prev().hasClass('skip')){
-               
-               if (songText.find('span.active').prev().prev().is('br')){                   
-                    scrollSong(lastNote, songText);
-                } else if (songText.find('span.active').prev().prev().hasClass('skip')) {
-                    if (songText.find('span.active').prev().prev().prev().is('br')){                    
-                         scrollSong(lastNote, songText);
-                     }
-                }
-            } 
-            
+            }   
     
           }
-
-    });
-    
+          scrollSong();
+    });    
     
     
 }
 
 
 
-function scrollSong(lastNote, songText) {
+function scrollSong() {
 
-    //var scrollSize = songText.find('span.active').offset().top - songText.offset().top;  
-    var scrollSize = 22;
+    var scrollFocus = document.querySelector('span.active');            
 
-    scrollCount++
-    
-    lastNote.style.paddingBottom = scrollCount*(scrollSize).toString() + 'px';
- //   songText.scrollTop(scrollCount*scrollSize);
-   songText.animate({ scrollTop: scrollCount*scrollSize }, 300)
-    console.log('scrolled');
+    scrollFocus.scrollIntoView();
+    document.getElementById('song-pattern').scrollBy(0, -3.5);
+  //  songText.animate({ scrollTop: scrollCount*scrollSize }, 300)
+  //  console.log('scrolled');
     
 }
 
@@ -136,3 +122,4 @@ function cleanUpSheet(){
     songText.find('span.wrong').removeClass('wrong');
     
 }
+

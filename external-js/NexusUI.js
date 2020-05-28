@@ -4498,12 +4498,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.currentElement = false;
 	
 	        this.element.addEventListener("touchstart", function (e) {
-	          console.log("touchstart");
+	          
 	          var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
 	          var key = _this.keys[element.index];
 	          _this.paintbrush = !key.state;
 	          key.down(_this.paintbrush);
-	          _this.currentElement = element.index;
+			  _this.currentElement = element.index;
+			  
 	          e.preventDefault();
 	          e.stopPropagation();
 	        });

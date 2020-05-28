@@ -71,7 +71,7 @@ End of comment */
 }
 
 html, body {
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
 }
 
 body {
@@ -84,33 +84,25 @@ body {
   background: #fff;
 }
 
+body .grid-container {
+  max-width: none;
+  width: 100%;
+}
+
 svg {
   border-radius: 2px 2px 10px 10px;
 }
 
 #piano-content {
   position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-  padding-top: 69px;
+  padding-top: 60px;
+  padding-bottom: 200px;
 }
 
 #piano-content::before {
   content: '';
   width: 100%;
-  height: 270px;
+  height: 240px;
   position: absolute;
   top: 0;
   left: 0;
@@ -123,11 +115,13 @@ svg {
 #piano-content > .container {
   z-index: 2;
   position: relative;
+  margin: 0 auto;
+  max-width: 1288px;
 }
 
 .loading {
   background: #000;
-  max-width: 1280px;
+  max-width: 1288px;
   width: 100%;
   margin: 0 auto;
   border-radius: 10px;
@@ -142,7 +136,7 @@ svg {
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
           transform: translateX(-50%);
-  top: 69px;
+  top: 60px;
 }
 
 .loading.loaded {
@@ -239,6 +233,7 @@ svg {
   margin: 0 0 12px 0;
   padding-top: 35px;
   display: block;
+  line-height: 1.35;
   font-size: 20px;
   color: #FF8300;
   text-shadow: 0 0 10px rgba(255, 131, 0, 0.5);
@@ -262,6 +257,7 @@ svg {
   font-size: 14px;
   letter-spacing: .6px;
   margin: 0 0 10px 0;
+  line-height: 1.5;
 }
 
 .loading__description span {
@@ -292,9 +288,7 @@ svg {
   height: 100% !important;
   /*  width: 1240px; */
   margin: 0px auto;
-  padding-left: 6px;
-  padding-right: 6px;
-  padding-bottom: 6px;
+  padding: 10px 12px 0;
   border-radius: 10px;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -308,7 +302,7 @@ svg {
 }
 
 .piano-menu {
-  padding: 10px 6px;
+ 
 }
 
 .piano-menu__top {
@@ -1094,16 +1088,11 @@ svg {
   font-size: 15px;
   padding: 1px 32px;
   margin: 0;
-  width: 85%;
-  max-width: 85%;
+  width: 75%;
   letter-spacing: 1px;
   text-align: left;
   font-family: RobotoMono;
   overflow-y: scroll;
-  overflow-wrap: anywhere;
-}
-.piano-menu__history::-webkit-scrollbar {
-  display: none;
 }
 
 .piano-menu__speaker {
@@ -1168,7 +1157,7 @@ svg {
   -webkit-transition: .25s;
   -o-transition: .25s;
   transition: .25s;
-  padding: 0 10px;
+  padding: 0 25px;
   font-weight: 700;
   position: relative;
 }
@@ -1225,7 +1214,7 @@ svg {
   content: '';
   width: 18px;
   position: absolute;
-  left: -15px;
+  left: 0;
   top: 1px;
   height: 12px;
   display: inline-block;
@@ -1258,7 +1247,7 @@ svg {
 .piano-menu__bottom .record-btn svg {
   position: absolute;
   top: 0px;
-  left: -10px;
+  left: 6px;
   opacity: 0;
   -webkit-transition: .3s;
   -o-transition: .3s;
@@ -2518,7 +2507,6 @@ select {
 }
 
 #Keyboard {
-  margin: 3px !important;
   -ms-flex-negative: 0;
   -webkit-flex-shrink: 0;
           flex-shrink: 0;
@@ -2534,6 +2522,8 @@ select {
   /*  width: 700px;*/
   /* height: 240px;*/
   display: block;
+  padding-top: 10px;
+  padding-bottom: 10px;
   /* -webkit-overflow-scrolling: touch;
       scroll-snap-type: x mandatory; 
   */
@@ -2572,85 +2562,6 @@ select {
   font-family: 'Lato', sans-serif;
 }
 
-.rotate-text {
-  transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
-  
-  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}
-
-/*ipad*/
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
-  .piano-body {
-    width: 95vw;
-    margin: 0px auto;
-    padding-left: 7px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    border-radius: 10px;
-    background-image: -o-linear-gradient(#454545 32px, #000 278px);
-    background: #2b2b2b;
-    background: -o-linear-gradient(top, #2b2b2b 0%, #3b3b3b 3%, #525252 15%, black 38%, #191919 90%, #343434 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#2b2b2b), color-stop(3%, #3b3b3b), color-stop(15%, #525252), color-stop(38%, black), color-stop(90%, #191919), to(#343434));
-    background: linear-gradient(180deg, #2b2b2b 0%, #3b3b3b 3%, #525252 15%, black 38%, #191919 90%, #343434 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2b2b2b",endColorstr="#343434",GradientType=1);
-    border: 2px solid black;
-  }
-  .slider {
-    margin: 0px;
-    height: 240px;
-    display: block;
-    overflow-x: auto;
-    /* background-image: linear-gradient(#454545 32px, #000 278px); */
-  }
-  #menu-div {
-    margin: 1%;
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0px;
-    border: 2px solid black;
-    border-radius: 10px;
-    background: #3c3c3c;
-    background: -o-linear-gradient(top, #3c3c3c 0%, #222222 3%, black 10%, #212020 50%, black 90%, #191919 95%, #343434 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#3c3c3c), color-stop(3%, #222222), color-stop(10%, black), color-stop(50%, #212020), color-stop(90%, black), color-stop(95%, #191919), to(#343434));
-    background: linear-gradient(180deg, #3c3c3c 0%, #222222 3%, black 10%, #212020 50%, black 90%, #191919 95%, #343434 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3c3c3c",endColorstr="#343434",GradientType=1);
-  }
-  body, html {
-    background-size: 110%;
-    background-repeat: repeat-y;
-    overflow-x: hidden !important;
-  }
-  body {
-    position: relative !important;
-  }
-  #Selector {
-    display: none;
-  }
-  #piano-content {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-            align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-            justify-content: center;
-  }
-}
-
-/*iphone x*/
 .slider-active {
   width: 700px;
 }
@@ -2671,517 +2582,311 @@ select {
   transition: 0;
 }
 
-p {
-  text-align: center;
-}
-
-.song-wrapper {
-  text-align: center;
-  margin: 0 36%;
-  display: block;
-  padding: 5px;
-  border-radius: 0.6em;
-  background-color: #3a3a3a;
-  color: #f5831f;
+.hamburger {
   display: none;
+  width: 36px;
+  height: 36px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: absolute;
+  left: 5px;
+  bottom: 15px;
 }
 
-.sustain-button {
-  /*  margin: auto;*/
-  border-color: #3a3a3a;
-  color: #f5831f;
-  -webkit-box-shadow: 0 0 40px 40px #3a3a3a inset, 0 0 0 0 #3a3a3a;
-  box-shadow: 0 0 40px 40px #3a3a3a inset, 0 0 0 0 #3a3a3a;
-  -webkit-transition: all 150ms ease-in-out;
-  -o-transition: all 150ms ease-in-out;
-  transition: all 150ms ease-in-out;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-color: transparent;
-  border: 1px solid  #3a3a3a;
-  border-radius: 0.6em;
-  cursor: pointer;
-  /*   display: -webkit-box;
-      display: -ms-flexbox;
-     */
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: -webkit-inline-flex;
-  display: inline-flex;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  font-size: 0.7rem;
-  font-weight: 400;
-  line-height: 1;
-  padding: 1.2em 2.8em;
-  text-decoration: none;
-  text-align: center;
-  text-transform: uppercase;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+.hamburger span {
+  width: 18px;
+  height: 3px;
+  position: relative;
+  -webkit-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+  background: #939393;
+  border-radius: 3px;
 }
 
-.sustain-button:hover {
-  -webkit-box-shadow: 0 0 10px 0 #3a3a3a inset, 0 0 10px 4px #3a3a3a;
-  box-shadow: 0 0 10px 0 #3a3a3a inset, 0 0 10px 4px #3a3a3a;
-  color: #ff9538;
-  outline: 0;
+.hamburger span::before, .hamburger span::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  background: #939393;
+  -webkit-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+  border-radius: 3px;
 }
 
-.sustain-button.clicked {
-  -webkit-box-shadow: 0 0 10px 0 #3a3a3a inset, 0 0 10px 4px #f5831f;
-  box-shadow: 0 0 10px 0 #3a3a3a inset, 0 0 10px 4px #f5831f;
-  color: #ff9538;
-  outline: 0;
+.hamburger span::before {
+  top: -7px;
+}
+
+.hamburger span::after {
+  bottom: -7px;
+}
+
+.hamburger.active span {
+  background: #FF8300;
+  -webkit-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+.hamburger.active span::after {
+  bottom: 0;
+  background: #FF8300;
+  -webkit-transition: .3s;
+  -o-transition: .3s;
+  transition: .3s;
+  -webkit-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+          transform: rotate(-90deg);
+}
+
+.hamburger.active span::before {
+  opacity: 0;
+}
+
+@media (max-width: 1300px) {
+  .loading {
+    text-align: center;
+  }
+  .piano-content {
+    padding: 60px 8px 200px;
+  }
+  .piano-content > .container {
+    width: 100%;
+  }
+  .slider {
+    width: 100%;    
+    overflow-x: scroll;
+  }
+  #Keyboard {
+    -webkit-transform-origin: 0 0;
+        -ms-transform-origin: 0 0;
+            transform-origin: 0 0;
+  }
+}
+
+@media (max-width: 1200px) {
+  .piano-menu__top {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    padding: 0;
+  }
+  .piano-menu__panel {
+    width: 100%;
+  }
+  .piano-menu__speaker {
+    display: none;
+  }
+  .piano-menu__search-box {
+    width: 270px;
+    left: -webkit-calc(100% / 2 - 300px);
+    left: calc(100% / 2 - 300px);
+  }
+  .piano-menu__search-box.active {
+    width: 600px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .key-span-white {
+    border-radius: 2px 2px 16px 16px;
+  }
+  .key-span-white svg {
+    border-radius: 2px 2px 16px 16px;
+  }
+  .key-span-black {
+    height: 116px !important;
+    border-radius: 2px 2px 10px 10px;
+  }
+  .key-span-black svg, .key-span-black rect {
+    height: 116px;
+  }
+  .key-span-black, .key-span-black svg, .key-span-black svg rect {
+    width: 31px !important;
+    margin-left: 0.5% !important;
+  }
+  .record {
+    left: 0;
+    -webkit-transform: scaleY(0.8) translate(0, 100%);
+        -ms-transform: scaleY(0.8) translate(0, 100%);
+            transform: scaleY(0.8) translate(0, 100%);
+  }
+  .record.active {
+    -webkit-transform: scaleY(1) translate(0, 100%);
+        -ms-transform: scaleY(1) translate(0, 100%);
+            transform: scaleY(1) translate(0, 100%);
+  }
+  .save {
+    left: auto;
+    right: 0;
+    -webkit-transform: scaleY(0.8) translate(0, 100%);
+        -ms-transform: scaleY(0.8) translate(0, 100%);
+            transform: scaleY(0.8) translate(0, 100%);
+  }
+  .save.active {
+    -webkit-transform: scaleY(1) translate(0, 100%);
+        -ms-transform: scaleY(1) translate(0, 100%);
+            transform: scaleY(1) translate(0, 100%);
+  }
+}
+
+@media (max-width: 767px) {
+  .hamburger {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .piano-body {
+    padding: 8px;
+  }
+  .piano-menu__search > div:last-child {
+    display: none;
+  }
+  .piano-menu__search > div:first-child {
+    width: 100%;
+    border-right: 0;
+  }
+  .piano-menu__search > div:first-child h3 {
+    text-align: center;
+  }
+  .piano-menu__search-box {
+    right: 20px;
+    left: auto;
+    width: 80%;
+  }
+  .piano-menu__search-box.active {
+    width: -webkit-calc(100% - 20px);
+    width: calc(100% - 20px);
+    right: 10px;
+  }
+  .piano-menu__search-box.active::after {
+    right: -webkit-calc(100% - 25px);
+    right: calc(100% - 25px);
+  }
+  .piano-menu__search-box.active input {
+    padding-left: 20px;
+  }
+  .piano-menu__search-box input {
+    padding: 7px 12px;
+  }
+  .piano-menu__search-results li {
+    padding-left: 35px;
+  }
+  .piano-menu__search-results li::before {
+    left: 4px;
+  }
+  .piano-menu__bottom {
+    position: absolute;
+    left: 8px;
+    top: 108px;
+    padding: 0;
+    width: -webkit-calc(100% - 16px);
+    width: calc(100% - 16px);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+  }
+  .piano-menu__bottom.active {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+  }
+  .piano-menu__bottom > ul {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-flow: row wrap;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
+    position: relative;
+  }
+  .piano-menu__bottom > ul > li {
+    padding-left: 16px;
+    width: 50%;
+    position: initial;
+    border-bottom: 1px solid #3E3E3E;
+  }
+  .piano-menu__bottom-btn {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    font-size: 12px;
+  }
+  .piano-menu__bottom-btn::after {
+    bottom: 18px;
+  }
+  .piano-menu__bottom-btn::before {
+    top: 24px;
+  }
+  .piano-menu__bottom .record-btn svg {
+    top: 22px;
+    left: 6px;
+  }
+  .piano-menu__bottom .styles-btn::before {
+    top: 22px;
+  }
+  .piano-menu__bottom .submenu {
+    width: -webkit-calc(100% + 20px);
+    width: calc(100% + 20px);
+    top: 0;
+    -webkit-transform: scaleY(0.8) translate(-50%, 0%);
+        -ms-transform: scaleY(0.8) translate(-50%, 0%);
+            transform: scaleY(0.8) translate(-50%, 0%);
+    bottom: auto;
+    z-index: 100;
+    -webkit-transform-origin: 50% 0;
+        -ms-transform-origin: 50% 0;
+            transform-origin: 50% 0;
+  }
+  .piano-menu__bottom .submenu.active {
+    -webkit-transform: scaleY(1) translate(-50%, 0%);
+        -ms-transform: scaleY(1) translate(-50%, 0%);
+            transform: scaleY(1) translate(-50%, 0%);
+  }
+  .piano-menu .record, .piano-menu .save {
+    right: auto;
+    left: 50%;
+    -webkit-transform: scaleY(0.8) translate(-50%, 0%);
+        -ms-transform: scaleY(0.8) translate(-50%, 0%);
+            transform: scaleY(0.8) translate(-50%, 0%);
+  }
+  .piano-menu .record.active, .piano-menu .save.active {
+    -webkit-transform: scaleY(1) translate(-50%, 0%);
+        -ms-transform: scaleY(1) translate(-50%, 0%);
+            transform: scaleY(1) translate(-50%, 0%);
+  }
 }
 
 /*  Tablets in landscape mode, older desktop monitors */
-@media only screen and (min-width: 1024px) and (max-width: 1365px) {
-  h1 {
-    font-size: 32px;
-  }
+
+.skip {
+  color: gray !important;
 }
 
-/* IPAD */
-@media only screen and (min-width: 768px) and (max-width: 1023px) and (orientation: portrait) {
-  body {
-    overflow-x: hidden;
-    margin: 0px;
-  }
-  .slider {
-    margin: 0px;
-    height: 290px;
-    display: block;
-    overflow-x: auto;
-  }
-  #menu-div {
-    height: 100px;
-  }
-  #menu-div-low {
-    display: block;
-    width: 735px;
-    height: 34px;
-    background: transparent;
-    border: 2px solid black;
-    border-radius: 10px;
-    background: -webkit-gradient(linear, left top, left bottom, from(#3c3c3c), color-stop(5.91%, #212020), color-stop(25.62%, #000), color-stop(47.78%, #101010), color-stop(56.27%, #191818), color-stop(92.61%, #212121), to(#343434));
-    background: -o-linear-gradient(#3c3c3c 0%, #212020 5.91%, #000 25.62%, #101010 47.78%, #191818 56.27%, #212121 92.61%, #343434 100%);
-    background: linear-gradient(#3c3c3c 0%, #212020 5.91%, #000 25.62%, #101010 47.78%, #191818 56.27%, #212121 92.61%, #343434 100%);
-    margin: 0.5%;
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0px;
-  }
-  .key-span-black, .key-span-black svg, .key-span-black svg rect {
-    width: 31px !important;
-    height: 115px !important;
-    margin-left: 0.5% !important;
-    margin-top: -1px;
-    -webkit-box-shadow: 0px 6px 4px -3px rgba(0, 0, 0, 0.4);
-    box-shadow: 0px 6px 4px -3px rgba(0, 0, 0, 0.4);
-    border-radius: 2px 2px 13px 13px;
-  }
-  .key-span-white, .key-span-white svg, .key-span-white svg rect {
-    -webkit-box-shadow: 2px 6px 4px -3px rgba(255, 255, 255, 0.2);
-    box-shadow: 2px 6px 4px -3px rgba(255, 255, 255, 0.2);
-    border-radius: 2px 2px 17px 17px;
-    width: 47px !important;
-  }
-  ::-webkit-scrollbar:horizontal {
-    top: -10px;
-    position: relative;
-    height: 30px;
-    background: #4d4d4d;
-    background: -webkit-gradient(linear, left top, left bottom, from(#4d4d4d), color-stop(5%, #3b3b3b), color-stop(22%, #222222), color-stop(37%, #1e1e1e), color-stop(96%, #191919), to(#343434));
-    background: linear-gradient(180deg, #4d4d4d 0%, #3b3b3b 5%, #222222 22%, #1e1e1e 37%, #191919 96%, #343434 100%);
-    background-position-y: 0px;
-    background-position: center;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-track:horizontal {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    height: 30px;
-    background: #4d4d4d;
-    background: -webkit-gradient(linear, left top, left bottom, from(#4d4d4d), color-stop(5%, #3b3b3b), color-stop(22%, #222222), color-stop(37%, #1e1e1e), color-stop(96%, #191919), to(#343434));
-    background: linear-gradient(180deg, #4d4d4d 0%, #3b3b3b 5%, #222222 22%, #1e1e1e 37%, #191919 96%, #343434 100%);
-    background-size: 100%;
-  }
-  ::-webkit-scrollbar-thumb:horizontal {
-    border-radius: 10px;
-    height: 10px;
-    background: url("https://devv.virtualpiano.net/wp-content/themes/generatepress_child/js-dev/assets//scroll-thumb.png");
-    background-size: 90% 50%;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-}
-
-/*  Tablets in portrait mode, large display smartphones landscape mode */
-@media only screen and (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
-  body {
-    width: 100%;
-  }
-  .piano-body {
-    width: 95vw;
-    margin: 0px auto;
-    padding-left: 7px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    border-radius: 10px;
-    background-image: -o-linear-gradient(#454545 32px, #000 278px);
-    background: #2b2b2b;
-    background: -o-linear-gradient(top, #2b2b2b 0%, #3b3b3b 3%, #525252 15%, black 38%, #191919 90%, #343434 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#2b2b2b), color-stop(3%, #3b3b3b), color-stop(15%, #525252), color-stop(38%, black), color-stop(90%, #191919), to(#343434));
-    background: linear-gradient(180deg, #2b2b2b 0%, #3b3b3b 3%, #525252 15%, black 38%, #191919 90%, #343434 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2b2b2b",endColorstr="#343434",GradientType=1);
-    border: 2px solid black;
-  }
-  .slider {
-    margin: 0px;
-    height: 240px;
-    display: block;
-    overflow-x: auto;
-    /* background-image: linear-gradient(#454545 32px, #000 278px); */
-  }
-  #menu-div {
-    margin: 1%;
-    height: 88px;
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0px;
-    border: 2px solid black;
-    border-radius: 10px;
-    background: #3c3c3c;
-    background: -o-linear-gradient(top, #3c3c3c 0%, #222222 3%, black 10%, #212020 50%, black 90%, #191919 95%, #343434 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#3c3c3c), color-stop(3%, #222222), color-stop(10%, black), color-stop(50%, #212020), color-stop(90%, black), color-stop(95%, #191919), to(#343434));
-    background: linear-gradient(180deg, #3c3c3c 0%, #222222 3%, black 10%, #212020 50%, black 90%, #191919 95%, #343434 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3c3c3c",endColorstr="#343434",GradientType=1);
-  }
-  body, html {
-    background-size: 110%;
-    background-repeat: repeat-y;
-    overflow-x: hidden !important;
-  }
-  body {
-    position: relative !important;
-  }
-  #Selector {
-    display: none;
-  }
-  #piano-content {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-            align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-            justify-content: center;
-  }
-  .key-span-black, .key-span-black svg, .key-span-black svg rect {
-    width: 31px !important;
-    height: 100px !important;
-    margin-left: 0.5% !important;
-    margin-top: -1px;
-    -webkit-box-shadow: 0px 6px 4px -3px rgba(0, 0, 0, 0.4);
-    box-shadow: 0px 6px 4px -3px rgba(0, 0, 0, 0.4);
-    border-radius: 2px 2px 13px 13px;
-  }
-  .key-span-white, .key-span-white svg, .key-span-white svg rect {
-    -webkit-box-shadow: 2px 6px 4px -3px rgba(255, 255, 255, 0.2);
-    box-shadow: 2px 6px 4px -3px rgba(255, 255, 255, 0.2);
-    border-radius: 2px 2px 17px 17px;
-    width: 48px !important;
-  }
-  ::-webkit-scrollbar:horizontal {
-    top: -10px;
-    position: relative;
-    height: 30px;
-    background: #4d4d4d;
-    background: -webkit-gradient(linear, left top, left bottom, from(#4d4d4d), color-stop(5%, #3b3b3b), color-stop(22%, #222222), color-stop(37%, #1e1e1e), color-stop(96%, #191919), to(#343434));
-    background: linear-gradient(180deg, #4d4d4d 0%, #3b3b3b 5%, #222222 22%, #1e1e1e 37%, #191919 96%, #343434 100%);
-    background-position-y: 0px;
-    background-position: center;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-track:horizontal {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    height: 30px;
-    background: #4d4d4d;
-    background: -webkit-gradient(linear, left top, left bottom, from(#4d4d4d), color-stop(5%, #3b3b3b), color-stop(22%, #222222), color-stop(37%, #1e1e1e), color-stop(96%, #191919), to(#343434));
-    background: linear-gradient(180deg, #4d4d4d 0%, #3b3b3b 5%, #222222 22%, #1e1e1e 37%, #191919 96%, #343434 100%);
-    background-size: 100%;
-  }
-  ::-webkit-scrollbar-thumb:horizontal {
-    border-radius: 10px;
-    height: 20px;
-    background: url("https://devv.virtualpiano.net/wp-content/themes/generatepress_child/js-dev/assets//scroll-thumb.png");
-    background-size: 30%;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-}
-
-/*  Smartphones in landscape mode */
-@media only screen and (min-width: 421px) and (max-width: 767px) {
-  body {
-    width: 100%;
-  }
-  .piano-body {
-    width: 90vw;
-    margin: 0px auto;
-    padding-left: 7px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    border-radius: 10px;
-    background-image: -o-linear-gradient(#454545 32px, #000 278px);
-    background: #2b2b2b;
-    background: -o-linear-gradient(top, #2b2b2b 0%, #3b3b3b 3%, #525252 15%, black 38%, #191919 90%, #343434 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#2b2b2b), color-stop(3%, #3b3b3b), color-stop(15%, #525252), color-stop(38%, black), color-stop(90%, #191919), to(#343434));
-    background: linear-gradient(180deg, #2b2b2b 0%, #3b3b3b 3%, #525252 15%, black 38%, #191919 90%, #343434 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2b2b2b",endColorstr="#343434",GradientType=1);
-    border: 2px solid black;
-  }
-  .slider {
-    margin: 0px;
-    height: 240px;
-    display: block;
-    overflow-x: auto;
-    /* background-image: linear-gradient(#454545 32px, #000 278px); */
-  }
-  #menu-div {
-    margin: 1%;
-    height: 88px;
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0px;
-    border: 2px solid black;
-    border-radius: 10px;
-    background: #3c3c3c;
-    background: -o-linear-gradient(top, #3c3c3c 0%, #222222 3%, black 10%, #212020 50%, black 90%, #191919 95%, #343434 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#3c3c3c), color-stop(3%, #222222), color-stop(10%, black), color-stop(50%, #212020), color-stop(90%, black), color-stop(95%, #191919), to(#343434));
-    background: linear-gradient(180deg, #3c3c3c 0%, #222222 3%, black 10%, #212020 50%, black 90%, #191919 95%, #343434 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3c3c3c",endColorstr="#343434",GradientType=1);
-  }
-  .menu-table {
-    color: #FF8300;
-    width: 100%;
-  }
-  .menu-table td {
-    margin: 20px;
-  }
-  .menu-left {
-    text-align: right;
-  }
-  body, html {
-    background-size: 110%;
-    background-repeat: repeat-y;
-    overflow-x: hidden !important;
-  }
-  body {
-    position: relative !important;
-  }
-  #Selector {
-    display: none;
-  }
-  #piano-content {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-            align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-            justify-content: center;
-  }
-  .key-span-black, .key-span-black svg, .key-span-black svg rect {
-    height: 100px !important;
-    width: 31px !important;
-    margin-left: 0.5% !important;
-    margin-top: -1px;
-    border-radius: 5px 5px 13px 13px;
-  }
-  .key-span-white, .key-span-white svg, .key-span-white svg rect {
-    border-radius: 2px 2px 17px 17px;
-    width: 48px !important;
-  }
-  .key-span-black {
-    -webkit-box-shadow: 0px 6px 4px -3px rgba(0, 0, 0, 0.4);
-    box-shadow: 0px 6px 4px -3px rgba(0, 0, 0, 0.4);
-  }
-  .key-span-white {
-    -webkit-box-shadow: 2px 6px 4px -3px rgba(255, 255, 255, 0.4);
-    box-shadow: 2px 6px 4px -3px rgba(255, 255, 255, 0.4);
-  }
-
- 
 
 
-  ::-webkit-scrollbar:horizontal {
-    top: -10px;
-    position: relative;
-    height: 30px;
-    background: #4d4d4d;
-    background: -webkit-gradient(linear, left top, left bottom, from(#4d4d4d), color-stop(5%, #3b3b3b), color-stop(22%, #222222), color-stop(37%, #1e1e1e), color-stop(96%, #191919), to(#343434));
-    background: linear-gradient(180deg, #4d4d4d 0%, #3b3b3b 5%, #222222 22%, #1e1e1e 37%, #191919 96%, #343434 100%);
-    background-position-y: 0px;
-    background-position: center;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-track:horizontal {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    height: 30px;
-    background: #4d4d4d;
-    background: -webkit-gradient(linear, left top, left bottom, from(#4d4d4d), color-stop(5%, #3b3b3b), color-stop(22%, #222222), color-stop(37%, #1e1e1e), color-stop(96%, #191919), to(#343434));
-    background: linear-gradient(180deg, #4d4d4d 0%, #3b3b3b 5%, #222222 22%, #1e1e1e 37%, #191919 96%, #343434 100%);
-    background-size: 100%;
-  }
-  ::-webkit-scrollbar-thumb:horizontal {
-    border-radius: 10px;
-    height: 20px;
-    background: url("https://devv.virtualpiano.net/wp-content/themes/generatepress_child/js-dev/assets//scroll-thumb.png");
-    background-size: 50%;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-}
-
-/*  Smartphones in portrait mode  */
-@media only screen and (max-width: 420px) {
-  body {
-    width: 100%;
-  }
-  .key-span-black, .key-span-black svg, .key-span-black svg rect {
-    width: 31px !important;
-    margin-left: 0.5% !important;
-    margin-top: -1px;
-    -webkit-box-shadow: 0px 6px 4px -3px rgba(0, 0, 0, 0.4);
-    box-shadow: 0px 6px 4px -3px rgba(0, 0, 0, 0.4);
-    border-radius: 2px 2px 13px 13px;
-  }
-  .key-span-white, .key-span-white svg, .key-span-white svg rect {
-    /*margin-right: 22px !important;
-        */
-    border-radius: 2px 2px 17px 17px;
-    width: 45px;
-  }
-  .key-span-white {
-    background: -webkit-gradient(linear, left top, left bottom, from(#b5b5b5), color-stop(1.48%, #fff), color-stop(3.95%, #d3d3d3), color-stop(93.6%, #a5a5a5), color-stop(94.62%, #d1d1d1), color-stop(95.57%, #bababa), color-stop(96.44%, #e0e0e0), color-stop(97.67%, #c1c1c1), color-stop(98.85%, #a0a0a0), to(rgba(0, 0, 0, 0)));
-    background: -o-linear-gradient(#b5b5b5 0%, #fff 1.48%, #d3d3d3 3.95%, #a5a5a5 93.6%, #d1d1d1 94.62%, #bababa 95.57%, #e0e0e0 96.44%, #c1c1c1 97.67%, #a0a0a0 98.85%, rgba(0, 0, 0, 0) 100%);
-    background: linear-gradient(#b5b5b5 0%, #fff 1.48%, #d3d3d3 3.95%, #a5a5a5 93.6%, #d1d1d1 94.62%, #bababa 95.57%, #e0e0e0 96.44%, #c1c1c1 97.67%, #a0a0a0 98.85%, rgba(0, 0, 0, 0) 100%);
-    -webkit-box-shadow: 2px 6px 4px -3px rgba(255, 255, 255, 0.4);
-    box-shadow: 2px 6px 4px -3px rgba(255, 255, 255, 0.4);
-    border-radius: 2px 2px 17px 17px;
-    background-size: 20px 100%;
-    width: 45px !important;
-  }
-  .piano-body {
-    height: 100% !important;
-    width: 90vw;
-    height: 24rem;
-    margin: 0px auto;
-    padding-left: 7px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-    border-radius: 10px;
-    background-image: -o-linear-gradient(#454545 32px, #000 278px);
-    background: #2b2b2b;
-    background: -o-linear-gradient(top, #2b2b2b 0%, #3b3b3b 3%, #525252 15%, black 38%, #191919 90%, #343434 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#2b2b2b), color-stop(3%, #3b3b3b), color-stop(15%, #525252), color-stop(38%, black), color-stop(90%, #191919), to(#343434));
-    background: linear-gradient(180deg, #2b2b2b 0%, #3b3b3b 3%, #525252 15%, black 38%, #191919 90%, #343434 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#2b2b2b",endColorstr="#343434",GradientType=1);
-    border: 2px solid black;
-  }
-  .slider {
-    margin: 0px;
-    height: 18rem;
-    display: block;
-    overflow-x: auto;
-    /* background-image: linear-gradient(#454545 32px, #000 278px); */
-  }
-  #menu-div {
-    margin: 8px;
-    height: 88px;
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0px;
-    border: 2px solid black;
-    border-radius: 10px;
-    background: #3c3c3c;
-    background: -o-linear-gradient(top, #3c3c3c 0%, #222222 3%, black 10%, #212020 50%, black 90%, #191919 95%, #343434 100%);
-    background: -webkit-gradient(linear, left top, left bottom, from(#3c3c3c), color-stop(3%, #222222), color-stop(10%, black), color-stop(50%, #212020), color-stop(90%, black), color-stop(95%, #191919), to(#343434));
-    background: linear-gradient(180deg, #3c3c3c 0%, #222222 3%, black 10%, #212020 50%, black 90%, #191919 95%, #343434 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3c3c3c",endColorstr="#343434",GradientType=1);
-  }
-  ::-webkit-scrollbar:horizontal {
-    top: -10px;
-    position: relative;
-    height: 30px;
-    background: url("https://devv.virtualpiano.net/wp-content/themes/generatepress_child/js-dev/assets//scroll-mob-port.png");
-    background-position-y: 0px;
-    background-position: center;
-    background-size: 100%;
-    background-repeat: no-repeat;
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-track:horizontal {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    height: 30px;
-    background: url("https://devv.virtualpiano.net/wp-content/themes/generatepress_child/js-dev/assets//scroll-mob.png");
-    background-size: 100%;
-  }
-  ::-webkit-scrollbar-thumb:horizontal {
-    border-radius: 10px;
-    height: 20px;
-    background: url("https://devv.virtualpiano.net/wp-content/themes/generatepress_child/js-dev/assets//scroll-thumb.png");
-    background-position: center;
-    background-size: 100% 40%;
-    background-repeat: no-repeat;
-  }
-}
-
-.menu-table {
-  color: #FF8300;
-  width: 100%;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.menu-table td {
-  margin: 20px;
-}
-
-.menu-left {
-  text-align: right;
+.metronome-btn, .record__time, .record__link, .transpose, .volume, .piano-menu__song-stats, .autoplay-btn, .styles-btn, .save-btn {
+  visibility: hidden;
+  display: none;
 }

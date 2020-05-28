@@ -1,9 +1,5 @@
 $(document).ready(function(){
 
-
-    //
-
-
     $("#search-input").on('input', function(e){
         console.log($('.song-item'));
         var searchString = $("#search-input").val();
@@ -84,8 +80,10 @@ $(document).ready(function(){
 
         
         $.getJSON('https://devv.virtualpiano.net/wp-json/wp/v2/posts/'+songId, function(response){        
-        var songText = response.content.rendered.replace(/ /g, '').replace(/<br>/g, "\n").replace(/<p>/g, "").replace(/<\/p>/g, "").split("").slice(1);
-              
+       // var songText = response.content.rendered.replace(/ /g, '').replace(/<br>/g, "\n").replace(/<p>/g, "").replace(/<\/p>/g, "").split("").slice(1);
+       var songText = response.content.rendered.split('<p class')[0].replace(/ /g, '').replace(/<br>/g, "\n").replace(/<p>/g, "").replace(/<\/p>/g, "").split("").slice(1);
+       
+       console.log(response.content.rendered.split('<p class')[0])     
         $('#song-info').empty();
         $('#song-pattern').empty();
         
@@ -110,12 +108,18 @@ $(document).ready(function(){
 
       pianoPlay();
 
-      
-
     });
 }
 
+//var pageReferrer = document.referrer;
+var pageReferrer = document.referrer;
+if (pageReferrer.length > 0) {    
 
-
+    console.log(window.location.href.split('post-')[1]);
+    var songIdRef = window.location.href.split('post-')[1];
+    renderSong(songIdRef);
+    $('.piano-menu__song').addClass('active');
+    
+}
 
 })

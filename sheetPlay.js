@@ -67,11 +67,7 @@ function pianoPlay() {
                 //scrollSong(lastNote, songText);
                 songArr[count].classList.add('correct');   
 
-            }/* else if (songArr[count+1].classList[0] == 'skip') {
-              //  scrollSong(lastNote, songText);
-                //console.log('gotcha')
-              //  count++
-            } */ else {
+            } else {
                 
                 songArr[count].classList.add('wrong');
             }

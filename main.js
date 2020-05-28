@@ -1,3 +1,13 @@
+var isTouchDevice = (('ontouchstart' in window)
+         || (navigator.MaxTouchPoints > 0)
+         || (navigator.msMaxTouchPoints > 0));
+ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) 
+   || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))) { 
+  isTouchDevice = true;
+ } else {
+  isTouchDevice = false;
+ }
+
 loadScr.start();
 
     Tone.Buffer.on('load', function() {
@@ -25,11 +35,33 @@ Nexus.colors.mediumLight = "transparent";
 
 
 var buttons = new Nexus.Piano('#Keyboard', {
-    'size': [1220, 212],
+    'size': [1262, 212],
     'mode': 'button', // 'button', 'toggle', or 'impulse'
     'lowNote': 24,
     'highNote': 85
 });
+
+var keysHeight = $('.slider').height();
+$(window).resize(function(){
+    if ($(window).width() <= 1310 && $(window).width() > 1024) {
+        buttons.resize(1262, 212);
+
+        var scale = $('.slider').width() / $('#Keyboard').width();
+
+        $('#Keyboard').css({'transform': 'scale(' + scale + ')'});
+        $('.slider').css({'height': keysHeight * scale + 10 + 'px'})
+        
+    } else if ($(window).width() <= 1024) {
+        $('#Keyboard').css({'transform': 'scale(1)'});
+        $('.slider').css({'height': 'auto'})
+        buttons.resize(1766, 244);
+    } else {
+        $('#Keyboard').css({'transform': 'scale(1)'});
+        $('.slider').css({'height': 'auto'})
+        buttons.resize(1262, 212);
+    }
+})
+$(window).trigger('resize');
 
 Tone.context.latencyHint = 'interactive';
 
@@ -129,32 +161,12 @@ var pianO2 = new Tone.Sampler({
 
 pianO = pianO1;
 
-/* PIANO SWITCHER */
-/*
-var pianoSwitch = document.getElementById('piano-switch');
+var switchClicked = false,
+    sustClicked = false;
 
-var switchClicked = false;
-
-pianoSwitch.addEventListener('click', function(e){
-    if(e.repeat){return};
-    pianoSwitch.classList.toggle('clicked');
-    if (!switchClicked){
-        pianoSwitch.textContent = 'PIANO NEW';
-        pianO = pianO2;
-        switchClicked = true;        
-
-    } else {        
-        
-        pianoSwitch.textContent = 'PIANO 1';
-        pianO = pianO1;
-        switchClicked = false;       
-        
-    }    
-});
-*/
 
 var vol1 = new Tone.Volume(-10);
-var vol2 = new Tone.Volume(-10);
+// var vol2 = new Tone.Volume(-10);
 
 var vol = vol1;
 
@@ -166,45 +178,33 @@ var keyMap = {
     '1': 24,'!': 25,'2': 26,'@': 27,'3': 28,'4': 29,'$': 30,'5': 31,'%': 32,'6': 33,'^': 34,'7': 35,'8': 36,'*': 37,'9': 38,'(': 39,'0': 40,'q': 41,'Q': 42,'w': 43,'W': 44,'e': 45,'E': 46,'r': 47,'t': 48,'T': 49,'y': 50,'Y': 51,'u': 52,'i': 53,'I': 54,'o': 55,'O': 56,'p': 57,'P': 58,'a': 59,'s': 60,'S': 61,'d': 62,'D': 63,'f': 64,'g': 65,'G': 66,'h': 67,'H': 68,'j': 69,'J': 70,'k': 71,'l': 72,'L': 73,'z': 74,'Z': 75,'x': 76,'c': 77,'C': 78,'v': 79,'V': 80,'b': 81,'B': 82,'n': 83,'m': 84
     };
 
-/*
-var sustainButton = document.getElementById('sustain-button');
-
-var sustClicked = false;
-
-sustainButton.addEventListener('click', function(e){
-    if(e.repeat){return};
-    sustainButton.classList.toggle('clicked');
-    if (!sustClicked){
-        sustainButton.textContent = 'SUSTAIN OFF';
-        sustClicked = true;        
-        pianO.release = 2;
-
-    } else {
-        
-        sustainButton.textContent = 'SUSTAIN ON';
-        sustClicked = false;       
-        pianO.release = 13;
-        console.log(pianO.sustain);
-    }
-    
-});
-
-*/
 
     /*Press key animation*/
 
-    var pressed = false;
+    // var pressed = false;
 
-    function animateKey(id) {
-        if (pressed){
-            document.getElementById(id).classList.toggle("pressed");
-            document.getElementById(id).parentElement.parentElement.classList.toggle('span-pressed');
+    // function animateKey(id) {
+    //     if (pressed){
+    //         document.getElementById(id).classList.toggle("pressed");
+    //         document.getElementById(id).parentElement.parentElement.classList.toggle('span-pressed');
             
-        } else if (!pressed){
+    //     } else if (!pressed){
+    //         document.getElementById(id).classList.remove("pressed");
+    //         document.getElementById(id).parentElement.parentElement.classList.remove('span-pressed');
+      
+    //     }
+        
+    // }
+    function animateKey(id) {
+        if (document.getElementById(id).classList.contains("pressed")) {
             document.getElementById(id).classList.remove("pressed");
             document.getElementById(id).parentElement.parentElement.classList.remove('span-pressed');
-      
+            
+        } else {
+            document.getElementById(id).classList.add("pressed");
+            document.getElementById(id).parentElement.parentElement.classList.add('span-pressed');
         }
+
         
     }
     
@@ -234,7 +234,7 @@ sustainButton.addEventListener('click', function(e){
     
            if (e.keyCode >= 48 && e.keyCode <= 90)  {
            pianO.triggerAttack(Tone.Frequency(keyMap[e.key], "midi").toNote());    
-           pressed = true;
+           // pressed = true;
           
            animateKey('key_'+ keyMap[e.key]);
            
@@ -251,11 +251,11 @@ sustainButton.addEventListener('click', function(e){
                 pianO.triggerRelease(Tone.Frequency(keyMap[e.key], "midi").toNote());    
             }
 */         
-         pressed = false;  
-         animateKey('key_'+ keyMap[e.key]);
+         // pressed = false;  
+            animateKey('key_'+ keyMap[e.key]);
 
 
-            if ($('.piano-menu__played').hasClass('active')){                
+            // if ($('.piano-menu__played').hasClass('active')){                
             
     
             $('#piano-chord').html(Tone.Frequency(keyMap[e.key], "midi").toNote());
@@ -265,11 +265,7 @@ sustainButton.addEventListener('click', function(e){
             var scrollHistory = document.getElementById('piano-key-history').lastChild;
             scrollHistory.scrollIntoView();
             
-            }
-
-        
-
-            
+            // }
 
         } else if ((e.key == "|" || e.key == '[' || e.key == ']' || e.keyCode == 32 ) && $('.piano-menu__played').hasClass('active')){ 
             
@@ -393,25 +389,25 @@ sustainButton.addEventListener('click', function(e){
     
     
         /* RESIZE PIANO ON MOBILE */
-        var screenWidth = innerWidth;
-        var screenHeight = innerHeight;   
+        // var screenWidth = innerWidth;
+        // var screenHeight = innerHeight;   
     
     
-        if (screenWidth == 768 && screenWidth < screenHeight){
-            buttons.resize(1800, 240);
-            sliderDiv.scrollLeft((buttons.width/36)*10 + 3);
+        // if (screenWidth == 768 && screenWidth < screenHeight){
+        //     buttons.resize(1800, 240);
+        //     sliderDiv.scrollLeft((buttons.width/36)*10 + 3);
     
-        }
-        else if (screenWidth <= 813 && screenWidth < screenHeight){
-            buttons.resize(1700, 240);
-            sliderDiv.scrollLeft((buttons.width/36)*14 + 3);
-            console.log('resized!');
-        } else if (screenWidth <= 813 && screenWidth > screenHeight){
-            buttons.resize(1800, 200);
-            sliderDiv.scrollLeft((buttons.width/36)*10 + 3);
-            pianoDiv.scrollIntoView();
-            console.log('resized! mm');
-        }  
+        // }
+        // else if (screenWidth <= 813 && screenWidth < screenHeight){
+        //     buttons.resize(1700, 240);
+        //     sliderDiv.scrollLeft((buttons.width/36)*14 + 3);
+        //     console.log('resized!');
+        // } else if (screenWidth <= 813 && screenWidth > screenHeight){
+        //     buttons.resize(1800, 200);
+        //     sliderDiv.scrollLeft((buttons.width/36)*10 + 3);
+        //     pianoDiv.scrollIntoView();
+        //     console.log('resized! mm');
+        // }  
     
     
     
@@ -426,9 +422,6 @@ sustainButton.addEventListener('click', function(e){
         $(document).on('click', function(e) {
             if ($(e.target)[0] !== $('.piano-menu__search-box')[0] && $(e.target)[0] !== $('.piano-menu__search-box input')[0]) {
                 $('.piano-menu__search-box, .piano-menu__search-results').removeClass('active');
-            }
-            if ($(e.target) !== $('.submenu')) {
-                // $('.submenu').removeClass('active');
             }
         })
         $('.piano-menu__top .close').click(function() {
@@ -459,14 +452,15 @@ sustainButton.addEventListener('click', function(e){
     
                 if (!$(this).hasClass('opened')) {
                     $('.submenu').removeClass('active');
-                   /* setTimeout(function() {
-                       var classAttr = $('.submenu.dragged').attr('class').split(' ')[1];
-                        var menu = $('.' + classAttr).removeClass('dragged').attr('style', '').detach();
-                        $('a[data-menu="' + classAttr + '"]').after(menu);
-                        
-                    }, 400);*/
+
+                   if($('.submenu.dragged').length) {
+                       setTimeout(function() {
+                           var classAttr = $('.submenu.dragged').attr('class').split(' ')[1];
+                           var menu = $('.' + classAttr).removeClass('dragged').attr('style', '').detach();
+                           $('a[data-menu="' + classAttr + '"]').after(menu);
+                       }, 400);
+                   }
                     
-                    console.log('a)))')
                     $(this).addClass('opened').parent().siblings().find('.piano-menu__bottom-btn').removeClass('opened');
                     $(this).next().addClass('active');
                 } else {  
@@ -485,6 +479,16 @@ sustainButton.addEventListener('click', function(e){
         
         $('.record-btn').click(function(e) {
             if ($(this).hasClass('recording')) {
+
+                $('.submenu').removeClass('active');
+                if($('.submenu.dragged').length) {
+                    setTimeout(function() {
+                        var classAttr = $('.submenu.dragged').attr('class').split(' ')[1];
+                        var menu = $('.' + classAttr).removeClass('dragged').attr('style', '').detach();
+                        $('a[data-menu="' + classAttr + '"]').after(menu);
+                    }, 400);
+                }
+
                 $(this).removeClass('recording').addClass('opened');
                 $(this).next().addClass('active')
                 console.log('stopped')
@@ -528,83 +532,130 @@ sustainButton.addEventListener('click', function(e){
     
     
          $('.assist-btn').click(function() {
-                if ($(this).hasClass('assist-notes')) {
-                    $(this).removeClass('active').removeClass('assist-notes');
-                    $('.assikeys').css({'opacity': '0', 'transition': '.3s'});
-                    $('.assinotes').css({'opacity': '0', 'transition': '.3s'});
-                } else if (!$(this).hasClass('active')) {
-                    $(this).addClass('active').addClass('assist-keys');
-                    $('.assikeys').css({'opacity': '1', 'transition': '.3s'});
-                } else if ($(this).hasClass('assist-keys')){
-                    $(this).addClass('assist-notes').removeClass('assist-keys');
-                    $('.assikeys').css({'opacity': '0', 'transition': '.0s'});
-                    $('.assinotes').css({'opacity': '1', 'transition': '.3s'});
-                }
-            });
-            
-            
-         var dragBlocks = document.querySelectorAll('.submenu');
-        dragBlocks.forEach((el) => {
-            console.log(el);
-            el.onmousedown = function(event) {
-              if (event.target.classList.contains('submenu')) {
-                let shiftX = event.clientX - el.getBoundingClientRect().left;
-                let shiftY = event.clientY - el.getBoundingClientRect().top;
-    
-                //$(el).addClass('dragged');
-                el.classList.add('dragged');
-                el.style.position = 'absolute';
-                el.style.zIndex = 1000;
-                el.style.transition = '0s';
-                document.body.append(el);
-    
-                moveAt(event.pageX, event.pageY);
-    
-                // moves the dragBlock at (pageX, pageY) coordinates
-                // taking initial shifts into account
-                function moveAt(pageX, pageY) {
-                  el.style.left = pageX - shiftX + 'px';
-                  el.style.top = pageY - shiftY + 'px';
-                }
-    
-                function onMouseMove(event) {
-                  moveAt(event.pageX, event.pageY);
-                }
-    
-                // move the dragBlock on mousemove
-                document.addEventListener('mousemove', onMouseMove);
-    
-                // drop the dragBlock, remove unneeded handlers
-                el.onmouseup = function() {
-                  document.removeEventListener('mousemove', onMouseMove);
-                  el.onmouseup = null;
-                  el.style.transition = '0.4s';
-                };
-    
-              }
-              
-            };
-    
-            el.ondragstart = function() {
-              return false;
-            };
+            if ($(this).hasClass('assist-notes')) {
+                $(this).removeClass('active').removeClass('assist-notes');
+                $('.assikeys').css({'opacity': '0', 'transition': '.3s'});
+                $('.assinotes').css({'opacity': '0', 'transition': '.3s'});
+            } else if (!$(this).hasClass('active')) {
+                $(this).addClass('active').addClass('assist-keys');
+                $('.assikeys').css({'opacity': '1', 'transition': '.3s'});
+            } else if ($(this).hasClass('assist-keys')){
+                $(this).addClass('assist-notes').removeClass('assist-keys');
+                $('.assikeys').css({'opacity': '0', 'transition': '.0s'});
+                $('.assinotes').css({'opacity': '1', 'transition': '.3s'});
+            }
         });
             
             
-            
-            $('.metronome-btn').click(function(e) {
-                $('.metronome').addClass('active');
-            });
+         var dragBlocks = document.querySelectorAll('.submenu');
+         dragBlocks.forEach((el) => {
+             if(!isTouchDevice) {
+                el.onmousedown = function(event) {
+                  if (event.target.classList.contains('submenu')) {
+                    let shiftX = event.clientX - el.getBoundingClientRect().left;
+                    let shiftY = event.clientY - el.getBoundingClientRect().top;
+
+                    $(el).addClass('dragged');
+                    el.style.position = 'absolute';
+                    el.style.zIndex = 1000;
+                    el.style.transition = '0s';
+                    document.body.append(el);
+
+                    moveAt(event.pageX, event.pageY);
+
+                    // moves the dragBlock at (pageX, pageY) coordinates
+                    // taking initial shifts into account
+                    function moveAt(pageX, pageY) {
+                      el.style.left = pageX - shiftX + 'px';
+                      el.style.top = pageY - shiftY + 'px';
+                    }
+
+                    function onMouseMove(event) {
+                      moveAt(event.pageX, event.pageY);
+                    }
+
+                    // move the dragBlock on mousemove
+                    document.addEventListener('mousemove', onMouseMove);
+
+                    // drop the dragBlock, remove unneeded handlers
+                    el.onmouseup = function() {
+                      document.removeEventListener('mousemove', onMouseMove);
+                      el.onmouseup = null;
+                      el.style.transition = '0.4s';
+                    };
+
+                  }
+                  
+                };
+                el.ondragstart = function() {
+                  return false;
+                };
+             } else if($(window).width() > 767) {
+                
+                // touchstart, touchmove, touchcancel, and touchend
+                el.ontouchstart = function(event) {
+                    console.log(event.changedTouches[0].pageX);
+                  if (event.target.classList.contains('submenu')) {
+                    let shiftX = event.changedTouches[0].clientX - el.getBoundingClientRect().left;
+                    let shiftY = event.changedTouches[0].clientY - el.getBoundingClientRect().top;
+
+                    $(el).addClass('dragged');
+                    el.style.position = 'absolute';
+                    el.style.zIndex = 1000;
+                    el.style.transition = '0s';
+                    document.body.append(el);
+
+                    moveAt(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
+
+                    // moves the dragBlock at (pageX, pageY) coordinates
+                    // taking initial shifts into account
+                    function moveAt(pageX, pageY) {
+                      el.style.left = pageX - shiftX + 'px';
+                      el.style.top = pageY - shiftY + 'px';
+                    }
+
+                    function onMouseMove(event) {
+                      moveAt(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
+                    }
+
+                    // move the dragBlock on mousemove
+                    document.addEventListener('touchmove', onMouseMove);
+
+                    // drop the dragBlock, remove unneeded handlers
+                    el.ontouchend = function() {
+                      document.removeEventListener('touchmove', onMouseMove);
+                      el.onmouseup = null;
+                      el.style.transition = '0.4s';
+                    };
+
+                  }
+                  
+                };
+                el.ondragstart = function() {
+                  return false;
+                };
+             }
+        });
+         $('.hamburger').click(function () {
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active');
+                $('.piano-menu__bottom, .submenu').removeClass('active'); 
+                $('.piano-menu__bottom-btn').removeClass('opened');            
+            } else {
+                $(this).addClass('active');
+                $('.piano-menu__bottom').addClass('active');
+            }
+         })
+
+        $('.metronome__play').click(function() {
+            $(this).toggleClass('played');
+            $('.metronome-btn').toggleClass('active');
+        });
         
-            $('.metronome__play').click(function() {
-                $(this).toggleClass('played');
-                $('.metronome-btn').toggleClass('active');
-            });
-            
-            $('.transpose__sign').click(function(e) {
-                var value = $('.transpose__value span').html();
-                if ($(this).hasClass('increment')) {
-                    if (value < 5) value++;
+        $('.transpose__sign').click(function(e) {
+            var value = $('.transpose__value span').html();
+            if ($(this).hasClass('increment')) {
+                if (value < 5) value++;
             } else if (value > -5) {
                 value--;
             }
@@ -623,13 +674,31 @@ sustainButton.addEventListener('click', function(e){
             $('.type').removeClass('active');
             $(this).parents('.type').find('option').eq($(this).index()).prop('selected', true);
             $(this).parents('.type').find('.type__current').html($(this).parents('.type').find('option:selected').html());
-    
+            
+            if ($('#piano-type option:selected').val() !== 'CLASSICAL PIANO') {
+                pianO = pianO2;
+                switchClicked = true;
+                console.log('grand piano');
+            } else {
+                pianO = pianO1;
+                switchClicked = false;
+            }
             checkSoundModification();
         });
         
         $('.sound input').change(function() {
             checkSoundModification();
         });
+        $('.sustain input').change(function () {
+            if ($(this).is(':checked')) {
+                sustClicked = false;
+                pianO.release = 10;
+            } else {
+                sustClicked = true;        
+                pianO.release = 2;
+                console.log('sustain off')
+            }
+        })
         function checkSoundModification() {
             if (!$('.sustain input').prop('checked') || $('.transpose__value span').html() !== '0' || $('.type option:selected').val() !== 'CLASSICAL PIANO') {
                 $('.sound-btn').addClass('active');
@@ -644,7 +713,6 @@ sustainButton.addEventListener('click', function(e){
     
             var that = $(this);
             setTimeout(function() {
-                // that.after($('.' + classAttr).removeClass('dragged').attr('style', ''));
                 var classAttr = that.parent().attr('class').split(' ')[1];
                 var menu = that.parent().removeClass('dragged').attr('style', '').detach();
                 $('a[data-menu="' + classAttr + '"]').after(menu);
@@ -695,7 +763,7 @@ sustainButton.addEventListener('click', function(e){
 
 $('.piano-menu__played-copy').on('click', function() {
 //    var str = document.getElementById('piano-key-history').innerHTML;
-var str = document.getElementById('piano-key-history').textContent;
+    var str = document.getElementById('piano-key-history').textContent;
     copyToClipboard(str);
 })
 

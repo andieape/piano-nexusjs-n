@@ -8,28 +8,33 @@ var isTouchDevice = (('ontouchstart' in window)
   isTouchDevice = false;
  }
 
- loadScr.start();
- $('.loading').addClass('loading-progress');
- 
- 
- 
- 
- //document.querySelector("#loading").style.display = 'none';
- 
- window.onload = NProgress.done();
- 
-     Tone.Buffer.on('load', function() {
-         loadScr.stop();
-         console.log('ready');    
-         
-         $('.loading').addClass('loaded');
-     });
-//document.querySelector(".container").style.display = 'block';
-//document.querySelector(".piano-menu__search").classList.add('active');
+ var playTimer;
+ var transValue = 0;
 
+
+
+
+//    var la = new Tone.BufferSource(baseUrl);
+
+$('.loading').addClass('loading-progress');
+
+Tone.Buffer.on('load', function() {
+    
+	$('.loading').addClass('loaded');
+    console.log('ready');  
+    document.querySelector(".piano-menu__search").classList.add('active');  
+});
+
+
+/*
+
+setTimeout(function() {
+    $('.loading').addClass('loaded');
+}, 3000)
+
+*/
 // create Nexus UI //
 Nexus.colors.accent = "transparent";
-
 Nexus.colors.light = "url('#grad-white')";
 Nexus.colors.dark = "url('#grad-black')";
 Nexus.colors.mediumLight = "transparent";
@@ -50,19 +55,26 @@ $(window).resize(function(){
         var scale = $('.slider').width() / $('#Keyboard').width();
 
         $('#Keyboard').css({'transform': 'scale(' + scale + ')'});
-        $('.slider').css({'height': keysHeight * scale + 10 + 'px'})
+        $('.slider').css({'height': keysHeight * scale + 20 + 'px'})
         
     } else if ($(window).width() <= 1024) {
         $('#Keyboard').css({'transform': 'scale(1)'});
-        $('.slider').css({'height': 'auto'})
+        $('.slider').css({'height': 'auto'});
+        
         buttons.resize(1766, 244);
+
+        $('.slider').scrollLeft((buttons.width/36)*10 + 3);
     } else {
         $('#Keyboard').css({'transform': 'scale(1)'});
         $('.slider').css({'height': 'auto'})
         buttons.resize(1262, 212);
     }
 })
+
 $(window).trigger('resize');
+
+
+
 
 Tone.context.latencyHint = 'interactive';
 
@@ -95,9 +107,13 @@ var pianO1 = new Tone.Sampler({
     'D#6' : 'Ds6.[mp3]',
     'F#6' : 'Fs6.[mp3]',
     'A6' : 'A6.[mp3]',
-    'C7' : 'C7.[mp3]',    
-    },
-    {
+    'C7' : 'C7.[mp3]',
+    'D#7' : 'Ds7.[mp3]',
+    'F#7' : 'Fs7.[mp3]',
+    'A7' : 'A7.[mp3]',
+    'C8' : 'C8.[mp3]'
+},
+ {
     'baseUrl' : './samples/piano/',
     curve: "exponential",
     attack: 0,
@@ -107,33 +123,22 @@ var pianO1 = new Tone.Sampler({
 });
 
 
-var pianO2 = new Tone.Sampler({
+var pianO2 = pianO1;/* new Tone.Sampler({
 
     
-    'A1' : 'A1.[mp3]',
-    'B1' : 'B1.[mp3]',
+    'A0' : 'A0.[mp3]',
     'C1' : 'C1.[mp3]',
-    'C2' : 'C2.[mp3]',
-    'D1' : 'D1.[mp3]',
-    'E1' : 'E1.[mp3]',
-    'G1' : 'G1.[mp3]',
-    'G3' : 'G3.[mp3]',   
-    'F3' : 'F3.[mp3]',
-    'E3' : 'E3.[mp3]',
-    'D3' : 'D3.[mp3]',
-    'A3' : 'A3.[mp3]',
-    'C3' : 'C3.[mp3]',
-
-    /*--- OLD SAMPLES BELOW */
-    'A0' : 'A0.[mp3]',   
     'D#1' : 'Ds1.[mp3]',
-    
-    'A1' : 'A1.[mp3]',    
+    'F#1' : 'Fs1.[mp3]',
+    'A1' : 'A1.[mp3]',
+    'C2' : 'C2.[mp3]',
     'D#2' : 'Ds2.[mp3]',
     'F#2' : 'Fs2.[mp3]',
-    'A2' : 'A2.[mp3]',  
+    'A2' : 'A2.[mp3]',
+    'C3' : 'C3.[mp3]',
     'D#3' : 'Ds3.[mp3]',
-    'F#3' : 'Fs3.[mp3]',  
+    'F#3' : 'Fs3.[mp3]',
+    'A3' : 'A3.[mp3]',
     'C4' : 'C4.[mp3]',
     'D#4' : 'Ds4.[mp3]',
     'F#4' : 'Fs4.[mp3]',
@@ -147,8 +152,10 @@ var pianO2 = new Tone.Sampler({
     'F#6' : 'Fs6.[mp3]',
     'A6' : 'A6.[mp3]',
     'C7' : 'C7.[mp3]',
-   
-
+    'D#7' : 'Ds7.[mp3]',
+    'F#7' : 'Fs7.[mp3]',
+    'A7' : 'A7.[mp3]',
+    'C8' : 'C8.[mp3]'
     
 },
  {
@@ -159,11 +166,16 @@ var pianO2 = new Tone.Sampler({
     sustain: 1,
     decay: 1    
 });
+*/
+
+
 
 pianO = pianO1;
 
+
 var switchClicked = false,
     sustClicked = false;
+
 
 
 var vol1 = new Tone.Volume(-10);
@@ -175,128 +187,143 @@ pianO1.chain(vol, Tone.Master);
 pianO2.chain(vol, Tone.Master);
 
 
+
 var keyMap = {
     '1': 24,'!': 25,'2': 26,'@': 27,'3': 28,'4': 29,'$': 30,'5': 31,'%': 32,'6': 33,'^': 34,'7': 35,'8': 36,'*': 37,'9': 38,'(': 39,'0': 40,'q': 41,'Q': 42,'w': 43,'W': 44,'e': 45,'E': 46,'r': 47,'t': 48,'T': 49,'y': 50,'Y': 51,'u': 52,'i': 53,'I': 54,'o': 55,'O': 56,'p': 57,'P': 58,'a': 59,'s': 60,'S': 61,'d': 62,'D': 63,'f': 64,'g': 65,'G': 66,'h': 67,'H': 68,'j': 69,'J': 70,'k': 71,'l': 72,'L': 73,'z': 74,'Z': 75,'x': 76,'c': 77,'C': 78,'v': 79,'V': 80,'b': 81,'B': 82,'n': 83,'m': 84
     };
 
 
-    /*Press key animation*/
+    /*Press key animation TEMPORARY*/
 
-    // var pressed = false;
+// var pressed = false;
 
-    // function animateKey(id) {
-    //     if (pressed){
-    //         document.getElementById(id).classList.toggle("pressed");
-    //         document.getElementById(id).parentElement.parentElement.classList.toggle('span-pressed');
-            
-    //     } else if (!pressed){
-    //         document.getElementById(id).classList.remove("pressed");
-    //         document.getElementById(id).parentElement.parentElement.classList.remove('span-pressed');
-      
-    //     }
+function animateKey(id) {
+
+    if (id == 'key_undefined') {return};
+
+    if (document.getElementById(id).classList.contains("pressed")) {
+        document.getElementById(id).classList.remove("pressed");
+        document.getElementById(id).parentElement.parentElement.classList.remove('span-pressed');
         
-    // }
-    function animateKey(id) {
-        if (document.getElementById(id).classList.contains("pressed")) {
-            document.getElementById(id).classList.remove("pressed");
-            document.getElementById(id).parentElement.parentElement.classList.remove('span-pressed');
-            
-        } else {
-            document.getElementById(id).classList.add("pressed");
-            document.getElementById(id).parentElement.parentElement.classList.add('span-pressed');
-        }
-
-        
+    } else {
+        document.getElementById(id).classList.add("pressed");
+        document.getElementById(id).parentElement.parentElement.classList.add('span-pressed');
     }
-    
 
-    var noteMap = Object.fromEntries(Object.entries(keyMap).map(([k, v]) => ([v, k])));
     
+}
 
-    buttons.on('change', function(note) {          
+
+var noteMap = Object.fromEntries(Object.entries(keyMap).map(([k, v]) => ([v, k])));
+
+buttons.on('change', function(note) {          
         
 
-        if (!$('.piano-menu__played').hasClass('active') && !$('.piano-menu__song').hasClass('active')){
-            $('.piano-menu__played').addClass('active').siblings().removeClass('active');
-        }        
+    if (!$('.piano-menu__played').hasClass('active') && !$('.piano-menu__song').hasClass('active')){
+        $('.piano-menu__played').addClass('active').siblings().removeClass('active');
 
-        if (note.state === true) {        
-            
-            pianO.triggerAttack(Tone.Frequency(note.note, "midi").toNote());
-                        
-        } else if (note.state === false) {
-            $('#piano-chord').html(Tone.Frequency(note.note, "midi").toNote());
-            $('#piano-key').html(noteMap[note.note]);  
-            $('#piano-key-history').append('<span>'+noteMap[note.note]+'</span>');           
-         /*   if (sustClicked){
-                pianO.triggerRelease(Tone.Frequency(note.note, "midi").toNote());    
-            } */      
-        }
-    
-        if(!$('.piano-menu__song-start').hasClass('hidden')){
-            $('.piano-menu__song-start').addClass('hidden');
-        }
-    
-    });
-    
-    
-    function playInput(buttons){
-    document.addEventListener("keydown", (e) => {      
-        if (e.repeat) { return };
-        if ($('.piano-menu__search-box').hasClass('active')) { return };
-    
-           if (e.keyCode >= 48 && e.keyCode <= 90)  {
-           pianO.triggerAttack(Tone.Frequency(keyMap[e.key], "midi").toNote());    
-           // pressed = true;
-          
-           animateKey('key_'+ keyMap[e.key]);
+    }
 
-           
-           
-            }    else if (e.keyCode == 32){
-                e.preventDefault();
-            }
-    });
+    if (note.state === true) {        
+        
+        pianO.triggerAttack(Tone.Frequency(note.note + parseInt(transValue)*2, "midi").toNote());
+        
+                    
+    } else if (note.state === false) {
+
+       if ($('.piano-menu__played').hasClass('active')){    
+        
+        $('#piano-chord').html(Tone.Frequency(note.note, "midi").toNote());
+        $('#piano-key').html(noteMap[note.note]);  
+        $('#piano-key-history').append('<span>'+noteMap[note.note]+'</span>');
+
+        var scrollHistory = document.getElementById('piano-key-history').lastChild;
+          scrollHistory.parentNode.scrollTop = scrollHistory.offsetTop - scrollHistory.parentNode.offsetTop;      			
+        }
+
+        if (sustClicked){
+            pianO.triggerRelease(Tone.Frequency(note.note + parseInt(transValue)*2, "midi").toNote());    
+        } 
+
+        console.log(sustClicked);
+
+        
+
+    }
+
+    if(!$('.piano-menu__song-start').hasClass('hidden')){
+        $('.piano-menu__song-start').addClass('hidden');
+    }
+
+});
+
+
+function playInput(buttons){
+
+document.addEventListener("keydown", (e) => {      
+    if (e.repeat) { return };
+    if ($('.piano-menu__search-box').hasClass('active')) { return };
+
+    if (!keyMap[e.key]) { return };
     
-    document.addEventListener("keyup", (e) => {      
+    if (keyMap[e.key] == 'key_undefined') { 
+        console.log('aa'); return };
+
+       if (e.keyCode >= 48 && e.keyCode <= 90)  {
+
+            animateKey('key_'+ keyMap[e.key]);
+            pianO.triggerAttack(Tone.Frequency(keyMap[e.key]  + parseInt(transValue)*2, "midi").toNote());  
+
+        } else if (e.keyCode == 32){
+            e.preventDefault();
+        }
+});
+
+    document.addEventListener("keyup", (e) => {
+        
+        if (!keyMap[e.key]) { return };
               
        
         if ((e.keyCode >= 48 && e.keyCode <= 90))  {  
-            /*  if (sustClicked){
-                pianO.triggerRelease(Tone.Frequency(keyMap[e.key], "midi").toNote());    
+             if (sustClicked){
+                pianO.triggerRelease(Tone.Frequency(keyMap[e.key] + parseInt(transValue)*2, "midi").toNote());    
             }
-*/         
-         // pressed = false;  
+         
+         pressed = false;  
 
-         if (!$('.piano-menu__search-box').hasClass('active')){
-            animateKey('key_'+ keyMap[e.key]);
-        
-           
+         if (!$('.piano-menu__search-box').hasClass('active') && $('.piano-menu__search').hasClass('active') && !$('.piano-menu__song').hasClass('active')) {
+            $('.piano-menu__played').addClass('active').siblings().removeClass('active');
+            console.log('op!')
+        }
+		 
+		 if (!$('.piano-menu__search-box').hasClass('active')){
+			 animateKey('key_'+ keyMap[e.key]);
+		 }
+         
+       
 
-
-            // if ($('.piano-menu__played').hasClass('active')){                
+         if ($('.piano-menu__played').hasClass('active')){                
             
     
             $('#piano-chord').html(Tone.Frequency(keyMap[e.key], "midi").toNote());
             $('#piano-key').html(e.key);
-            $('#piano-key-history').append('<span>'+e.key+'</span>');
-            
+            $('#piano-key-history').append('<span>'+e.key+'</span>');            
             var scrollHistory = document.getElementById('piano-key-history').lastChild;
-            scrollHistory.scrollIntoView();
-            
-            // }
-        }
+            scrollHistory.parentNode.scrollTop = scrollHistory.offsetTop - scrollHistory.parentNode.offsetTop;	
+             
+          }
+
         } else if ((e.key == "|" || e.key == '[' || e.key == ']' || e.keyCode == 32 ) && $('.piano-menu__played').hasClass('active')){ 
             
             
                 e.preventDefault();
                 $('#piano-key-history').append('<span>'+e.key+'</span>'); 
-               
-           
 
         } else if (e.keyCode == 13){
             e.preventDefault();
-            $('#piano-key-history').append("<br>"); 
+            $('#piano-key-history').append("\n").append('<br>');
+             
+			
         } else if (e.keyCode == 8){
             e.preventDefault();
             $('#piano-key-history').children().last().remove();
@@ -305,9 +332,7 @@ var keyMap = {
             return;
         }
     
-        if (!$('.piano-menu__search-box').hasClass('active') && $('.piano-menu__search').hasClass('active')) {
-            $('.piano-menu__played').addClass('active').siblings().removeClass('active');
-        }
+
     
          /*   if(Tone.Frequency(keyMap[e.key], "midi").toNote() !== 'undefined-Infinity') {
                 
@@ -321,189 +346,161 @@ var keyMap = {
             $('.piano-menu__song-start').addClass('hidden');
         }
     });
+
+$('.piano-menu__played-back').click(function() {
+    $('.piano-menu__search').addClass('active').siblings().removeClass('active');
+    $('#piano-key-history').html('');
+});
+
+$('.piano-menu__song-start').on('click', function() {
+    $(this).addClass('hidden');
     
-    $('.piano-menu__played-back').click(function() {
-        $('.piano-menu__search').addClass('active').siblings().removeClass('active');
-        $('#piano-key-history').html('');
-    });
-    
-    $('.piano-menu__song-start').on('click', function() {
-        $(this).addClass('hidden');
-        
-    });
-    
-    
+});
+
+
+}
+
+playInput();
+
+
+/* RESIZER --- DON'T USE YET */
+
+/*
+var x = window.matchMedia("(max-width: 700px)");
+resizePiano(x);
+x.addListener(resizePiano);
+
+function resizePiano(x) {
+    if (x.matches) {
+        buttons.resize(1200, 150);
+        Tone.context.lookAhead = 0.1;
+    } else {
+       // buttons.resize(1000, 150);
+        Tone.context.lookAhead = 0;
     }
+}*/
+
+
+/* Setting IDs for keys*/
+
+//reordering the obj to set the ids
+var keyIds = Object.values(keyMap).sort(function(a, b){return a-b});
+var keyNames = Object.values(Object.fromEntries(Object.entries(keyMap).map(([k, v]) => ([v, k]))));
+
+var sliderDiv = $('.slider');
+var pianoDiv = document.getElementById('piano-body');
+
+window.onload = function(){
     
-    playInput();
-    
-    /* RESIZER --- DON'T USE YET */
-    
-    /*
-    var x = window.matchMedia("(max-width: 700px)");
-    resizePiano(x);
-    x.addListener(resizePiano);
-    
-    function resizePiano(x) {
-        if (x.matches) {
-            buttons.resize(1200, 150);
-            Tone.context.lookAhead = 0.1;
-        } else {
-           // buttons.resize(1000, 150);
-            Tone.context.lookAhead = 0;
+    var keyB = document.querySelectorAll('rect');
+    var keySpan = document.querySelector("#Keyboard").getElementsByTagName('span');
+
+    var noteKeys = ['c','c#','d','d#','e','f', 'f#','g','g#','a','a#','b'];    
+    var octaveCount = 6;
+
+    var allKeys = [];
+
+    for (var k=0;k<octaveCount; k++){        
+        for (var z=0; z<noteKeys.length; z++){
+           
+            allKeys.push(noteKeys[z]+""+(k+1));
         }
-    }*/
-    
-    
-    /* Setting IDs, ASSIST LABEL for keys*/
-    
-    //reordering the obj to set the ids
-    var keyIds = Object.values(keyMap).sort(function(a, b){return a-b});
-    var keyNames = Object.values(Object.fromEntries(Object.entries(keyMap).map(([k, v]) => ([v, k]))));
-    
-    var sliderDiv = $('.slider');
-    var pianoDiv = document.getElementById('piano-body');
-    
-    window.onload = function(){
+    }
+
+    for (var i=0; i < keyB.length; i++){
+        var key = keyB[i];
+        var span = keySpan[i];     
         
-        var keyB = document.querySelectorAll('rect');
-        var keySpan = document.querySelector("#Keyboard").getElementsByTagName('span');
-    
-        var noteKeys = ['c','c#','d','d#','e','f', 'f#','g','g#','a','a#','b'];    
-        var octaveCount = 6;
-    
-        var allKeys = [];
-    
-        for (var k=0;k<octaveCount; k++){        
-            for (var z=0; z<noteKeys.length; z++){
-               
-                allKeys.push(noteKeys[z]+""+(k+1));
-            }
-        }
-    
-        for (var i=0; i < keyB.length; i++){
-            var key = keyB[i];
-            var span = keySpan[i];     
-            
-           // console.log(Tone.Frequency(keyMap[i], "midi").toNote())
-            
-            if (key){
-                key.setAttribute('id', 'key_'+ keyIds[i]);
-                  //    $('<label>'+ keyIds[i] +'<label>').appendTo(labelTarget[i]).css('position: absolute');
-                if (key.getAttribute('fill') === "url('#grad-black')") {
-                   key.classList.add('key-black');
-                   span.classList.add('key-span-black');
-                   span.id = 'span_b_' + keyIds[i];
-                  $('<label class="keyassist keylabel-b assikeys">'+keyNames[i-1]+'<br>+<br>⇧' +'<label>').css({'opacity': '0'}).appendTo(span);
-                  $('<label class="keyassist keylabel-b assinotes rotate-text">'+allKeys[i] +'<label>').css({'opacity': '0'}).appendTo(span);
-    
-                } else {
-    
-                  key.classList.add('key-white');
-                  span.classList.add('key-span-white');
-                  span.id = 'span_w_' + keyIds[i];
-                  $('<label class="keyassist keylabel-w assikeys">'+keyNames[i]+'<label>').css({'opacity': '0'}).appendTo(span);
-                  $('<label class="keyassist keylabel-w assinotes">'+allKeys[i]+'<label>').css({'opacity': '0'}).appendTo(span);
-    
-                }                
-            }   
-                    
-        }
-    
-    
-        /* RESIZE PIANO ON MOBILE */
-        // var screenWidth = innerWidth;
-        // var screenHeight = innerHeight;   
-    
-    
-        // if (screenWidth == 768 && screenWidth < screenHeight){
-        //     buttons.resize(1800, 240);
-        //     sliderDiv.scrollLeft((buttons.width/36)*10 + 3);
-    
-        // }
-        // else if (screenWidth <= 813 && screenWidth < screenHeight){
-        //     buttons.resize(1700, 240);
-        //     sliderDiv.scrollLeft((buttons.width/36)*14 + 3);
-        //     console.log('resized!');
-        // } else if (screenWidth <= 813 && screenWidth > screenHeight){
-        //     buttons.resize(1800, 200);
-        //     sliderDiv.scrollLeft((buttons.width/36)*10 + 3);
-        //     pianoDiv.scrollIntoView();
-        //     console.log('resized! mm');
-        // }  
-    
-    
-    
-        // open search box
-        $('.piano-menu__search-box').click(function() {
-            if ($('.piano-menu__search input').val()) {
-                $('.piano-menu__search-results').addClass('active');
-            }
-            $(this).addClass('active')
-        })
-        // close search box if clicked outside of search box
-        $(document).on('click', function(e) {
-            if ($(e.target)[0] !== $('.piano-menu__search-box')[0] && $(e.target)[0] !== $('.piano-menu__search-box input')[0]) {
-                $('.piano-menu__search-box, .piano-menu__search-results').removeClass('active');
-            }
-        })
-        $('.piano-menu__top .close').click(function() {
-            $('.piano-menu__search').addClass('active').siblings().removeClass('active');
-            $('.piano-menu__song-start').removeClass('hidden');
-        })
-    
-        $('.piano-menu__search input').on('input', function() {
-            // if search input !== 0 then reveal the search results
-            if ($(this).val()) {
-                $(this).next().addClass('active');
+       // console.log(Tone.Frequency(keyMap[i], "midi").toNote())
+        
+        if (key){
+            key.setAttribute('id', 'key_'+ keyIds[i]);
+              //    $('<label>'+ keyIds[i] +'<label>').appendTo(labelTarget[i]).css('position: absolute');
+            if (key.getAttribute('fill') === "url('#grad-black')") {
+               key.classList.add('key-black');
+               span.classList.add('key-span-black');
+               span.id = 'span_b_' + keyIds[i];
+              $('<label class="keyassist keylabel-b assikeys">'+keyNames[i-1]+'<br>+<br>⇧' +'<label>').css({'opacity': '0'}).appendTo(span);
+              $('<label class="keyassist keylabel-b assinotes rotate-text">'+allKeys[i] +'<label>').css({'opacity': '0'}).appendTo(span);
+
             } else {
-                $(this).next().removeClass('active');
-            }
-        })
-    
-            // PICK A SONG FROM SEARCH
-          
-            
-            $('.stats-toggle').click(function () {
-                $(this).toggleClass('active');
-                $('.piano-menu__song-stats').toggleClass('invisible');
-            })
-        
-        $('.piano-menu__bottom-btn').click(function(e) {
-            e.preventDefault();
-            if (!$(this).hasClass('record-btn') && !$(this).hasClass('assist-btn')) {
-    
-                if (!$(this).hasClass('opened')) {
-                    $('.submenu').removeClass('active');
 
-                   if($('.submenu.dragged').length) {
-                       setTimeout(function() {
-                           var classAttr = $('.submenu.dragged').attr('class').split(' ')[1];
-                           var menu = $('.' + classAttr).removeClass('dragged').attr('style', '').detach();
-                           $('a[data-menu="' + classAttr + '"]').after(menu);
-                       }, 400);
-                   }
-                    
-                    $(this).addClass('opened').parent().siblings().find('.piano-menu__bottom-btn').removeClass('opened');
-                    $(this).next().addClass('active');
-                } else {  
-                    $(this).removeClass('opened');
-                    $('.submenu').removeClass('active');
-    
-                    var classAttr = $(this).attr('data-menu');
-                    var that = $(this);
-                    setTimeout(function() {
-                        that.after($('.' + classAttr).removeClass('dragged').attr('style', ''));
-                    }, 400);
-                }
-            }
-            
-        })
-        
-        $('.record-btn').click(function(e) {
-            if ($(this).hasClass('recording')) {
+              key.classList.add('key-white');
+              span.classList.add('key-span-white');
+              span.id = 'span_w_' + keyIds[i];
+              $('<label class="keyassist keylabel-w assikeys">'+keyNames[i]+'<label>').css({'opacity': '0'}).appendTo(span);
+              $('<label class="keyassist keylabel-w assinotes">'+allKeys[i]+'<label>').css({'opacity': '0'}).appendTo(span);
 
+            }                
+        }   
+                
+    }
+
+
+    /* RESIZE PIANO ON MOBILE */
+    // var screenWidth = innerWidth;
+    // var screenHeight = innerHeight;   
+
+
+    // if (screenWidth == 768 && screenWidth < screenHeight){
+    //     buttons.resize(1800, 240);
+    //     sliderDiv.scrollLeft((buttons.width/36)*10 + 3);
+
+    // }
+    // else if (screenWidth <= 813 && screenWidth < screenHeight){
+    //     buttons.resize(1700, 240);
+    //     sliderDiv.scrollLeft((buttons.width/36)*14 + 3);
+    //     console.log('resized!');
+    // } else if (screenWidth <= 813 && screenWidth > screenHeight){
+    //     buttons.resize(1800, 200);
+    //     sliderDiv.scrollLeft((buttons.width/36)*10 + 3);
+    //     pianoDiv.scrollIntoView();
+    //     console.log('resized! mm');
+    // }
+  
+
+    // open search box
+   $('.piano-menu__search-box').click(function() {
+       if ($('.piano-menu__search input').val()) {
+           $('.piano-menu__search-results').addClass('active');
+       }
+       $(this).addClass('active')
+   })
+   // close search box if clicked outside of search box
+   $(document).on('click', function(e) {
+       if ($(e.target)[0] !== $('.piano-menu__search-box')[0] && $(e.target)[0] !== $('.piano-menu__search-box input')[0]) {
+           $('.piano-menu__search-box, .piano-menu__search-results').removeClass('active');
+       }
+   })
+   $('.piano-menu__top .close').click(function() {
+       $('.piano-menu__search').addClass('active').siblings().removeClass('active');
+       $('.piano-menu__song-start').removeClass('hidden');
+   })
+   
+   $('.piano-menu__search input').on('input', function() {
+       // if search input !== 0 then reveal the search results
+       if ($(this).val()) {
+           $(this).next().addClass('active');
+       } else {
+           $(this).next().removeClass('active');
+       }
+   })
+   
+       // PICK A SONG FROM SEARCH
+     
+       
+   $('.stats-toggle').click(function () {
+       $(this).toggleClass('active');
+       $('.piano-menu__song-stats').toggleClass('invisible');
+   })
+
+    $('.piano-menu__bottom-btn').click(function(e) {
+        e.preventDefault();
+        if (!$(this).hasClass('assist-btn')) {
+
+            if (!$(this).hasClass('opened')) {
                 $('.submenu').removeClass('active');
+                
                 if($('.submenu.dragged').length) {
                     setTimeout(function() {
                         var classAttr = $('.submenu.dragged').attr('class').split(' ')[1];
@@ -512,293 +509,375 @@ var keyMap = {
                     }, 400);
                 }
 
-                $(this).removeClass('recording').addClass('opened');
-                $(this).next().addClass('active')
-                console.log('stopped')
-                stopRecording();
-            } else if ($('.record').hasClass('active')) {
-                $(this).removeClass('opened active');
-                $(this).next().removeClass('active');
-                
-            } else {
-                $(this).addClass('active recording');
-                startRecordingNew();
-            }
-        });
-        
-        $('.record .close').click(function() {
-            $('.record-btn').removeClass('opened active');
-            $('.record').removeClass('active');
-        })
-         $('.record__play-btn').click(function(e) {
-            $(this).toggleClass('played');
-            var audio = document.getElementById('audio_record');
+                $(this).addClass('opened').parent().siblings().find('.piano-menu__bottom-btn').removeClass('opened');
+                $(this).next().addClass('active');
+            } else {  
+                $(this).removeClass('opened');
+                $('.submenu').removeClass('active');
 
-            let playTimer = setInterval(() => {
-                $('#record').val(audio.currentTime);
-            }, 10);
-            $('#record').attr('step', '0.1');
-            $('#record').attr('max', audio.duration);
-
-            if (audio.currentTime == audio.duration){
-                clearInterval(playTimer);
-            }
-           
-            
-            if (!$(this).hasClass('played')){
-                audio.pause();
-                clearInterval(playTimer);
-            } else {
-                audio.play();
-            }
-         });
-    
-    
-         $('.assist-btn').click(function() {
-            if ($(this).hasClass('assist-notes')) {
-                $(this).removeClass('active').removeClass('assist-notes');
-                $('.assikeys').css({'opacity': '0', 'transition': '.3s'});
-                $('.assinotes').css({'opacity': '0', 'transition': '.3s'});
-            } else if (!$(this).hasClass('active')) {
-                $(this).addClass('active').addClass('assist-keys');
-                $('.assikeys').css({'opacity': '1', 'transition': '.3s'});
-            } else if ($(this).hasClass('assist-keys')){
-                $(this).addClass('assist-notes').removeClass('assist-keys');
-                $('.assikeys').css({'opacity': '0', 'transition': '.0s'});
-                $('.assinotes').css({'opacity': '1', 'transition': '.3s'});
-            }
-        });
-            
-            
-         var dragBlocks = document.querySelectorAll('.submenu');
-         dragBlocks.forEach((el) => {
-             if(!isTouchDevice) {
-                el.onmousedown = function(event) {
-                  if (event.target.classList.contains('submenu')) {
-                    let shiftX = event.clientX - el.getBoundingClientRect().left;
-                    let shiftY = event.clientY - el.getBoundingClientRect().top;
-
-                    $(el).addClass('dragged');
-                    el.style.position = 'absolute';
-                    el.style.zIndex = 1000;
-                    el.style.transition = '0s';
-                    document.body.append(el);
-
-                    moveAt(event.pageX, event.pageY);
-
-                    // moves the dragBlock at (pageX, pageY) coordinates
-                    // taking initial shifts into account
-                    function moveAt(pageX, pageY) {
-                      el.style.left = pageX - shiftX + 'px';
-                      el.style.top = pageY - shiftY + 'px';
-                    }
-
-                    function onMouseMove(event) {
-                      moveAt(event.pageX, event.pageY);
-                    }
-
-                    // move the dragBlock on mousemove
-                    document.addEventListener('mousemove', onMouseMove);
-
-                    // drop the dragBlock, remove unneeded handlers
-                    el.onmouseup = function() {
-                      document.removeEventListener('mousemove', onMouseMove);
-                      el.onmouseup = null;
-                      el.style.transition = '0.4s';
-                    };
-
-                  }
-                  
-                };
-                el.ondragstart = function() {
-                  return false;
-                };
-             } else if($(window).width() > 767) {
-                
-                // touchstart, touchmove, touchcancel, and touchend
-                el.ontouchstart = function(event) {
-                    console.log(event.changedTouches[0].pageX);
-                  if (event.target.classList.contains('submenu')) {
-                    let shiftX = event.changedTouches[0].clientX - el.getBoundingClientRect().left;
-                    let shiftY = event.changedTouches[0].clientY - el.getBoundingClientRect().top;
-
-                    $(el).addClass('dragged');
-                    el.style.position = 'absolute';
-                    el.style.zIndex = 1000;
-                    el.style.transition = '0s';
-                    document.body.append(el);
-
-                    moveAt(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
-
-                    // moves the dragBlock at (pageX, pageY) coordinates
-                    // taking initial shifts into account
-                    function moveAt(pageX, pageY) {
-                      el.style.left = pageX - shiftX + 'px';
-                      el.style.top = pageY - shiftY + 'px';
-                    }
-
-                    function onMouseMove(event) {
-                      moveAt(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
-                    }
-
-                    // move the dragBlock on mousemove
-                    document.addEventListener('touchmove', onMouseMove);
-
-                    // drop the dragBlock, remove unneeded handlers
-                    el.ontouchend = function() {
-                      document.removeEventListener('touchmove', onMouseMove);
-                      el.onmouseup = null;
-                      el.style.transition = '0.4s';
-                    };
-
-                  }
-                  
-                };
-                el.ondragstart = function() {
-                  return false;
-                };
-             }
-        });
-         $('.hamburger').click(function () {
-            if ($(this).hasClass('active')) {
-                $(this).removeClass('active');
-                $('.piano-menu__bottom, .submenu').removeClass('active'); 
-                $('.piano-menu__bottom-btn').removeClass('opened');            
-            } else {
-                $(this).addClass('active');
-                $('.piano-menu__bottom').addClass('active');
-            }
-         })
-
-        $('.metronome__play').click(function() {
-            $(this).toggleClass('played');
-            $('.metronome-btn').toggleClass('active');
-        });
-        
-        $('.transpose__sign').click(function(e) {
-            var value = $('.transpose__value span').html();
-            if ($(this).hasClass('increment')) {
-                if (value < 5) value++;
-            } else if (value > -5) {
-                value--;
-            }
-    
-            if (value > 0 && value <= 5) {
-                value = '+' + +value;
-            }
-            $('.transpose__value span').html(value);
-            checkSoundModification();
-        });
-        $('.type__current').click(function(e) {
-            $(this).parents('.type').toggleClass('active');
-        });
-        $('.type__custom li').click(function(e) {
-            $(this).addClass('active').siblings().removeClass('active');
-            $('.type').removeClass('active');
-            $(this).parents('.type').find('option').eq($(this).index()).prop('selected', true);
-            $(this).parents('.type').find('.type__current').html($(this).parents('.type').find('option:selected').html());
-            
-            if ($('#piano-type option:selected').val() !== 'CLASSICAL PIANO') {
-                pianO = pianO2;
-                switchClicked = true;
-                console.log('grand piano');
-            } else {
-                pianO = pianO1;
-                switchClicked = false;
-            }
-            checkSoundModification();
-        });
-        
-        $('.sound input').change(function() {
-            checkSoundModification();
-        });
-        $('.sustain input').change(function () {
-            if ($(this).is(':checked')) {
-                sustClicked = false;
-                pianO.release = 10;
-            } else {
-                sustClicked = true;        
-                pianO.release = 2;
-                console.log('sustain off')
-            }
-        })
-        function checkSoundModification() {
-            if (!$('.sustain input').prop('checked') || $('.transpose__value span').html() !== '0' || $('.type option:selected').val() !== 'CLASSICAL PIANO') {
-                $('.sound-btn').addClass('active');
-            } else {
-                $('.sound-btn').removeClass('active');
+                var classAttr = $(this).attr('data-menu');
+                var that = $(this);
+                setTimeout(function() {
+                    that.after($('.' + classAttr).removeClass('dragged').attr('style', ''));
+                }, 400);
             }
         }
         
-            $(document).on('click', '.submenu .close', function(){
-            $('.submenu').removeClass('active');
-            $('.piano-menu__bottom a').removeClass('opened');
-    
-            var that = $(this);
-            setTimeout(function() {
-                var classAttr = that.parent().attr('class').split(' ')[1];
-                var menu = that.parent().removeClass('dragged').attr('style', '').detach();
-                $('a[data-menu="' + classAttr + '"]').after(menu);
-            }, 400);
-           
-        });
-    
-    
-    }
-    
-    /* ANIMATING TOUCH EVENT*/
-    
-    var buttonSingle = document.getElementById('Keyboard').firstElementChild.childNodes;
-    
-    for (var button of buttonSingle){
-        button.addEventListener("touchstart", function (e) {
-           
-            e.currentTarget.classList.add('span-pressed');
-        });
-        button.addEventListener("touchmove", function (e) {
-            
-            var location = e.changedTouches[0];       
-            var targetNow = document.elementFromPoint(location.clientX, location.clientY);
-            targetNow.classList.add('span-pressed');
-            location.target.classList.remove('span-pressed');     
-    
-        });
-    
-        button.addEventListener("touchend", function (e) {
-            
-            e.currentTarget.classList.remove('span-pressed'); 
-         
-        });
-    
-    
-        
-    }
+    })
+
+    $('.record__start').click(function() {
+        $('.record-btn').addClass('active recording');
+        $(this).removeClass('active').siblings().addClass('active');
+
+        startRecordingNew();
+    })
+    $('.record__stop').click(function() {
+        $('.record-btn').removeClass('recording').addClass('opened');
+        $('.record__stopped').addClass('active').siblings().removeClass('active');
+        if($(this).parent().hasClass('record__initial')){
+            $(this).removeClass('active');
+        } else {
+            $(this).removeClass('active').siblings().addClass('active');
+        }
+
+        console.log('stopped')
+        stopRecording();
+    })
+
 
     
-    function copyToClipboard(str) {
+
+     $('.record__play-btn').click(function(e) {
+        $(this).toggleClass('played');
+        var audio = document.getElementById('audio_record');
+
+       
+        $('#record').attr('step', '0.1');
+        $('#record').attr('max', audio.duration);
+
+        if (audio.currentTime == audio.duration){
+            clearInterval(playTimer);
+        }       
+        
+        if (!$(this).hasClass('played')){
+            audio.pause();
+            clearInterval(playTimer);
+            console.log(playTimer);
+            
+        } else {
+            audio.play();
+            playTimer = setInterval(() => {                
+                $('#record').val(audio.currentTime);
+            }, 10);
+        }
+     });
+
+     $('#record').on('input', function(e) {
+        var audio = document.getElementById('audio_record');
+        audio.currentTime = $('#record').val()
+         $('.record__time').children().first().val($('#record').val());
+         console.log('woop')
+     });
+
+     $('.assist-btn').click(function() {
+        if ($(this).hasClass('assist-notes')) {
+            $(this).removeClass('active').removeClass('assist-notes');
+            $('.assikeys').css({'opacity': '0', 'transition': '.3s'});
+            $('.assinotes').css({'opacity': '0', 'transition': '.3s'});
+        } else if (!$(this).hasClass('active')) {
+            $(this).addClass('active').addClass('assist-keys');
+            $('.assikeys').css({'opacity': '1', 'transition': '.3s'});
+        } else if ($(this).hasClass('assist-keys')){
+            $(this).addClass('assist-notes').removeClass('assist-keys');
+            $('.assikeys').css({'opacity': '0', 'transition': '.0s'});
+            $('.assinotes').css({'opacity': '1', 'transition': '.3s'});
+        }
+    });
+
+     var dragBlocks = document.querySelectorAll('.submenu');
+     dragBlocks.forEach((el) => {
+         if(!isTouchDevice) {
+            el.onmousedown = function(event) {
+              if (event.target.classList.contains('submenu')) {
+                let shiftX = event.clientX - el.getBoundingClientRect().left;
+                let shiftY = event.clientY - el.getBoundingClientRect().top;
+
+                $(el).addClass('dragged');
+                el.style.position = 'absolute';
+                el.style.zIndex = 1000;
+                el.style.transition = '0s';
+                document.body.append(el);
+
+                moveAt(event.pageX, event.pageY);
+
+                // moves the dragBlock at (pageX, pageY) coordinates
+                // taking initial shifts into account
+                function moveAt(pageX, pageY) {
+                  el.style.left = pageX - shiftX + 'px';
+                  el.style.top = pageY - shiftY + 'px';
+                }
+
+                function onMouseMove(event) {
+                  moveAt(event.pageX, event.pageY);
+                }
+
+                // move the dragBlock on mousemove
+                document.addEventListener('mousemove', onMouseMove);
+
+                // drop the dragBlock, remove unneeded handlers
+                el.onmouseup = function() {
+                  document.removeEventListener('mousemove', onMouseMove);
+                  el.onmouseup = null;
+                  el.style.transition = '0.4s';
+                };
+
+              }
+              
+            };
+            el.ondragstart = function() {
+              return false;
+            };
+         } else {
+            
+            // touchstart, touchmove, touchcancel, and touchend
+            el.ontouchstart = function(event) {
+                console.log(event.changedTouches[0].pageX);
+              if (event.target.classList.contains('submenu')) {
+                let shiftX = event.changedTouches[0].clientX - el.getBoundingClientRect().left;
+                let shiftY = event.changedTouches[0].clientY - el.getBoundingClientRect().top;
+
+                $(el).addClass('dragged');
+                el.style.position = 'absolute';
+                el.style.zIndex = 1000;
+                el.style.transition = '0s';
+                document.body.append(el);
+
+                moveAt(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
+
+                // moves the dragBlock at (pageX, pageY) coordinates
+                // taking initial shifts into account
+                function moveAt(pageX, pageY) {
+                  el.style.left = pageX - shiftX + 'px';
+                  el.style.top = pageY - shiftY + 'px';
+                }
+
+                function onMouseMove(event) {
+                    console.log(event.changedTouches[0].pageX);
+                  moveAt(event.changedTouches[0].pageX, event.changedTouches[0].pageY);
+                }
+
+                // move the dragBlock on mousemove
+                document.addEventListener('touchmove', onMouseMove);
+
+                // drop the dragBlock, remove unneeded handlers
+                el.ontouchend = function() {
+                  document.removeEventListener('touchmove', onMouseMove);
+                  el.onmouseup = null;
+                  el.style.transition = '0.4s';
+                };
+
+              }
+              
+            };
+            el.ondragstart = function() {
+              return false;
+            };
+         }
+    
+        
+
+        
+    });
+     $('.hamburger').click(function () {
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+            $('.piano-menu__bottom, .submenu').removeClass('active'); 
+            $('.piano-menu__bottom-btn').removeClass('opened');            
+        } else {
+            $(this).addClass('active');
+            $('.piano-menu__bottom').addClass('active');
+        }
+     })
+
+    $('.metronome__sign').click(function () {
+        if ($(this).hasClass('plus')) {
+            $('.metronome input').val(+$('.metronome input').val() + 1);
+        } else {
+            $('.metronome input').val($('.metronome input').val() - 1);
+        }
+        $('.metronome input').trigger('change');
+    })
+
+    var tickStart, tickEnd;
+    $('.metronome input').change(function() {
+        $('.metronome__bpm').html($(this).val());
+        updateTicker();
+    })
+
+    $('.metronome__play').click(function() {
+        if (!$(this).hasClass('played')) {
+            $(this).addClass('played');
+            $('.metronome-btn').addClass('active');
+
+            var metronomeValue = $('.metronome input').val();
+            var interval = 1000 / (metronomeValue / 60);
+
+            tickStart = setInterval(function () {
+                
+                $('.metronome__ticker').css({'opacity': '1', 'transform': 'scale(1.25)'})
+            }, interval/2)
+            tickEnd = setInterval(function () {
+                metroPlay();
+                $('.metronome__ticker').css({'opacity': '0', 'transform': 'scale(1)'})
+            }, interval)
+            
+        } else {
+            $(this).removeClass('played');
+            $('.metronome-btn').removeClass('active');
+            clearInterval(tickStart);
+            clearInterval(tickEnd);
+        }
+        
+    })
+    function updateTicker() {
+        clearInterval(tickStart);
+        clearInterval(tickEnd);
+
+        if ($('.metronome__play').hasClass('played')){
+            $('.metronome__play').removeClass('played');
+        }
+
+        var metronomeValue = $('.metronome input').val();
+        var interval = 1000 / (metronomeValue / 60);
+
+        tickStart = setInterval(function () {
+            $('.metronome__ticker').css({'opacity': '1', 'transform': 'scale(1.25)'})
+        }, interval/2)
+        tickEnd = setInterval(function () {
+            $('.metronome__ticker').css({'opacity': '0', 'transform': 'scale(1)'})
+        }, interval)
+    }
+
+
+    $('.transpose__sign').click(function(e) {
+        transValue = $('.transpose__value span').html();
+        if ($(this).hasClass('increment')) {
+            if (transValue < 5) transValue++;
+        } else if (transValue > -5) {
+            transValue--;
+        }
+
+        if (transValue > 0 && transValue <= 5) {
+            transValue = '+' + +transValue;
+        }
+        $('.transpose__value span').html(transValue);
+        checkSoundModification();
+        return transValue;
+    });
+    $('.type__current').click(function(e) {
+        $(this).parents('.type').toggleClass('active');
+    });
+    $('.type__custom li').click(function(e) {
+        $(this).addClass('active').siblings().removeClass('active');
+        $('.type').removeClass('active');
+        $(this).parents('.type').find('option').eq($(this).index()).prop('selected', true);
+        $(this).parents('.type').find('.type__current').html($(this).parents('.type').find('option:selected').html());
+
+        if ($('#piano-type option:selected').val() !== 'CLASSICAL PIANO') {
+            pianO = pianO2;
+            switchClicked = true;
+            console.log('grand piano');
+        } else {
+            pianO = pianO1;
+            switchClicked = false;
+        }
+        
+        
+        checkSoundModification();
+    });
+    
+    $('.sound input').change(function() {
+        checkSoundModification();
+    });
+    $('.sustain input').change(function () {
+        if ($(this).is(':checked')) {
+            sustClicked = false;
+            pianO.release = 10;
+        } else {
+            sustClicked = true;        
+            pianO.release = 2;
+            console.log('sustain off')
+        }
+    })
+    function checkSoundModification() {
+        if (!$('.sustain input').prop('checked') || $('.transpose__value span').html() !== '0' || $('.type option:selected').val() !== 'CLASSICAL PIANO') {
+            $('.sound-btn').addClass('active');
+        } else {
+            $('.sound-btn').removeClass('active');
+        }
+    }
+    $(document).on('click', '.submenu .close', function(){
+        $('.submenu').removeClass('active');
+        $('.piano-menu__bottom a').removeClass('opened');
+
+        var that = $(this);
+        setTimeout(function() {
+            var classAttr = that.parent().attr('class').split(' ')[1];
+            var menu = that.parent().removeClass('dragged').attr('style', '').detach();
+            $('a[data-menu="' + classAttr + '"]').after(menu);
+        }, 400);
+    })
+}
+
+
+var buttonSingle = document.getElementById('Keyboard').firstElementChild.childNodes;
+
+for (var button of buttonSingle){
+    button.addEventListener("touchstart", function (e) {
+       
+        e.currentTarget.classList.add('span-pressed');
+    });
+    button.addEventListener("touchmove", function (e) {
+        
+        var location = e.changedTouches[0];       
+        var targetNow = document.elementFromPoint(location.clientX, location.clientY);
+        targetNow.classList.add('span-pressed');
+        location.target.classList.remove('span-pressed');     
+
+    });
+
+    button.addEventListener("touchend", function (e) {
+        
+        e.currentTarget.classList.remove('span-pressed'); 
+     
+    });
+
+
+    
+}
+
+
+function copyToClipboard(str) {
         const el = document.createElement('textarea');
         el.value = str;
+        console.log(str);
         document.body.appendChild(el);
         el.select();
         document.execCommand('copy');
         document.body.removeChild(el);
-      };    
+     };    
 
 $('.piano-menu__played-copy').on('click', function() {
-//    var str = document.getElementById('piano-key-history').innerHTML;
+    //var str = document.getElementById('piano-key-history').innerHTML;
     var str = document.getElementById('piano-key-history').textContent;
+   //str = str.replace(/  /g, '').replace(/<span>/g, '').replace(/<\/span>/g, '').replace(/<br>/g, '\n');
     copyToClipboard(str);
 })
 
-
-//go!
-
-  
-
-//go!
-
-
-
-
-
-
+$('.song-hamburger').click(function () {
+    $('.piano-menu__song-menu').addClass('active');
+})
+$('.close-song-menu').click(function () {
+    $('.piano-menu__song-menu').removeClass('active');
+    console.log('lala')
+})

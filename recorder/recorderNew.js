@@ -14,22 +14,6 @@ var audioContext; //new audio context to help us record
 
 
 
-/*
-var encodingTypeSelect = document.getElementById("encodingTypeSelect");
-var recordButton = document.getElementById("recordButton");
-var stopButton = document.getElementById("stopButton");
-var recordButtonNew = document.getElementById('recordButtonNew');
-*/
-//add events to those 2 buttons
-/*
-recordButton.addEventListener("click", startRecording);
-stopButton.addEventListener("click", stopRecording);
-recordButtonNew.addEventListener('click', startRecordingNew);
-*/
-
-
-
-
 if(navigator.userAgent.indexOf("Chrome") != -1 ){
 	console.log(navigator.userAgent);
 } else {
@@ -39,12 +23,10 @@ if(navigator.userAgent.indexOf("Chrome") != -1 ){
 
 function startRecordingNew() {
 
-		actx = Tone.context;
-		console.log(actx);
+		actx = Tone.context;	
 
 		var dest = actx.createMediaStreamDestination();		
-		
-		
+
 		//assign to gumStream for later use
 		vol.connect(dest);
 		gumStream = dest.stream;
@@ -57,10 +39,6 @@ function startRecordingNew() {
 		//get the encoding 
 		
 		encodingType = 'wav';  //encodingTypeSelect.options[encodingTypeSelect.selectedIndex].value;
-		
-		//disable the encoding selector
-      //  encodingTypeSelect.disabled = true;
-       
 		
 		recorder = new WebAudioRecorder(input, {
 		  workerDir: "recorder/", // must end with slash
@@ -81,14 +59,13 @@ function startRecordingNew() {
 		}
 
 		recorder.setOptions({
-		  timeLimit:3,
+		  timeLimit:30,
 		  encodeAfterRecord:encodeAfterRecord,
 	      ogg: {quality: 0.9},
 	      mp3: {bitRate: 320}
 		});
 		
-		recorder.onTimeout = function(recorder) { 
-					
+		recorder.onTimeout = function(recorder) { 			
 			
 
 			if ($('.record-btn').hasClass('recording')) {
@@ -100,6 +77,9 @@ function startRecordingNew() {
                 $('.record-btn').removeClass('opened active');
                 $('.record-btn').next().removeClass('active');
 		 }
+
+		 $('.record__stop').trigger('click');
+
 		} 
 
 		//start the recording process
@@ -109,91 +89,75 @@ function startRecordingNew() {
 
 
 function stopRecording() {
-	console.log("stopRecording() called");
-
-	//var auOld = document.getElementById('audio1');
-	
-/*	if (auOld){
-		auOld.parentNode.removeChild(auOld);
-	}
-	
-*/	//stop
+	console.log("stopRecording() called");	
+	//stop
 	gumStream.getAudioTracks()[0].stop();
-
 	
 	//tell the recorder to finish 
 	recorder.finishRecording();
 	console.log('hmm');
-//	createDownloadLink(blob,recorder.encoding);
 
 }
 
 var url;
 
-function createDownloadLink(blob,encoding) {
-	
-	console.log('la');
+function createDownloadLink(blob,encoding) {	
 
 	if ($('#audio_record')){
 		$('#audio_record').remove();
 	}
 
-/*	if (recordingsList.firstElementChild){
-		recordingsList.firstElementChild.remove()
-	}*/
+	var recordTimeCurrent = $('.record__time').children().first();
+	var recordTimeMax = $('.record__time').children().last();
 
 	url = URL.createObjectURL(blob);
 	var au = document.createElement('audio');
 	var li = document.createElement('li');
 	var link = $('.record__link.download');
+	var linkSc = $('.record__link.soundcloud');	
+	
 	au.title = 'title';
 	au.id = 'audio_record'
+	
 	var recordUi = $('.submenu.record');
 	au.style.display = 'none';
-	
-
-
 	
 	//add controls to the <audio> element
 	au.controls = true;
 	au.src = url;
 
 	//link the a element to the blob
+	
 	link.attr('href', url);
-//	link.download = new Date().toISOString() + '.'+encoding;
-	//link.innerHTML = 'Download';
+	link.attr('target', '_blank');
+	link.attr('download', new Date().toISOString() + '.'+encodingType)
+
+	linkSc.attr('href', 'https://soundcloud.com/upload');	
+	linkSc.attr('target', '_blank');
 
 	recordUi.append(au);
 
-	//add the new audio and a elements to the li element
-	//li.appendChild(au);
-	//li.appendChild(link);
-	
-	//label.setAttribute(label) = 'alala';
-
-	//add the li element to the ordered list
-//	recordingsListrecordingsList.appendChild(li);
-
- 	var auDuration = document.getElementById('audio_record').duration
-
 	var time = convertTime();
-	console.log(time);
+	setTimeout(() => {
 
+		var auD = document.getElementById('audio_record');
+		
+	//	recordTimeCurrent.html(convertTime(auD.currentTime));	
+		recordTimeMax.html(convertTime(auD.duration));
 
+	}, 400);
 
 }
 
 
-function convertTime()
-{   
+function convertTime(number){   
 
-	var time = document.getElementById('audio_record').duration;
-    // Hours, minutes and seconds
+	var time = number;
+   
     var hrs = ~~(time / 3600);
     var mins = ~~((time % 3600) / 60);
     var secs = ~~time % 60;
-
-    // Output like "1:01" or "4:03:59" or "123:03:59"
+    
     var ret = "";
 
     if (hrs > 0) {
@@ -204,4 +168,3 @@ function convertTime()
     ret += "" + secs;
     return ret;
 }
-

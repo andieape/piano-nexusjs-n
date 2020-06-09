@@ -4567,7 +4567,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	          // no touches to calculate because none remaining
 			  var key = _this.keys[_this.currentElement];
 			   
-			  tpCache = new Array();
+			  setTimeout(() => {
+				tpCache = new Array();
+			  }, 10);
 
 			  
 			 

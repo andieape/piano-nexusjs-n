@@ -1263,8 +1263,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 	};
 	
-	exports.locateTouch = function (e, offset) {
-	  return {
+	exports.locateTouch = function (e, offset) {		
+		return {
 	    x: e.targetTouches.length ? e.targetTouches[0].pageX - offset.left : false,
 	    y: e.targetTouches.length ? e.targetTouches[0].pageY - offset.top : false
 	  };
@@ -4461,7 +4461,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // emit data for any key turning on/off
 	        // "note" is the note value
 	        // "on" is a boolean whether it is on or off
-	        // in aftertouch mode, "on: is an object with state/x/y properties
+			// in aftertouch mode, "on: is an object with state/x/y properties
+			
 	        var data = {
 	          note: note
 	        };
@@ -4500,7 +4501,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.element.addEventListener("touchstart", function (e) {
 	          
 	          var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-	          var key = _this.keys[element.index];
+			  var key = _this.keys[element.index];
+			  $('#logg').html(""+e.targetTouches.length)
+			  console.log(e.targetTouches)
 	          _this.paintbrush = !key.state;
 	          key.down(_this.paintbrush);
 			  _this.currentElement = element.index;
@@ -4511,7 +4514,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        this.element.addEventListener("touchmove", function (e) {
 	          var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-	          var key = _this.keys[element.index];
+			  var key = _this.keys[element.index];
+			  
+			  if (!key){ return; };
+
 	          if (element.index !== _this.currentElement) {
 	            if (_this.currentElement) {
 	              var pastKey = _this.keys[_this.currentElement];

@@ -65,12 +65,13 @@ function startRecordingNew() {
 	      mp3: {bitRate: 320}
 		});
 		
-		recorder.onTimeout = function(recorder) { 			
+		recorder.onTimeout = function() { 			
 			
 
 			if ($('.record-btn').hasClass('recording')) {
                 $('.record-btn').removeClass('recording').addClass('opened');
-                $('.record-btn').next().addClass('active')
+				$('.record-btn').next().addClass('active');
+				$('.record__message').html(timeoutMessage);
                 console.log('stopped')
                 stopRecording();
             } else if ($('.record').hasClass('active')) {
@@ -95,8 +96,7 @@ function stopRecording() {
 	
 	//tell the recorder to finish 
 	recorder.finishRecording();
-	console.log('hmm');
-
+	
 }
 
 var url;
@@ -130,7 +130,7 @@ function createDownloadLink(blob,encoding) {
 	
 	link.attr('href', url);
 	link.attr('target', '_blank');
-	link.attr('download', new Date().toISOString() + '.'+encodingType)
+	link.attr('download', 'Virtual-Piano-'+new Date().toLocaleTimeString() + '.'+encodingType)
 
 	linkSc.attr('href', 'https://soundcloud.com/upload');	
 	linkSc.attr('target', '_blank');
@@ -164,7 +164,11 @@ function convertTime(number){
         ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
     }
 
-    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "0" + mins + ":" + (secs < 10 ? "0" : "");
     ret += "" + secs;
     return ret;
 }
+
+
+
+var timeoutMessage = "You've reached your 30 seconds of free recording. \n To record longer performances, upgrade to Virtual Piano +";

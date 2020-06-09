@@ -85,7 +85,9 @@
                                    <div class="hamburger hamburger-btn"><span></span></div>
    
                                    <div class="piano-menu__search-box">
-                                       <input autocomplete="off" id="search-input" name="search-input" type="text" placeholder="Search music sheets to play…">
+                            
+                                       <input autocomplete="off" id="search-input" name="search-input" type="search" placeholder="Search music sheets to play…">
+                                      
                                        <div class="piano-menu__search-results">
                                            <ul id="search-result" >
                                               
@@ -136,6 +138,7 @@
                                            <div class="piano-menu__song-menu">
                                                <span class="close-song-menu"></span>
                                                <button class="play-btn" id="play-btn">Play</button>
+                                               <button class="pause-btn" id="pause-btn">Pause</button>
                                                <button class="restart-btn" id="restart-btn">Restart</button>
                                                <button class="autoplay-btn" id="autoplay-btn">Auto Play</button>
                                                
@@ -171,9 +174,7 @@
                                    <span id="piano-chord"></span>
                                    <span id="piano-key"></span>
                                </div>
-                               <p class="piano-menu__history" id="piano-key-history">
-                                   
-                               </p>
+                               <p class="piano-menu__history" id="piano-key-history"></p>
                                <div class="piano-menu__played-functions">
                                    <span class="piano-menu__played-back">
                                       <svg id="home" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15">
@@ -217,6 +218,7 @@
                                        <span></span>
                                    </span>
                                    <div class="record__initial active">
+                                    <p сlass="record__message">30 seconds max recording length for free users.</p>
                                        <button class="btn record__start active">Start recording</button>
                                        <button class="btn record__stop">Stop recording</button>
                                    </div>
@@ -374,6 +376,8 @@
                </div>
    
            </div>
+
+           <div id='logg'></div>
     <svg>
         <defs>
 

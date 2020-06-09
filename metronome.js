@@ -1,3 +1,5 @@
+var metroStatus;
+
 var metro = new Tone.Sampler({
 
     'A1' : 'metro-up.[wav]',    
@@ -11,10 +13,43 @@ var metro = new Tone.Sampler({
     decay: 1    
 });
 
-metro.toMaster();
+ var vol2 = new Tone.Volume(-10);
+
+metro.chain(vol2, Tone.Master);
 
 
-function metroPlay() {
+var metronome = new Tone.Loop(function(){
+
     metro.triggerAttackRelease('A1');
+
+}, "1.2");
+
+
+function metroPlay(interv) {
+    //metro.triggerAttackRelease('A1');
+    metronome.interval = interv;
+    metronome.start(interv/2);
+    Tone.Transport.start();
 }
 
+function metroStop() {
+    metronome.stop()
+    Tone.Transport.stop();
+}
+
+metroStatus = false;
+
+document.addEventListener('keydown', function(e) {
+    
+    if (e.key == '*') {
+      if (!metroStatus) {
+        metroPlay()
+        metroStatus = true;    
+      } else {
+        metroStop()
+        metroStatus = false;
+      }
+       
+    } 
+
+})

@@ -3128,10 +3128,13 @@ opacity: 0;
 
 
 
-
-.skip {
-color: gray !important;
+.skip{
+  
+  /*background: transparent !important;
+*/ padding: 1px 0px !important;
+ margin: 0px !important;
 }
+
 
 .pause {
      color: transparent !important;
@@ -3140,5 +3143,28 @@ color: gray !important;
     margin: 0px !important;
 }
 
+.chord-gliss {
+  color: transparent !important;
+}
 
 
+
+.chord-gliss span {
+ 
+  padding: 1px 0px !important;
+  margin: 0px !important;
+}
+
+
+#song-pattern text{
+  opacity: 0.3 !important;
+} 
+
+
+.piano-menu__song-menu button {
+  transition: .2s;
+}
+
+.piano-menu__song-menu button:hover {
+ color: #FF8300;
+}

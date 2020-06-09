@@ -22,6 +22,8 @@ var accuScore = 0;
 var bpm = 120;
 var rythmCount = 100;
 
+var autoPlaySpeed = 180; //milliseconds
+
 var timerRunning = false;
 var timeInterval;
 
@@ -37,31 +39,66 @@ var userRating = {
 
 //change afterwards
 
+
+
 userRating.set(1000);
 
 $('#stat_rating').html(userRating.get());
 
+function checkPlay() {
+
+    if (!playBoo) {        
+
+        playBtn.html('Play');
+        clearInterval(timeInterval); 
+   
+        playBoo = false;
+        timerRunning = false;
+
+    }  else {
+        playBtn.html('Pause');
+        if (!timerRunning){
+            countTime();
+            }
+       
+        return playBoo = true;
+    }  
+
+   // return playBoo
+    
+}
+
 
 playBtn.on('click', function(){   
-    playBoo = true;
-    $('.piano-menu__song-start').addClass('hidden');
 
-    if (!timerRunning){
-        countTime();
-        }
+    $('.piano-menu__song-start').addClass('hidden');    
+    checkPlay(); 
+   
+
+    //playBtn    
     
 });
 
 restartBtn.on('click', function() {
     cleanUpSheet();
 
+    stopAutoPlay();
+
     accuCount = 0;
     $('#stat_accur').html('- - -');
     clearInterval(timeInterval);
     $('#stat_time').html('00:00');
     timerRunning = false;
+
+    if(autoPlayBtn.hasClass('playing')) {       
+        autoPlayBtn.removeClass('playing');
+    }
+
+
+    
  
 });
+
 closeBtn.on('click', function() {
     cleanUpSheet();
 
@@ -72,34 +109,46 @@ closeBtn.on('click', function() {
     clearInterval(timeInterval);
     $('#stat_time').html('00:00');
     timerRunning = false;
+    playBoo = true;
+
+    if(autoPlayBtn.hasClass('playing')) {       
+        autoPlayBtn.removeClass('playing');
+    }
+
 })
 
-autoPlayBtn.on('click', function() {
-   
-    if (!autoPlayBtn.hasClass('playing')){
+autoPlayBtn.on('click', function() { 
+    
+    if(!autoPlayBtn.hasClass('playing')) {
         autoPlay();
-        autoPlayBtn.toggleClass('playing');
+        autoPlayBtn.addClass('playing');
+        autoPlayBtn.html('Auto Pause')
+       
     } else {
+
         stopAutoPlay();
-         autoPlayBtn.toggleClass('playing');
-    }
+        autoPlayBtn.removeClass('playing');
+        autoPlayBtn.html('Auto Play')
+    }  
 
     if (!$('.piano-menu__song-start').hasClass('hidden')){
         $('.piano-menu__song-start').addClass('hidden');
     }
     
-})
+});
+
+
+
+
+
 
 
 
 function pianoPlay() {
 
-    accuCount = 0;      
-
-    playBoo = true;  
+    accuCount = 0;        
 
     songArr = songText.find('span'); 
-
     
     if (songArr[count+1].classList[0] != 'skip') {
         songArr[count].classList.add('active');
@@ -112,109 +161,88 @@ function pianoPlay() {
 
     buttons.on('change', function (note) {
 
+
+        playBtn.html('Pause');
         if (!timerRunning){
-        countTime();
+            countTime();
         }
 
-        if (note.state == false){
+        playBoo = false;
+
+        keysPressed[noteMap[note.note]] = true;
+
+        
+        var pressStr = Object.keys(keysPressed).sort().join('');   
+
+        if (note.state == false) {
 
             if (sustClicked){
-                pianO.triggerRelease(Tone.Frequency(note.note, "midi").toNote());    
+                pianO.triggerRelease(Tone.Frequency(note.note + parseInt(transValue), "midi").toNote());    
             } 
             
             var key =  songArr[count];            
             if (count <= songArr.length-1){          
     
-            songArr[count].classList.remove('active');
-    
-            if (noteMap[note.note] == key.innerHTML) {                
-                songArr[count].classList.add('correct');   
-                accuCount++
-
-            } else {
-                
-                songArr[count].classList.add('wrong');
-            }            
-    
-            count++
-    
-                //except the last note
-                if (count == songArr.length) {
-                    
-                    console.log('end!');
-                    finishSong();
-               } else {
-
-                   if  (count <= songArr.length-1 && songArr[count].classList[0] != 'skip'){
-                       songArr[count].classList.add('active');
-                       
-                    } else if (count < songArr.length && songArr[count].classList[0] == 'skip' && songArr[count+1].classList[0] == 'skip' && songArr[count+2].classList[0] == 'skip'){
-                        count++
-                        count++
-                        count++
-                        songArr[count].classList.add('active');
-                        
-                    }  else if (songArr[count].classList[0] == 'skip' && songArr[count+1].classList[0] == 'skip'){
-                       count++
-                       count++
-                       songArr[count].classList.add('active');
-                       
-                   }    else if (songArr[count].classList[0] == 'skip'){
-                       count++
-                       songArr[count].classList.add('active');
-                       
-                   }
-               }
-            }  
-
-            scrollSong();
-        }            
-        
-    })  
-    
-
-    document.addEventListener('keydown', function(e){    
-
-        if (e.repeat){return}
-        if (e.keyCode >= 48 && e.keyCode <= 90) {  
-
-            if (!timerRunning){
-                countTime();
-                }
-
-            keysPressed[e.key] = true;
-            var pressStr = Object.keys(keysPressed).sort().join('');            
-
-            var key =  songArr[count];          
-            
-
-            if (count <= songArr.length-1){          
-    
                 key.classList.remove('active');
     
-            if (e.key == key.innerHTML) {                
+            if (noteMap[note.note] == key.innerHTML && key.classList[0] != 'gliss') {                
                 key.classList.add('correct');   
                 accuCount++
 
             } else if (key.innerHTML.length > 1) {
                 
                 
-            } else {                
+            } else if (noteMap[note.note] != key.innerHTML && key.classList[0] != 'gliss'){                
                 key.classList.add('wrong');
-            }            
-            if (key.innerHTML.length > 1){
+            }   
+            
+            if (key.classList[0] == 'gliss') {
+             /*    let gliTime = 0.00;
+                 let glissTimer;
+                 function goTimerGli() {
+                         glissTimer = setInterval(() => {
+                         gliTime = gliTime + 0.01
+                         return console.log(gliTime)
+                      }, 100);
+                 }                    
+               */
+                 if (noteMap[note.note] == key.innerHTML){
+
+                     key.classList.remove('active');
+                     key.classList.add('correct');
+                     count++
+                     accuCount++
+                     
+                 } else {
+                     key.classList.remove('active');
+                     key.classList.remove('correct');
+                     key.classList.add('wrong');
+                     let parentGliss = key.parentNode.querySelectorAll('span');
+                     parentGliss.forEach(function(x){
+                         x.classList.remove('correct');
+                         x.classList.add('wrong');
+                         });
+                     
+                     NodeList.prototype.indexOf = Array.prototype.indexOf;
+                     key.parentNode.classList.add('wrong');
+                     count = count + (parentGliss.length - parentGliss.indexOf(key) + 1)   
+                     
+
+                 }
+
+             
+
+         } else if (key.innerHTML.length > 1 && key.classList[0] == 'chord'){
                 
                 var chordStr = key.innerHTML.split('').sort().join('');
                 if (pressStr.length == chordStr.length && pressStr == chordStr){
-                    console.log(chordStr);
-                    console.log(pressStr);
+
                     key.classList.add('correct'); 
                     accuCount++                  
                     count++
                     
                 } else if (pressStr.length == chordStr.length && pressStr != chordStr) {
-                    console.log(chordStr);
-                    console.log(pressStr);
+
                     key.classList.add('wrong');                           
                     count++         
                 }     
@@ -223,6 +251,161 @@ function pianoPlay() {
                 count++
             }
                 
+                //except the last note
+
+                
+            
+                if (count == songArr.length) {
+                    
+                     console.log('end!');
+                     finishSong();
+                } else {
+
+                    if  (count <= songArr.length-1 && songArr[count].classList[0] != 'skip' && songArr[count].classList[0] != 'pause'){
+                        songArr[count].classList.add('active');
+                        
+                    }  else if (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'pause' && songArr[count+1].classList[1] == 'long' && songArr[count+6].classList[1] == 'par'){                        
+                        count = count + 16;                        
+                        songArr[count].classList.add('active');
+                     
+                        
+                                            
+                    }  else if (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'pause' && songArr[count+1].classList[1] == 'par' && (songArr[count+11].innerHTML.length > 1 && songArr[count+11].classList[0] == 'chord-gliss')){                        
+                        count = count + 12;                        
+                        songArr[count].classList.add('active');
+                     
+                        
+                    } else if (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'pause' && songArr[count+1].classList[1] == 'par'){                        
+                        count = count + 11;                        
+                        songArr[count].classList.add('active');
+                     
+                        
+                    } else if (count < songArr.length && (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'pause' && songArr[count+2].classList[0] == 'pause' && songArr[count+3].classList[0] == 'pause' && songArr[count+4].classList[0] == 'pause')) {
+                        count = count + 5;
+                        songArr[count].classList.add('active');  
+                    } else if (songArr[count].classList[0] == 'pause' && songArr[count +1].classList[0] == 'pause' && songArr[count+2].classList[0] != 'pause') {
+                        count++
+                        count++
+                        songArr[count].classList.add('active');
+                    } else if (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] != 'chord-gliss'){
+                        count++                        
+                        songArr[count].classList.add('active');
+                                              
+                    } else if (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'chord-gliss'){
+                        count++ 
+                        count++                                               
+                        songArr[count].classList.add('active');
+                    }
+                }
+               
+            } 
+
+            
+
+            setTimeout(() => {
+                keysPressed = {};
+            }, 100);
+
+            scrollSong();
+        }            
+        
+    })  
+    
+
+    document.addEventListener('keydown', function(e){            
+
+        if (e.repeat){ return }
+        if (e.keyCode >= 48 && e.keyCode <= 90) {  
+
+            playBtn.html('Pause');
+            if (!timerRunning){
+            countTime();
+            }
+
+            playBoo = false;
+
+            keysPressed[e.key] = true;
+            var pressStr = Object.keys(keysPressed).sort().join('');            
+
+            var key =  songArr[count]; 
+
+            if (count <= songArr.length-1){          
+    
+                key.classList.remove('active');
+    
+            if (e.key == key.innerHTML && key.classList[0] != 'gliss') {                
+                key.classList.add('correct');   
+                accuCount++
+
+            } else if (key.innerHTML.length > 1) {
+                
+                
+            } else if (e.key != key.innerHTML && key.classList[0] != 'gliss'){                
+                key.classList.add('wrong');
+            }  
+            
+            
+            if (key.classList[0] == 'gliss') {
+                    let gliTime = 0.00;
+                    
+                /*     let glissTimer = setInterval(() => {
+                            gliTime = gliTime + 0.01
+                            return console.log(gliTime)
+                         }, 100);
+
+*/
+                                      
+                  
+                    if (e.key == key.innerHTML){
+
+                        key.classList.remove('active');
+                        key.classList.add('correct');
+                        count++
+                        accuCount++
+                        
+                    } else {
+                        key.classList.remove('active');
+                        key.classList.remove('correct');
+                        key.classList.add('wrong');
+                        let parentGliss = key.parentNode.querySelectorAll('span');
+                        parentGliss.forEach(function(x){
+                            x.classList.remove('correct');
+                            x.classList.add('wrong');
+                            });
+                        
+                        NodeList.prototype.indexOf = Array.prototype.indexOf;
+                        key.parentNode.classList.add('wrong');
+                        count = count + (parentGliss.length - parentGliss.indexOf(key) + 1)   
+                        
+
+                    }
+
+                
+
+            } else if (key.innerHTML.length > 1 && key.classList[0] == 'chord'){
+                
+                var chordStr = key.innerHTML.split('').sort().join('');                
+
+                //IGNORE SHIFT FOR LETTERS HERE
+                pressStr = pressStr.toUpperCase();
+                chordStr = chordStr.toUpperCase();
+
+                if (pressStr.length == chordStr.length && pressStr == chordStr){
+                   
+
+                    key.classList.add('correct'); 
+                    accuCount++                  
+                    count++
+                    
+                } else if (pressStr.length == chordStr.length && pressStr != chordStr) {
+
+                    key.classList.add('wrong');                           
+                    count++         
+                }     
+                
+            } else if (key.innerHTML.length == 1) {
+                count++
+            }                
                 //except the last note
             
                 if (count == songArr.length) {
@@ -234,25 +417,37 @@ function pianoPlay() {
                     if  (count <= songArr.length-1 && songArr[count].classList[0] != 'skip' && songArr[count].classList[0] != 'pause'){
                         songArr[count].classList.add('active');
                         
+                    }  else if (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'pause' && songArr[count+1].classList[1] == 'long' && songArr[count+6].classList[1] == 'par'){                        
+                        count = count + 16;                        
+                        songArr[count].classList.add('active');
+                     
                         
-                    } else if (count < songArr.length && ((songArr[count].classList[0] == 'skip' && songArr[count+1].classList[0] == 'skip') || (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'pause')) ){
-                        count++
+                                            
+                    }  else if (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'pause' && songArr[count+1].classList[1] == 'par' && (songArr[count+11].innerHTML.length > 1 && songArr[count+11].classList[0] == 'chord-gliss')){                        
+                        count = count + 12;                        
+                        songArr[count].classList.add('active');
+                     
+                        
+                    } else if (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'pause' && songArr[count+1].classList[1] == 'par'){                        
+                        count = count + 11;                        
+                        songArr[count].classList.add('active');
+                     
+                        
+                    } else if (count < songArr.length && (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'pause' && songArr[count+2].classList[0] == 'pause' && songArr[count+3].classList[0] == 'pause' && songArr[count+4].classList[0] == 'pause')) {
+                        count = count + 5;
+                        songArr[count].classList.add('active');  
+                    } else if (songArr[count].classList[0] == 'pause' && songArr[count +1].classList[0] == 'pause' && songArr[count+2].classList[0] != 'pause') {
                         count++
                         count++
                         songArr[count].classList.add('active');
-                       
-                        
-                    }  else if ((songArr[count].classList[0] == 'skip' && songArr[count+1].classList[0] == 'skip') || (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'pause')){
-                        count++
-                        count++
+                    } else if (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] != 'chord-gliss'){
+                        count++                        
                         songArr[count].classList.add('active');
-                        
-                        
-                    }    else if (songArr[count].classList[0] == 'skip' || songArr[count].classList[0] == 'pause'){
-                        count++
+                                              
+                    } else if (songArr[count].classList[0] == 'pause' && songArr[count+1].classList[0] == 'chord-gliss'){
+                        count++ 
+                        count++                                               
                         songArr[count].classList.add('active');
-                       
-                        
                     }
                 }
                
@@ -264,22 +459,46 @@ function pianoPlay() {
     });
     
     document.addEventListener('keyup', (e) => {
-        setTimeout(() => {
-            delete keysPressed[e.key];            
-        }, 500);
+        setTimeout(() => {     
+            
+
+       //     if (Object.keys(keysPressed).length > 0) {return}
+            
+            let allSpans = document.querySelectorAll('.span-pressed')
+            let allRects = document.querySelectorAll('rect.pressed')
+
+            for (let s of allSpans) {
+                if (!s) { return };
+               s.classList.remove('span-pressed');                                
+            }
+            for (let r of allRects) {
+                if (!r) { return };
+                r.classList.remove('pressed')
+            }
+            delete keysPressed[e.key];  
+            keysPressed = {}
+
+
+            
+        }, 100);
 
      });    
     
 }
 
 function scrollSong() {    
-
-    var scrollFocus = document.querySelector('span.active');  
-    if (scrollFocus) {
-        scrollFocus.parentNode.scrollTop = scrollFocus.offsetTop - scrollFocus.parentNode.offsetTop;
-    }
     
-    document.getElementById('song-pattern').scrollBy(0, -5);
+    var scrollFocus = document.querySelector('span.active');  
+    console.log(scrollFocus);
+    if (!scrollFocus) { return };
+    if (scrollFocus.classList[0] == 'pause') { return };
+    if (scrollFocus.classList[0] == 'skip') { return };
+
+    if (scrollFocus.parentNode.classList[0] == 'chord-gliss'){
+        scrollFocus.parentNode.parentNode.scrollTop = scrollFocus.offsetTop - scrollFocus.parentNode.parentNode.offsetTop - 7;
+    } else if (scrollFocus) {
+        scrollFocus.parentNode.scrollTop = scrollFocus.offsetTop - scrollFocus.parentNode.offsetTop - 7;
+    }    
     
 }
 
@@ -313,18 +532,51 @@ function autoPlay() {
 
      autoPlayInterval = setInterval(() => {
         let keyCheck = songArr[count];
-
+        
         if (!keyCheck){
-            
+
             stopAutoPlay()
             return;
            
         }
+
+        let checkNext = songArr[count+1];        
+
         let key = keyCheck.innerHTML;
+
+        if (keyCheck.classList[0] == 'chord-gliss'){
+
+            keyCheck.classList.remove('active');
+            keyCheck.classList.add('correct');
+           
+      /*      let glissChiNode = keyCheck.children;
+
+            let glissChi = Array.prototype.slice.call(glissChiNode);
+
+          //  glissChi.splice(0, 1);
+
+            for (let l = 0; l < glissChi.length; l++) {  
+                let gli = glissChi[l];
+
+                pianO.triggerAttack(Tone.Frequency(keyMap[gli.innerHTML] + parseInt(transValue), "midi").toNote());
+
+                setTimeout(() => {
+                    pianO.triggerAttack(Tone.Frequency(keyMap[gli.innerHTML] + parseInt(transValue), "midi").toNote());
+                }, 25*l);  
+
+
+
+            }*/
+
+            
+            count++
+           // count = count + glissChi.length + 1;
+            return;
+        }
         
         if (key.length == 1 && key != '.' && key != '|'){
 
-           pianO.triggerAttack(Tone.Frequency(keyMap[key], "midi").toNote());
+           pianO.triggerAttack(Tone.Frequency(keyMap[key] + parseInt(transValue), "midi").toNote());
            songArr[count].classList.remove('active');
            songArr[count].classList.add('correct');
            count++
@@ -332,34 +584,36 @@ function autoPlay() {
 
         } else if (key == "."){ 
             songArr[count].classList.remove('active'); 
-            console.log(key);
+            count++
+           
+
+        } else if (key == ""){ 
+            songArr[count].classList.remove('active'); 
             count++
            
 
         } else if (key == "|"){ 
-            songArr[count].classList.remove('active'); 
-            
+
+            songArr[count].classList.remove('active');                         
             count++
            
 
         }  else {
             chord = key.split('');
             for (let cNote of chord){
-                pianO.triggerAttack(Tone.Frequency(keyMap[cNote], "midi").toNote());
+                pianO.triggerAttack(Tone.Frequency(keyMap[cNote] + parseInt(transValue), "midi").toNote());
                 songArr[count].classList.remove('active');
                 if (songArr[count].classList[0] != 'skip') {
                     songArr[count].classList.add('correct');
-                }               
-                
-                
-                
+                }     
                
             }   
             count++         
 
         }
 
-        if  (count < songArr.length ){
+        if  (count < songArr.length && key != '|'){
+            
             songArr[count].classList.add('active');
             
         } else if (count < songArr.length && songArr[count].classList[0] == 'skip' && songArr[count+1].classList[0] == 'skip' && songArr[count+2].classList[0] == 'skip'){
@@ -377,6 +631,7 @@ function autoPlay() {
             count++
             songArr[count].classList.add('active');
             
+            
         } else if (count == songArr.length-1) {            
             //handle the song end here
             console.log('song end');
@@ -384,10 +639,9 @@ function autoPlay() {
         }  
 
         
-        scrollSong();
-        
+    scrollSong();    
 
-    }, 20000/bpm);
+    }, autoPlaySpeed);
     
 }
 
@@ -400,13 +654,13 @@ function stopAutoPlay(){
 function finishSong(){
     
     let skipped = songText.find('.skip').length;
-    let totalNotes = songArr.length - skipped;  
+    let pauses = songText.find('span.pause').length;
+    let totalNotes = songArr.length - skipped - pauses; 
     accuScore = Math.round(accuCount/totalNotes * 100); 
 
     clearInterval(timeInterval);
 
-    countRating(userRating.get(), bpm);
-  
+    countRating(userRating.get(), bpm);  
 
     $('#stat_accur').html(accuScore + '%');
     
@@ -421,21 +675,28 @@ function countTime() {
  //  let timeTaken;
 
     let startTime = new Date().getTime();
+
+    let timeNow = $('#stat_time').html();
+    timeNow = timeNow.split(':')
+ 
+    let minNow = parseInt(timeNow[0]);
+    let secNow = parseInt(timeNow[1]);
+
     timeInterval = setInterval(() => {
         let currentTime = new Date().getTime();
         timeTaken = currentTime - startTime;
        
-       let minutes = Math.floor((timeTaken % (1000 * 60 * 60)) / (1000 * 60));
-       let seconds = Math.floor((timeTaken % (1000 * 60)) / 1000);
+       let minutes = Math.floor((timeTaken % (1000 * 60 * 60)) / (1000 * 60))+ minNow;
+       let seconds = Math.floor((timeTaken % (1000 * 60)) / 1000)+ secNow;
 
        if (seconds < 10){ seconds = "0" + seconds; } else { seconds = seconds; }
        if (minutes < 10){ minutes = "0" + minutes; } else { minutes = minutes; }
-       
 
        var timerStat = minutes + ':' + seconds;
-        //console.log(convertTime(currentTime-startTime));
 
         $('#stat_time').html(timerStat);
+
+        
         
     }, 1000);
 
@@ -447,7 +708,8 @@ function countTime() {
 function countRating(rating, bpm){
 
     let skipped = songText.find('.skip').length;
-    let totalNotes = songArr.length - skipped; 
+    let pauses = songText.find('span.pause').length
+    let totalNotes = songArr.length - skipped - pauses; 
 
     let seconds = Math.floor((timeTaken % (1000 * 60)) / 1000);    
 
@@ -460,12 +722,17 @@ function countRating(rating, bpm){
 
     if (rythmAccu > 100){ rythmAccu = rythmAccu - 100; } 
     else { rythmAccu = rythmAccu; }
-    console.log(prevRating)
     let newRating = Math.round(prevRating + (accuScore + rythmAccu)/10 + (songDiff/2));
 
     userRating.set(newRating);
     $('#stat_rating').html(newRating);
 
+    if (!$('.piano-menu__song-stats').hasClass('active')){
+        $('.piano-menu__song-stats').addClass('active');
+    }
+   
+
 }
+
 
 

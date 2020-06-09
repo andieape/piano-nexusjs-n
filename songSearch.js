@@ -1,4 +1,5 @@
 var pageReferrer = document.referrer;
+var stArr;
 
 $(document).ready(function(){
 
@@ -59,81 +60,145 @@ $(document).ready(function(){
 
     });
 
-    $("#song-search").select2({
-        placeholder: 'Select an option',
-        width: '200px'
-    });
    
 
-    $("#song-search").on('change', function(){
-
-        var songId = $('#song-search option:selected').attr("value");      
-        renderSong(songId);
-         
-
-    });  
     
 
 
     function renderSong(songId) {  
 
             $.getJSON('https://devv.virtualpiano.net/wp-json/wp/v2/posts/'+songId, function(response){        
+                stArr = response.content.rendered.split('<p class')[0].replace(/  /g, ' ').replace(/\n/g, "").replace(/<br>/g, " \n ").replace(/<p>/g, " -par- ").replace(/<\/p>/g, "").replace(/\s+(?=[^[\]]*\])/g, '.').replace(/  /g, " ").split(" ");
+                stArr.splice(0, 4);    
+                
+                var dArr =  response.content.rendered.split('<p class')[0].replace(/  /g, ' ').replace(/\n/g, "").replace(/<br>/g, " \n ").replace(/<p>/g, " -par- ").replace(/<\/p>/g, "").replace(/\s+(?=[^[\]]*\])/g, '.').replace(/([^-\]\|\s]{1})(\s)/g, '$1. ').replace(/  /g, " ").split(" ");
+                dArr.splice(0, 2);
 
-                var stArr = response.content.rendered.split('<p class')[0].replace(/<br>/g, " \n ").replace(/<p>/g, " \n ").replace(/<\/p>/g, "").replace(/ /g, "  ").split(" ");
-                      
+                console.log(dArr);
                 $('#song-info').empty();
                 $('#song-pattern').empty();
-                console.log(stArr)
-        
-                for (let k=0; k<stArr.length; k++){
+               
 
-                   let letter = stArr[k];
-                   let letterNext = stArr[k+1];
+                console.log(dArr)
+                console.log(stArr[stArr.length-1])
 
-                    if(k == stArr.length-1) {
-                        letterNext = 'none';
-                    } else {
-                        letterNext = stArr[k+1];
-                    }
+                for (let k=0; k<dArr.length; k++) {
+                    let letter = dArr[k];
+                    let letterNext = dArr[k+1];
+                    let letterPrev = dArr[k-1];
+                    let songPattern = $('#song-pattern');
+
+                    k == stArr.length-1 ? letterNext = 'none' : letterNext = stArr[k+1];
+
                    
+
                     if (letter == '\n'){
-        
-                        $('#song-pattern').append('<br>');
-        
-                    } else if (letter.length > 1 && letter[0] != '[') {
-        
-                        var letArr = letter.split('');
+
+                        songPattern.append('<br>');
+                    } else if (letter.length < dArr.length-1 && letter == '-par-'){
+                        songPattern.append('<br>');
+                        let kk = 0;
+                        while (kk < 10){
+                            songPattern.append('<span class="pause par">.</span>');
+                            kk++
+                        }
+                        songPattern.append('<br>');
+
+                    }  else if (dArr[k].length > 1 && letter[letter.length-1] == ']' && letter[2] == '.'){
+
+                        let chordGliss = dArr[k].slice(1, letter.length-1).split('');
+                       
+                        songPattern.append(letter[0]);
+                        
+                        songPattern.append('<span class="chord-gliss"></span>'); 
+                        console.log(chordGliss);
+                        let z = 0;
+
+                        do  {
+
+                            let gliss = chordGliss[z];
+                            console.log(gliss);
+                            if (gliss != '.'){
+                                $('.chord-gliss').append('<span class="gliss">'+gliss+'</span>'); 
+                            } else {
+                                $('.chord-gliss').append(gliss); 
+                            }
+                            z++
+                        } while (z<chordGliss.length)
+                        
+                                     
+                        songPattern.append(letter[letter.length-1]);
+                        songPattern.append('<span class="pause">.</span>');
+
+                    } else if (letter.length > 1 && letter[0] == '[') {   
+                        
+                        if ( k != 0 && letterPrev[0] == '[') {
+                            songPattern.append('<span class="pause"></span>')
+                                        .append(letter[0])
+                                        .append('<span class="chord">'+letter.slice(1, letter.length-1)+'</span>')                  
+                                        .append(letter[letter.length-1])
+                                        .append('<span class="pause">.</span>');
+                                        
+                        } else {
+                            songPattern.append(letter[0])
+                                        .append('<span class="chord">'+letter.slice(1, letter.length-1)+'</span>')                  
+                                        .append(letter[letter.length-1])
+                                        .append('<span class="pause">.</span>');
+                        }
+
+                    } else if (letter.length == 0 && letter == " "){
+                        songPattern.append('<span class=pause>.</span>')
+                        
+                    } else if (letter.length == 2 && letter[1] == '.') {
+
+                        songPattern.append('<span>' + letter[0] + '</span>');
+                        songPattern.append('<span class="pause">' + letter[1] + '</span>');
+
+                    } else if (letter.length > 1 && letter[0] != '[' ){
+                        let letArr = letter.split('');
                         
                         for (let lettr of letArr){
-                            if (lettr != "\n") {
-                            $('#song-pattern').append('<span>'+lettr+'</span>');
+                           
+                            if (lettr != "\n" && lettr != '.') {
+                                
+                              songPattern.append('<span>'+lettr+'</span>');
+                            
+                            } else if (lettr == '.'){
+                                songPattern.append('<span class=pause>' + lettr + '</span>')
                             }
                         }
-                    } else if (letterNext.length == 0 && letter.length == 1 && letter != '|') {
-                        $('#song-pattern').append('<span>' + letter+'</span>');
-                        $('#song-pattern').append('<span class="pause">.</span>');
-                    } else if (letter.length == 0){                        
-                    
-                    } else if (letter.length > 1 && letter[letter.length-1] == ']'){    
+                    } else if (letter.length > 1 && letter[letter.length-1] == ']' && letter[2] == '.'){
+
+                        let chordGliss = letter.slice(1, letter.length-1).split('');
+
+                        songPattern.append(letter[0]);
                         
-                   
-                    $('#song-pattern').append(letter[0]);
-                    $('#song-pattern').append('<span class="chord">'+letter.slice(1, letter.length-1)+'</span>');
-                    
-                    $('#song-pattern').append(letter[letter.length-1]);
-                    $('#song-pattern').append('<span class="pause">.</span>');
-        
-                    } else if (letter == '|'){
-                        $('#song-pattern').append('<span class="skip">'+letter+'</span>');
-                        $('#song-pattern').append('<span class="pause">.</span>');
-                    } else {  
-        
-                        $('#song-pattern').append('<span>'+letter+'</span>');
+                        songPattern.append('<span class="chord-gliss"></span>');  
+                        for (let gliss of chordGliss) {
+                            if (gliss != '.'){
+                                $('.chord-gliss').append('<span class="gliss">'+gliss+'</span>'); 
+                            } else {
+                                $('.chord-gliss').append(gliss); 
+                            }
+                        }                  
+                        songPattern.append(letter[letter.length-1]);
+                        songPattern.append('<span class="pause">.</span>');
+
+                    } else if (letter == '|') {
+
+                        songPattern.append('<span class="pause long"></span>')
+                        songPattern.append(letter);
+                        songPattern.append('<span class="pause">.</span>')
+                        songPattern.append('<span class="pause"></span>')
+                        songPattern.append('<span class="pause"></span>')                        
                         
-                    }  
-                    
-                }        
-                
+
+                    } else {
+                        songPattern.append('<span>' + letter + '</span>');
+                    }
+
+                }
+
              
               $('.song_wrapper').show();                
         
@@ -144,8 +209,7 @@ $(document).ready(function(){
         
                 pianoPlay();       
           
-            } else {  
-        
+            } else {          
                 cleanUpSheet();         
             }   
              

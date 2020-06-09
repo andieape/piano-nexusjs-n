@@ -4500,22 +4500,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        this.element.addEventListener("touchstart", function (e) {
 	          
-	        //  var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-			//  var key = _this.keys[element.index];
+	         var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+			 var key = _this.keys[element.index];
+			 if (!key){ return; };
 				//if (e.targetTouches.length > 
-			  for (let z=0; z<e.targetTouches.length; z++){
-				var  element = document.elementFromPoint(e.targetTouches[z].clientX, e.targetTouches[z].clientY);
-				var  key = _this.keys[element.index];
+			  for (let z=0; z<e.targetTouches.length; z++){				
+				tpCache.push(e.targetTouches[z])
+				console.log(tpCache)				
+			  }
+
+			  for (let i=0; i<tpCache.length; i++){
+				
+				element = document.elementFromPoint(tpCache[i].clientX, tpCache[i].clientY);
+				key = _this.keys[element.index];
+				if (!key){ return; };
+				console.log(key)
 
 				_this.paintbrush = !key.state;
 				key.down(_this.paintbrush);
 				_this.currentElement = element.index;
-
-				console.log(element)
-				
 			  }
 
-			  $('#logg').append(". "+e.targetTouches.length)
+			  $('#logg').append(". "+tpCache.length)
 			 
 			
 	         
@@ -4545,11 +4551,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	
 	        this.element.addEventListener("touchend", function (e) {
+
+
+				for (let i=0; i<tpCache.length; i++){
+				
+					var element = document.elementFromPoint(tpCache[i].clientX, tpCache[i].clientY);
+					var key = _this.keys[element.index];
+					if (!key){ return; };
+					_this.paintbrush = !key.state;
+					key.up();
+					_this.currentElement = element.index;
+					_this.interacting = false;
+					_this.currentElement = false;
+				  }
 	          // no touches to calculate because none remaining
-	          var key = _this.keys[_this.currentElement];
-	          key.up();
-	          _this.interacting = false;
-	          _this.currentElement = false;
+			  var key = _this.keys[_this.currentElement];
+			   
+			  tpCache = new Array();
+
+			  
+			 
+	        
+
 	          e.preventDefault();
 	          e.stopPropagation();
 	        });

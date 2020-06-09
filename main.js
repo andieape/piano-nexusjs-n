@@ -13,6 +13,7 @@ var isTouchDevice = (('ontouchstart' in window)
  
  var noteModified;
 
+ var tpCache = new Array();
 
 
 

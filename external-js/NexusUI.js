@@ -4521,7 +4521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				_this.currentElement = element.index;
 			  }
 
-			  $('#logg').append(". "+tpCache.length)
+			  $('#logg').append("- "+tpCache.length)
 			 
 			
 	         

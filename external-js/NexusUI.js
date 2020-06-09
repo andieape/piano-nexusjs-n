@@ -4515,7 +4515,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				
 			  }
 
-			  $('#logg').append(" "+e.targetTouches.length)
+			  $('#logg').append(". "+e.targetTouches.length)
 			 
 			
 	         

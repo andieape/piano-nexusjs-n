@@ -4506,16 +4506,19 @@ return /******/ (function(modules) { // webpackBootstrap
 			  for (let z=0; z<e.targetTouches.length; z++){
 				var  element = document.elementFromPoint(e.targetTouches[z].clientX, e.targetTouches[z].clientY);
 				var  key = _this.keys[element.index];
+
+				_this.paintbrush = !key.state;
+				key.down(_this.paintbrush);
+				_this.currentElement = element.index;
+
 				console.log(element)
-				$('#logg').append(" "+e.targetTouches.length)
+				
 			  }
 
-
+			  $('#logg').append(" "+e.targetTouches.length)
 			 
-			  console.log(e.targetTouches)
-	          _this.paintbrush = !key.state;
-	          key.down(_this.paintbrush);
-			  _this.currentElement = element.index;
+			
+	         
 			  
 	          e.preventDefault();
 	          e.stopPropagation();

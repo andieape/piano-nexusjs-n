@@ -4500,9 +4500,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	        this.element.addEventListener("touchstart", function (e) {
 	          
-	          var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-			  var key = _this.keys[element.index];
-			  $('#logg').html(""+e.targetTouches.length)
+	        //  var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+			//  var key = _this.keys[element.index];
+				//if (e.targetTouches.length > 
+			  for (let z=0; z<e.targetTouches.length; z++){
+				var  element = document.elementFromPoint(e.targetTouches[z].clientX, e.targetTouches[z].clientY);
+				var  key = _this.keys[element.index];
+				console.log(key)
+			  }
+
+
+			  $('#logg').html(""+key)
 			  console.log(e.targetTouches)
 	          _this.paintbrush = !key.state;
 	          key.down(_this.paintbrush);

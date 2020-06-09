@@ -4502,11 +4502,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	          
 	         var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
 			 var key = _this.keys[element.index];
+
 			 if (!key){ return; };
-				//if (e.targetTouches.length > 
+			if (e.targetTouches.length > 1) {
 			  for (let z=0; z<e.targetTouches.length; z++){				
-				tpCache.push(e.targetTouches[z])
-				console.log(tpCache)				
+				tpCache.push(e.targetTouches[z])								
 			  }
 
 			  for (let i=0; i<tpCache.length; i++){
@@ -4520,9 +4520,15 @@ return /******/ (function(modules) { // webpackBootstrap
 				key.down(_this.paintbrush);
 				_this.currentElement = element.index;
 			  }
+			} else {
+				if (!key){ return; };
 
-			  $('#logg').append("- "+tpCache.length)
-			 
+				_this.paintbrush = !key.state;
+				key.down(_this.paintbrush);
+				_this.currentElement = element.index;
+			}
+
+			  $('#logg').append("- "+tpCache.length) 
 			
 	         
 			  
@@ -4551,25 +4557,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	        });
 	
 	        this.element.addEventListener("touchend", function (e) {
-
-
-				for (let i=0; i<tpCache.length; i++){
+				console.log(e)
 				
-					var element = document.elementFromPoint(tpCache[i].clientX, tpCache[i].clientY);
-					var key = _this.keys[element.index];
+				if (tpCache.length > 0) {
+					for (let i=0; i<tpCache.length; i++){
+				
+					 var element = document.elementFromPoint(tpCache[i].clientX, tpCache[i].clientY);
+					 var key = _this.keys[element.index];
+					   if (!key){ return; };
+					   _this.paintbrush = !key.state;
+					   key.up();
+					   _this.currentElement = element.index;
+   
+					 }
+
+					 setTimeout(() => {
+						tpCache = new Array();
+		
+					  }, 100);
+
+				} else {
+					var key = _this.keys[_this.currentElement];
 					if (!key){ return; };
-					_this.paintbrush = !key.state;
-					key.up();
-					_this.currentElement = element.index;
-					_this.interacting = false;
-					_this.currentElement = false;
-				  }
+					   _this.paintbrush = !key.state;
+					   key.up();					   
+				}
+
+
+				  _this.interacting = false;
+				  _this.currentElement = false;
 	          // no touches to calculate because none remaining
-			  var key = _this.keys[_this.currentElement];
+			 	 
 			   
-			  setTimeout(() => {
-				tpCache = new Array();
-			  }, 10);
+
 
 			  
 			 

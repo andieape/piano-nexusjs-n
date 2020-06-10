@@ -267,20 +267,17 @@ buttons.on('change', function(note) {
         } 
 
         if ($('.piano-menu__played').hasClass('active')){    
-            if (tpCache.touches.length > 1) {
-                console.log(tpCache.touches)
-
-                console.log(noteMap[note.note])
-                for (let o=0; 0<tpCache.touches.length-1; o++){
-                    
+           if (tpCache.touches.length > 1) {  
+              
+                for (let o=0; o<tpCache.touches.length-1; o++){
+                   
                     let tc = tpCache.touches[o]
                     let touch = parseInt(tc.target.id.split('_')[1])
-                    console.log(touch);
+                   
                     $('#piano-chord').html(Tone.Frequency(touch, "midi").toNote());
                     $('#piano-key').html(noteMap[touch]);  
                     $('#piano-key-history').append('<span>'+noteMap[touch]+'</span>');
-                }
-                
+                }                
 
                 return;
 

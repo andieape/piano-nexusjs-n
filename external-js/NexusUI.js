@@ -4499,8 +4499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			  this.currentElement = false;
 	  
 			  this.element.addEventListener("touchstart", function (e) {
-				console.log(e.touches[0])
-				console.log(e.targetTouches)
+
 				$('#logg').html(e.touches.length);
 				
 				
@@ -4514,7 +4513,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					$('#logg').append('mm');
 
 					for (let z=0;z<e.touches.length;z++){						
-						tpCache.touches.push(e.touches[z]);						
+						tpCache.touches.push(e.touches[z]);	
+						tpCache.targets.push(element.index);					
 					}
 
 					for (let touch of tpCache.touches){
@@ -4522,10 +4522,8 @@ return /******/ (function(modules) { // webpackBootstrap
 						key = _this.keys[element.index];
 						_this.paintbrush = !key.state;
 						key.down(_this.paintbrush);
-						_this.currentElement = element.index;
-						tpCache.targets.push(_this.currentElement);
-					}
-					
+						_this.currentElement = element.index;						
+					}					
 
 				} else {
 
@@ -4564,13 +4562,14 @@ return /******/ (function(modules) { // webpackBootstrap
 				var key = _this.keys[_this.currentElement];				
 
 				if (!key) { return };
-				console.log(tpCache.targets)
+				
 				if (tpCache.touches.length > 1){
-					for (let i = 0; i<tpCache.targets; i++){
+					for (let i = 0; i<tpCache.targets.length; i++){
 						let tr = tpCache.targets[i]
 						console.log(_this.keys[tr]);
 						key = _this.keys[tr];
 						key.up();
+						$('#logg').append(key)
 					}
 
 				} else {

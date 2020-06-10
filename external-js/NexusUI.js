@@ -1264,10 +1264,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 	
 	exports.locateTouch = function (e, offset) {		
-		return {
+	/*	return {
 	    x: e.targetTouches.length ? e.targetTouches[0].pageX - offset.left : false,
 	    y: e.targetTouches.length ? e.targetTouches[0].pageY - offset.top : false
-	  };
+	  };*/
 	};
 	
 	exports.SmartCanvas = function (parent) {
@@ -4516,11 +4516,17 @@ return /******/ (function(modules) { // webpackBootstrap
 					for (let z=0;z<e.touches.length;z++){
 						element = document.elementFromPoint(e.touches[z].clientX, e.touches[z].clientY);
 						key = _this.keys[element.index];
+						_this.paintbrush = !key.state;
+						key.down(_this.paintbrush);
+						_this.currentElement = element.index;
 					}
+					
+
+				} else {
+
 					_this.paintbrush = !key.state;
 					key.down(_this.paintbrush);
-					_this.currentElement = element.index;					
-
+					_this.currentElement = element.index;
 				}
 
 
@@ -4533,7 +4539,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			  });
 	  
 			  this.element.addEventListener("touchmove", function (e) {
-				var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
 				var key = _this.keys[element.index];
 				
 
@@ -4551,7 +4557,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				_this.currentElement = element.index;
 				e.preventDefault();
 				e.stopPropagation();
-			  });
+			  }); 
 	  
 			  this.element.addEventListener("touchend", function (e) {
 				// no touches to calculate because none remaining
@@ -5029,6 +5035,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.currentElement = false;
 	
 	        this.element.addEventListener("touchstart", function (e) {
+				
 	          var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
 	          var cell = _this.cells[element.index];
 	          _this.paintbrush = !cell.state;

@@ -267,24 +267,14 @@ buttons.on('change', function(note) {
         } 
 
         if ($('.piano-menu__played').hasClass('active')){    
-           if (tpCache.touches.length > 1) {  
-              
-                for (let o=0; o<tpCache.touches.length; o++){
-                   
-                    let tc = tpCache.touches[o]
-                    let touch = parseInt(tc.target.id.split('_')[1])
-                   
-                    $('#piano-chord').html(Tone.Frequency(touch, "midi").toNote());
-                    $('#piano-key').html(noteMap[touch]);  
-                    $('#piano-key-history').append('<span>'+noteMap[touch]+'</span>');
-                }                
+           if (tpCache.touches.length > 1) { };
 
-                return;
+                $('#piano-chord').html(Tone.Frequency(note.note, "midi").toNote());
+                $('#piano-key').html(noteMap[note.note]);  
+                $('#piano-key-history').append('<span>'+noteMap[note.note]+'</span>');    
 
-             };
-            $('#piano-chord').html(Tone.Frequency(note.note, "midi").toNote());
-            $('#piano-key').html(noteMap[note.note]);  
-            $('#piano-key-history').append('<span>'+noteMap[note.note]+'</span>');
+         
+            
     
             var scrollHistory = document.getElementById('piano-key-history').lastChild;
               scrollHistory.parentNode.scrollTop = scrollHistory.offsetTop - scrollHistory.parentNode.offsetTop;      			

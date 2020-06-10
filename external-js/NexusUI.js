@@ -4488,118 +4488,64 @@ return /******/ (function(modules) { // webpackBootstrap
 	      value: function render() {}
 	    },
 	    addTouchListeners: {
-	      value: function addTouchListeners() {
-	        var _this = this;
-	
-	        this.preClick = this.preMove = this.preRelease = function () {};
-	        this.click = this.move = this.release = function () {};
-	        this.preTouch = this.preTouchMove = this.preTouchRelease = function () {};
-	        this.touch = this.touchMove = this.touchRelease = function () {};
-	
-	        this.currentElement = false;
-	
-	        this.element.addEventListener("touchstart", function (e) {
-	          
-	         var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-			 var key = _this.keys[element.index];
-
-			 if (!key){ return; };
-			if (e.targetTouches.length > 1) {
-			  for (let z=0; z<e.targetTouches.length; z++){				
-				tpCache.push(e.targetTouches[z])								
-			  }
-
-			  for (let i=0; i<tpCache.length; i++){
+			value: function addTouchListeners() {
+			  var _this = this;
+	  
+			  this.preClick = this.preMove = this.preRelease = function () {};
+			  this.click = this.move = this.release = function () {};
+			  this.preTouch = this.preTouchMove = this.preTouchRelease = function () {};
+			  this.touch = this.touchMove = this.touchRelease = function () {};
+	  
+			  this.currentElement = false;
+	  
+			  this.element.addEventListener("touchstart", function (e) {
+				console.log(e.touches)
+				console.log(e.targetTouches)
+				$('#logg').html(e.touches.length);
 				
-				element = document.elementFromPoint(tpCache[i].clientX, tpCache[i].clientY);
-				key = _this.keys[element.index];
-				if (!key){ return; };
-				console.log(key)
-
+				
+				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+				var key = _this.keys[element.index];
 				_this.paintbrush = !key.state;
 				key.down(_this.paintbrush);
 				_this.currentElement = element.index;
-			  }
-			} else {
+				
+				e.preventDefault();
+				e.stopPropagation();
+			  });
+	  
+			  this.element.addEventListener("touchmove", function (e) {
+				var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+				var key = _this.keys[element.index];
+				
+
 				if (!key){ return; };
-
-				_this.paintbrush = !key.state;
-				key.down(_this.paintbrush);
-				_this.currentElement = element.index;
-			}
-
-			  $('#logg').append("- "+tpCache.length) 
-			
-	         
-			  
-	          e.preventDefault();
-	          e.stopPropagation();
-	        });
-	
-	        this.element.addEventListener("touchmove", function (e) {
-	          var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
-			  var key = _this.keys[element.index];
-			  
-			  if (!key){ return; };
-
-	          if (element.index !== _this.currentElement) {
-	            if (_this.currentElement) {
-	              var pastKey = _this.keys[_this.currentElement];
-	              pastKey.up();
-	            }
-	            key.down(_this.paintbrush);
-	          } else {
-	            key.bend();
-	          }
-	          _this.currentElement = element.index;
-	          e.preventDefault();
-	          e.stopPropagation();
-	        });
-	
-	        this.element.addEventListener("touchend", function (e) {
-				console.log(e)
-				
-				if (tpCache.length > 0) {
-					for (let i=0; i<tpCache.length; i++){
-				
-					 var element = document.elementFromPoint(tpCache[i].clientX, tpCache[i].clientY);
-					 var key = _this.keys[element.index];
-					   if (!key){ return; };
-					   _this.paintbrush = !key.state;
-					   key.up();
-					   _this.currentElement = element.index;
-   
-					 }
-
-					 setTimeout(() => {
-						tpCache = new Array();
-		
-					  }, 100);
-
+  
+				if (element.index !== _this.currentElement) {
+				  if (_this.currentElement) {
+					var pastKey = _this.keys[_this.currentElement];
+					pastKey.up();
+				  }
+				  key.down(_this.paintbrush);
 				} else {
-					var key = _this.keys[_this.currentElement];
-					if (!key){ return; };
-					   _this.paintbrush = !key.state;
-					   key.up();					   
+				  key.bend();
 				}
-
-
-				  _this.interacting = false;
-				  _this.currentElement = false;
-	          // no touches to calculate because none remaining
-			 	 
-			   
-
-
-			  
-			 
-	        
-
-	          e.preventDefault();
-	          e.stopPropagation();
-	        });
-	      }
-	    },
+				_this.currentElement = element.index;
+				e.preventDefault();
+				e.stopPropagation();
+			  });
+	  
+			  this.element.addEventListener("touchend", function (e) {
+				// no touches to calculate because none remaining
+				var key = _this.keys[_this.currentElement];
+				key.up();
+				_this.interacting = false;
+				_this.currentElement = false;
+				e.preventDefault();
+				e.stopPropagation();
+			  });
+			}
+		  },
 	    setRange: {
 	
 	      /**

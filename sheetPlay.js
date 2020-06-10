@@ -73,8 +73,6 @@ playBtn.on('click', function(){
 
     $('.piano-menu__song-start').addClass('hidden');    
     checkPlay(); 
-   
-
     //playBtn    
     
 });
@@ -93,9 +91,6 @@ restartBtn.on('click', function() {
     if(autoPlayBtn.hasClass('playing')) {       
         autoPlayBtn.removeClass('playing');
     }
-
-
-    
  
 });
 
@@ -120,7 +115,7 @@ closeBtn.on('click', function() {
 autoPlayBtn.on('click', function() { 
     
     if(!autoPlayBtn.hasClass('playing')) {
-        autoPlay();
+        autoPlay(autoPlaySpeed);
         autoPlayBtn.addClass('playing');
         autoPlayBtn.html('Auto Pause')
        
@@ -128,7 +123,7 @@ autoPlayBtn.on('click', function() {
 
         stopAutoPlay();
         autoPlayBtn.removeClass('playing');
-        autoPlayBtn.html('Auto Play')
+        autoPlayBtn.html('Auto Play');
     }  
 
     if (!$('.piano-menu__song-start').hasClass('hidden')){
@@ -489,7 +484,6 @@ function pianoPlay() {
 function scrollSong() {    
     
     var scrollFocus = document.querySelector('span.active');  
-    console.log(scrollFocus);
     if (!scrollFocus) { return };
     if (scrollFocus.classList[0] == 'pause') { return };
     if (scrollFocus.classList[0] == 'skip') { return };
@@ -525,7 +519,7 @@ function cleanUpSheet(){
     
 }
 
-function autoPlay() {
+function autoPlay(speed) {
     
     songText = $('#song-pattern');     
     songArr = songText.find('span'); 
@@ -547,38 +541,32 @@ function autoPlay() {
         if (keyCheck.classList[0] == 'chord-gliss'){
 
             keyCheck.classList.remove('active');
-            keyCheck.classList.add('correct');
-           
-      /*      let glissChiNode = keyCheck.children;
-
-            let glissChi = Array.prototype.slice.call(glissChiNode);
-
-          //  glissChi.splice(0, 1);
-
-            for (let l = 0; l < glissChi.length; l++) {  
-                let gli = glissChi[l];
-
-                pianO.triggerAttack(Tone.Frequency(keyMap[gli.innerHTML] + parseInt(transValue), "midi").toNote());
-
-                setTimeout(() => {
-                    pianO.triggerAttack(Tone.Frequency(keyMap[gli.innerHTML] + parseInt(transValue), "midi").toNote());
-                }, 25*l);  
-
-
-
-            }*/
-
             
+
+            stopAutoPlay()
+            autoPlay(autoPlaySpeed/2);
+
+            console.log('restart!')
             count++
-           // count = count + glissChi.length + 1;
-            return;
+          //  count = count + glissChi.length +1;
+        
+        } else if (keyCheck.classList[0] == 'gliss' && songArr[count+2].classList[0] != 'gliss'){
+
+            keyCheck.classList.remove('active');
+            keyCheck.classList.add('correct');  
+            pianO.triggerAttack(Tone.Frequency(keyMap[key] + parseInt(transValue), "midi").toNote());
+            console.log('restart again!')
+            stopAutoPlay()
+            autoPlay(autoPlaySpeed);
+            count = count++
         }
         
-        if (key.length == 1 && key != '.' && key != '|'){
+        if (key.length == 1 && key != '.' && key != '|' && keyCheck.classList[0] != 'pause'){
 
            pianO.triggerAttack(Tone.Frequency(keyMap[key] + parseInt(transValue), "midi").toNote());
            songArr[count].classList.remove('active');
            songArr[count].classList.add('correct');
+           
            count++
             
 
@@ -641,7 +629,7 @@ function autoPlay() {
         
     scrollSong();    
 
-    }, autoPlaySpeed);
+    }, speed);
     
 }
 

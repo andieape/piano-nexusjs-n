@@ -4499,18 +4499,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			  this.currentElement = false;
 	  
 			  this.element.addEventListener("touchstart", function (e) {
-
-				$('#logg').html(e.touches.length);
-				
 				
 				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-				var key = _this.keys[element.index];
-				
+				var key = _this.keys[element.index];				
 				
 				if (!key) { return };
 
 				if (e.touches.length > 0){
-					$('#logg').append('mm');
 
 					for (let z=0;z<e.touches.length;z++){						
 						tpCache.touches.push(e.touches[z]);	
@@ -4569,22 +4564,17 @@ return /******/ (function(modules) { // webpackBootstrap
 						console.log(_this.keys[tr]);
 						key = _this.keys[tr];
 						key.up();
-						$('#logg').append(key)
 					}
 
 				} else {
-
 					key.up();
-
 				}
 
 				_this.interacting = false;
 				_this.currentElement = false;
 
 				tpCache.touches = new Array();
-				tpCache.targets = new Array();
-
-				
+				tpCache.targets = new Array();				
 
 				e.preventDefault();
 				e.stopPropagation();

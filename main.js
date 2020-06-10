@@ -269,7 +269,7 @@ buttons.on('change', function(note) {
         if ($('.piano-menu__played').hasClass('active')){    
            if (tpCache.touches.length > 1) {  
               
-                for (let o=0; o<tpCache.touches.length-1; o++){
+                for (let o=0; o<tpCache.touches.length; o++){
                    
                     let tc = tpCache.touches[o]
                     let touch = parseInt(tc.target.id.split('_')[1])

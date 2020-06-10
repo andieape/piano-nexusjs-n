@@ -4519,8 +4519,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					}
 					_this.paintbrush = !key.state;
 					key.down(_this.paintbrush);
-					_this.currentElement = element.index;
-					
+					_this.currentElement = element.index;					
 
 				}
 

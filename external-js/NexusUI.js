@@ -4510,7 +4510,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				
 				if (!key) { return };
 
-				if (e.touches.length > 0){
+				if (e.touches.length > 1){
 					$('#logg').append('mm');
 
 					for (let z=0;z<e.touches.length;z++){

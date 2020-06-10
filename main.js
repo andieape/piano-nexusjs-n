@@ -13,7 +13,10 @@ var isTouchDevice = (('ontouchstart' in window)
  
  var noteModified;
 
- var tpCache = new Array();
+var tpCache = {};
+
+  tpCache.touches = new Array();
+  tpCache.targets = new Array();
 
 
 
@@ -264,7 +267,24 @@ buttons.on('change', function(note) {
         } 
 
         if ($('.piano-menu__played').hasClass('active')){    
-        
+            if (tpCache.touches.length > 1) {
+                console.log(tpCache.touches)
+
+                console.log(noteMap[note.note])
+                for (let o=0; 0<tpCache.touches.length-1; o++){
+                    
+                    let tc = tpCache.touches[o]
+                    let touch = parseInt(tc.target.id.split('_')[1])
+                    console.log(touch);
+                    $('#piano-chord').html(Tone.Frequency(touch, "midi").toNote());
+                    $('#piano-key').html(noteMap[touch]);  
+                    $('#piano-key-history').append('<span>'+noteMap[touch]+'</span>');
+                }
+                
+
+                return;
+
+             };
             $('#piano-chord').html(Tone.Frequency(note.note, "midi").toNote());
             $('#piano-key').html(noteMap[note.note]);  
             $('#piano-key-history').append('<span>'+noteMap[note.note]+'</span>');

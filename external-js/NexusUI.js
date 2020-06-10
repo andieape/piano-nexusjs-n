@@ -4510,15 +4510,20 @@ return /******/ (function(modules) { // webpackBootstrap
 				
 				if (!key) { return };
 
-				if (e.touches.length > 1){
+				if (e.touches.length > 0){
 					$('#logg').append('mm');
 
-					for (let z=0;z<e.touches.length;z++){
-						element = document.elementFromPoint(e.touches[z].clientX, e.touches[z].clientY);
+					for (let z=0;z<e.touches.length;z++){						
+						tpCache.touches.push(e.touches[z]);						
+					}
+
+					for (let touch of tpCache.touches){
+						element = document.elementFromPoint(touch.clientX, touch.clientY);
 						key = _this.keys[element.index];
 						_this.paintbrush = !key.state;
 						key.down(_this.paintbrush);
 						_this.currentElement = element.index;
+						tpCache.targets.push(_this.currentElement);
 					}
 					
 
@@ -4527,23 +4532,17 @@ return /******/ (function(modules) { // webpackBootstrap
 					_this.paintbrush = !key.state;
 					key.down(_this.paintbrush);
 					_this.currentElement = element.index;
-				}
-
-
-				
+				}				
 				e.preventDefault();
 				e.stopPropagation();
-
-
 
 			  });
 	  
 			  this.element.addEventListener("touchmove", function (e) {
 				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-				var key = _this.keys[element.index];
-				
-
-				if (!key){ return; };
+				if (!element){ return; };
+				if (tpCache.touches.length > 1) {return};
+				var key = _this.keys[element.index];				
   
 				if (element.index !== _this.currentElement) {
 				  if (_this.currentElement) {
@@ -4560,16 +4559,38 @@ return /******/ (function(modules) { // webpackBootstrap
 			  }); 
 	  
 			  this.element.addEventListener("touchend", function (e) {
-				// no touches to calculate because none remaining
-				var key = _this.keys[_this.currentElement];
+				// no touches to calculate because none remaining				
+				
+				var key = _this.keys[_this.currentElement];				
 
 				if (!key) { return };
+				console.log(tpCache.targets)
+				if (tpCache.touches.length > 1){
+					for (let i = 0; i<tpCache.targets; i++){
+						let tr = tpCache.targets[i]
+						console.log(_this.keys[tr]);
+						key = _this.keys[tr];
+						key.up();
+					}
 
-				key.up();
+				} else {
+
+					key.up();
+
+				}
+
 				_this.interacting = false;
 				_this.currentElement = false;
+
+				tpCache.touches = new Array();
+				tpCache.targets = new Array();
+
+				
+
 				e.preventDefault();
 				e.stopPropagation();
+				
+				
 			  });
 			}
 		  },

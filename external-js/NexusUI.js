@@ -4565,16 +4565,16 @@ return /******/ (function(modules) { // webpackBootstrap
 						key = _this.keys[tr];
 						key.up();
 					}
-
+					tpCache.touches = new Array();
+					tpCache.targets = new Array();	
 				} else {
 					key.up();
 				}
 
 				_this.interacting = false;
 				_this.currentElement = false;
-
-				tpCache.touches = new Array();
-				tpCache.targets = new Array();				
+				
+			
 
 				e.preventDefault();
 				e.stopPropagation();

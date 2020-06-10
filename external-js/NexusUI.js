@@ -4499,19 +4499,38 @@ return /******/ (function(modules) { // webpackBootstrap
 			  this.currentElement = false;
 	  
 			  this.element.addEventListener("touchstart", function (e) {
-				console.log(e.touches)
+				console.log(e.touches[0])
 				console.log(e.targetTouches)
 				$('#logg').html(e.touches.length);
 				
 				
 				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
 				var key = _this.keys[element.index];
-				_this.paintbrush = !key.state;
-				key.down(_this.paintbrush);
-				_this.currentElement = element.index;
+				
+				
+				if (!key) { return };
+
+				if (e.touches.length > 0){
+					$('#logg').append('mm');
+
+					for (let z=0;z<e.touches.length;z++){
+						element = document.elementFromPoint(e.touches[z].clientX, e.touches[z].clientY);
+						key = _this.keys[element.index];
+					}
+					_this.paintbrush = !key.state;
+					key.down(_this.paintbrush);
+					_this.currentElement = element.index;
+					
+
+				}
+
+
 				
 				e.preventDefault();
 				e.stopPropagation();
+
+
+
 			  });
 	  
 			  this.element.addEventListener("touchmove", function (e) {
@@ -4538,6 +4557,9 @@ return /******/ (function(modules) { // webpackBootstrap
 			  this.element.addEventListener("touchend", function (e) {
 				// no touches to calculate because none remaining
 				var key = _this.keys[_this.currentElement];
+
+				if (!key) { return };
+
 				key.up();
 				_this.interacting = false;
 				_this.currentElement = false;

@@ -451,7 +451,7 @@ $('#Keyboard rect').on("touchstart", (e) => {
     pianO.triggerAttack(Tone.Frequency(parseInt(keyNow) + parseInt(transValue), "midi").toNote());      
 
     animateKey(keyNow);
-    $('#logg').append(e);
+    $('#logg').append(e.touches.length + " ");
     
     e.preventDefault();
 

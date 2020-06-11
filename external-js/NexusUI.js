@@ -4498,80 +4498,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 			  this.currentElement = false;
 	  
-	/*		  this.element.addEventListener("touchstart", function (e) {
-				$('#logg').empty();
+			  this.element.addEventListener("touchstart", function (e) {
 
-				$('#logg').append('x')
-				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
-				var key = _this.keys[element.index];				
-				
-				if (!key) { return };
-				if (e.touches.length == 1){		
-					
-					let event = new Event("touchstart");
-					element.dispatchEvent(event);
-					
-
-				}
-
+				var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+				var key = _this.keys[element.index];
+				_this.paintbrush = !key.state;
+				key.down(_this.paintbrush);
+				_this.currentElement = element.index;
 				e.preventDefault();
-			//  e.stopPropagation();
-			//	e.stopImmediatePropagation();
-				
-			
-					if (e.touches.length > 0){
+				e.stopPropagation();
 
-						for (let z=0;z<e.touches.length;z++){						
-							tpCache.touches.push(e.touches[z]);	
-							tpCache.targets.push(element.index);					
-						}
-	
-						for (let touch of tpCache.touches){
-							element = document.elementFromPoint(touch.clientX, touch.clientY);
-							key = _this.keys[element.index];
-							_this.paintbrush = !key.state;
-							key.down(_this.paintbrush);
-							_this.currentElement = element.index;						
-						}					
-						$('#logg').append(e.touches.length)
-
-	
-						return;
-					} else {
-	
-					//	_this.paintbrush = !key.state;
-					//	key.down(_this.paintbrush);
-					//	_this.currentElement = element.index;
-						e.preventDefault();
-					//	e.stopPropagation();
-					//	return;
-					}	
-					
-			
-		
-				
-
-
-			  });*/
+			  });
 	  
 			  $(this.element).on("touchmove", function (e) {
-
-				//if ()
+				  
 				var myLocation = e.originalEvent.changedTouches[0];
 				var realTarget = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
 				
-				if (e.target.id == realTarget.id){
-					console.log("no!")
-					return;
-				}
-				console.log('aha');
-				//console.log(e.changedTouches[0].target.id)
-				//console.log(e.targetTouches[0].target.id)
+				if (e.target.id == realTarget.id){ return }	
 
 				var element = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
-				if (!element){ return; };
-				
-				if (e.touches.length > 1) {return};
+				if (!element){ return }
+			
+			//	if (e.touches.length > 1) {return};
 				var key = _this.keys[element.index];		
 				if (!key) { return };		
 				
@@ -4589,45 +4538,15 @@ return /******/ (function(modules) { // webpackBootstrap
 				e.stopPropagation();
 			  }); 
 	  
-			/*  this.element.addEventListener("touchend", function (e) {
-				// no touches to calculate because none remaining				
-				
-				var key = _this.keys[_this.currentElement];				
-
-				if (!key) { return };
-				
-				
-				if (tpCache.touches.length > 0){
-					
-					for (let i = 0; i<tpCache.targets.length; i++){
-						let tr = tpCache.targets[i]
-						console.log(tr)						
-						key = _this.keys[tr];
-						console.log(key)
-						key.up();
-						$('#logg').append(tr+'ups');
-
-						tr = false;
-						_this.interacting = false;						
-						
-					}					
-					
-					tpCache.touches = new Array();
-					tpCache.targets = new Array();	
-					e.preventDefault();
-				//	e.stopPropagation();
-				//	e.stopImmediatePropagation();
-				//	return;
-				} else {
-				//key.up();
-				//	_this.interacting = false;
-				//	_this.currentElement = false;
-				//	e.preventDefault();
-				//	e.stopPropagation();
-				//	return;					
-				}				
-				
-			  });*/
+			 this.element.addEventListener("touchend", function (e) {
+ 		// no touches to calculate because none remaining
+	          var key = _this.keys[_this.currentElement];
+	          key.up();
+	          _this.interacting = false;
+	          _this.currentElement = false;
+	          e.preventDefault();
+	          e.stopPropagation();
+			  });
 			}
 		  },
 	    setRange: {

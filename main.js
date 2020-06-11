@@ -301,7 +301,7 @@ buttons.on('change', function(note) {
 });
 
 
-function playInput(buttons){
+function playInput(){
 
 document.addEventListener("keydown", (e) => {    
     
@@ -337,6 +337,7 @@ document.addEventListener("keydown", (e) => {
       
 
 });
+
 
 document.addEventListener("keyup", (e) => {
         if (e.repeat) { return };
@@ -445,6 +446,8 @@ document.addEventListener("keyup", (e) => {
 
 });
 
+/*
+
 $('#Keyboard rect').on("touchstart", (e) => {
     keyNow = e.target.id.split('_')[1];
     console.log(e.originalEvent.target);
@@ -469,13 +472,7 @@ $('#Keyboard rect').on("touchend", (e) => {
     e.preventDefault();
 
 });
-
-
-
-
-
-
-
+*/
 
 
 $('.piano-menu__played-back').click(function() {

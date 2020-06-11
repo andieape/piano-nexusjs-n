@@ -4559,7 +4559,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				var element = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
 				if (!element){ return; };
 				
-				if (tpCache.touches.length > 1) {return};
+				if (e.touches.length > 1) {return};
 				var key = _this.keys[element.index];		
 				if (!key) { return };		
 				console.log(e.changedTouches)
@@ -4577,7 +4577,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				e.stopPropagation();
 			  }); 
 	  
-			  this.element.addEventListener("touchend", function (e) {
+			/*  this.element.addEventListener("touchend", function (e) {
 				// no touches to calculate because none remaining				
 				
 				var key = _this.keys[_this.currentElement];				
@@ -4615,7 +4615,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				//	return;					
 				}				
 				
-			  });
+			  });*/
 			}
 		  },
 	    setRange: {

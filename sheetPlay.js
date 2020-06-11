@@ -667,8 +667,6 @@ function countTime() {
     
     timerRunning = true;
 
- //  let timeTaken;
-
     let startTime = new Date().getTime();
 
     let timeNow = $('#stat_time').html();

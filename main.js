@@ -240,8 +240,7 @@ var noteMap = Object.fromEntries(Object.entries(keyMap).map(([k, v]) => ([v, k])
 
 buttons.on('change', function(note) {  
 
-    if (!note) {return};
-   
+    if (!note) {return};   
     
     let currentKey = '#key_' +note.note;
     currentKey = $(currentKey);
@@ -253,7 +252,11 @@ buttons.on('change', function(note) {
 
     }
     
-    if (note.state === true) {   
+    if (note.state === true) {
+        
+        tpCache.targets.push(note.note-24);
+
+        
         
         pianO.triggerAttack(Tone.Frequency(note.note + parseInt(transValue), "midi").toNote());      
         currentKey.parent().parent().addClass('span-pressed');
@@ -276,6 +279,8 @@ buttons.on('change', function(note) {
         
                     
     } else if (note.state === false) {
+
+       
     
         currentKey.parent().parent().removeClass('span-pressed');
 
@@ -283,6 +288,8 @@ buttons.on('change', function(note) {
             pianO.triggerRelease(Tone.Frequency(note.note + parseInt(transValue), "midi").toNote());    
         } 
 
+
+        tpCache.targets = new Array();
 
 
     }

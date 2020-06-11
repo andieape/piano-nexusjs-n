@@ -4502,6 +4502,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				var element = document.elementFromPoint(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
 				var key = _this.keys[element.index];
+				if (!key) { return }
 				_this.paintbrush = !key.state;
 				key.down(_this.paintbrush);
 				_this.currentElement = element.index;
@@ -4520,7 +4521,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				var element = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
 				if (!element){ return }			
 				if (e.touches.length > 1) {return};
-				
+
 				var key = _this.keys[element.index];		
 				if (!key) { return };		
 				
@@ -4539,9 +4540,19 @@ return /******/ (function(modules) { // webpackBootstrap
 			  }); 
 	  
 			 this.element.addEventListener("touchend", function (e) {
- 		// no touches to calculate because none remaining
-	          var key = _this.keys[_this.currentElement];
-	          key.up();
+		 // no touches to calculate because none remaining
+			
+
+				for (let k=0; k<tpCache.targets.length; k++){
+					let tr = tpCache.targets[k];
+					var key = _this.keys[tr];
+					key.up();
+					tr = false;
+				}
+
+			// var key = _this.keys[_this.currentElement];			
+		   //   key.up();
+		   
 	          _this.interacting = false;
 	          _this.currentElement = false;
 	          e.preventDefault();

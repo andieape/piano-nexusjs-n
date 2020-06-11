@@ -48,7 +48,7 @@ Nexus.colors.mediumLight = "transparent";
 
 var buttons = new Nexus.Piano('#Keyboard', {
     'size': [1262, 212],
-    'mode': 'impulse', // 'button', 'toggle', or 'impulse'
+    'mode': 'button', // 'button', 'toggle', or 'impulse'
     'lowNote': 24,
     'highNote': 85
 });

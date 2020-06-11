@@ -538,6 +538,8 @@ function autoPlay(speed) {
 
         let key = keyCheck.innerHTML;
 
+        animateKey(keyMap[key]);
+
         if (keyCheck.classList[0] == 'chord-gliss'){
 
             keyCheck.classList.remove('active');
@@ -548,7 +550,6 @@ function autoPlay(speed) {
 
             console.log('restart!')
             count++
-          //  count = count + glissChi.length +1;
         
         } else if (keyCheck.classList[0] == 'gliss' && songArr[count+2].classList[0] != 'gliss'){
 
@@ -626,7 +627,9 @@ function autoPlay(speed) {
             
         }  
 
-        
+    setTimeout(() => {
+        animateKey(keyMap[key]); 
+    }, speed*2);           
     scrollSong();    
 
     }, speed);

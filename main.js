@@ -253,8 +253,7 @@ buttons.on('change', function(note) {
 
     }
     
-    if (note.state === true) {      
-           
+    if (note.state === true) {   
         
         pianO.triggerAttack(Tone.Frequency(note.note + parseInt(transValue), "midi").toNote());      
         currentKey.parent().parent().addClass('span-pressed');
@@ -262,19 +261,11 @@ buttons.on('change', function(note) {
         
         if ($('.piano-menu__played').hasClass('active')){
             
-            if (tpCache.touches.length > 1){
-                console.log(tpCache.touches)
+          
              $('#piano-chord').html(Tone.Frequency(note.note, "midi").toNote());
              $('#piano-key').html(noteMap[note.note]);  
              $('#piano-key-history').append('<span>'+noteMap[note.note]+'</span>'); 
 
-            } else {
-                console.log('aa')
-                $('#piano-chord').html(Tone.Frequency(note.note, "midi").toNote());
-                $('#piano-key').html(noteMap[note.note]);  
-                $('#piano-key-history').append('<span>'+noteMap[note.note]+'</span>'); 
-
-            }
 
          
              var scrollHistory = document.getElementById('piano-key-history').lastChild;

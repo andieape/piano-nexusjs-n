@@ -588,14 +588,18 @@ function autoPlay(speed) {
            
 
         }  else {
+            if (keyCheck.classList[0] == 'chord-gliss') { return };
             chord = key.split('');
             for (let cNote of chord){
+                animateKey(keyMap[cNote]);                
                 pianO.triggerAttack(Tone.Frequency(keyMap[cNote] + parseInt(transValue), "midi").toNote());
                 songArr[count].classList.remove('active');
                 if (songArr[count].classList[0] != 'skip') {
                     songArr[count].classList.add('correct');
                 }     
-               
+               setTimeout(() => {
+                animateKey(keyMap[cNote]);
+               }, speed*2);
             }   
             count++         
 

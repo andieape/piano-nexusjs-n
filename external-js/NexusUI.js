@@ -4567,6 +4567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						key = _this.keys[tr];
 						console.log(key)
 						key.up();
+						$('logg').append(tr+'up')
 						tr = false;
 						
 						

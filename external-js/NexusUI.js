@@ -4572,6 +4572,8 @@ return /******/ (function(modules) { // webpackBootstrap
 						
 						
 					}
+
+					$('#logg').empty();
 					_this.interacting = false;
 				//	tpCache.touches = new Array();
 				//	tpCache.targets = new Array();	

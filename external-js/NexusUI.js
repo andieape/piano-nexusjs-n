@@ -4522,9 +4522,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				} else {
 
-					_this.paintbrush = !key.state;
-					key.down(_this.paintbrush);
-					_this.currentElement = element.index;
+			//		_this.paintbrush = !key.state;
+			//		key.down(_this.paintbrush);
+			//		_this.currentElement = element.index;
 				}				
 				e.preventDefault();
 				e.stopPropagation();
@@ -4558,29 +4558,30 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				if (!key) { return };
 				
-				if (tpCache.touches.length > 1){
+				if (tpCache.touches.length > 0){
 					
 					for (let i = 0; i<tpCache.targets.length; i++){
 						let tr = tpCache.targets[i]
-						console.log(_this.keys[tr]);
+						
 						key = _this.keys[tr];
+						console.log(key)
 						key.up();
 						tr = false;
-						tr = false;
+						
 						_this.interacting = false;
 					}
 					
 					tpCache.touches = new Array();
 					tpCache.targets = new Array();	
 				} else {
-					key.up();
-					_this.interacting = false;
-					_this.currentElement = false;
+				//	key.up();
+				//	_this.interacting = false;
+				//	_this.currentElement = false;
 					
 				}
 				
-				tpCache.touches = new Array();
-				tpCache.targets = new Array();	
+		//		tpCache.touches = new Array();
+		//		tpCache.targets = new Array();	
 
 
 				

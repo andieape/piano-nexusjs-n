@@ -4499,7 +4499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			  this.currentElement = false;
 	  
 			  this.element.addEventListener("touchstart", function (e) {
-				
+				$('#logg').empty();
 				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
 				var key = _this.keys[element.index];				
 				
@@ -4535,7 +4535,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
 				if (!element){ return; };
-				if (tpCache.touches.length > 1) {return};
+			//	if (tpCache.touches.length > 1) {return};
 				var key = _this.keys[element.index];				
   
 				if (element.index !== _this.currentElement) {
@@ -4569,12 +4569,13 @@ return /******/ (function(modules) { // webpackBootstrap
 						key.up();
 						$('#logg').append(tr+'up')
 						tr = false;
+						_this.interacting = false;
 						
 						
 					}
 
-					$('#logg').empty();
-					_this.interacting = false;
+					
+					
 				//	tpCache.touches = new Array();
 				//	tpCache.targets = new Array();	
 				} else {

@@ -4519,7 +4519,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						key.down(_this.paintbrush);
 						_this.currentElement = element.index;						
 					}					
-
+					$('#logg').append(e.touches.length)
 				} else {
 
 			//		_this.paintbrush = !key.state;

@@ -4504,8 +4504,16 @@ return /******/ (function(modules) { // webpackBootstrap
 				var key = _this.keys[element.index];				
 				
 				if (!key) { return };
+				if (e.touches.length == 1){		
+					
+					let event = new Event("touchstart");
+					element.dispatchEvent(event);
+					
 
-				if (e.touches.length > 1){
+				}
+				
+				
+				if (e.touches.length > 0){
 
 					for (let z=0;z<e.touches.length;z++){						
 						tpCache.touches.push(e.touches[z]);	
@@ -4589,6 +4597,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					tpCache.targets = new Array();	
 					e.preventDefault();
 					e.stopPropagation();
+					e.stopImmediatePropagation();
 				//	return;
 				} else {
 				//key.up();

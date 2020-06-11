@@ -456,6 +456,8 @@ $('#Keyboard rect').on("touchstart", (e) => {
     $('#logg').append(e.touches.length + " ");
     
     e.preventDefault();
+    e.stopPropagation();
+    return false;
 
 });
 

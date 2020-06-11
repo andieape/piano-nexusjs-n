@@ -943,6 +943,9 @@ $('.close-song-menu').click(function () {
 
 
 $('#Keyboard rect').on('touchstart', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+   
 
     if (e.touches.length == 1){
          
@@ -960,8 +963,7 @@ $('#Keyboard rect').on('touchstart', function (e) {
     //    currentKey.parent().parent().addClass('span-pressed');
 
     }
-    e.preventDefault();
-    e.stopPropagation();
+    e.stopImmediatePropagation();
 });
 $('#Keyboard rect').on('touchend', function (e) { 
 
@@ -981,5 +983,5 @@ $('#Keyboard rect').on('touchend', function (e) {
     if (sustClicked){
         pianO.triggerRelease(Tone.Frequency(parseInt(key) + parseInt(transValue), "midi").toNote());    
     } 
-    
+    e.stopImmediatePropagation();
 });

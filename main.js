@@ -238,47 +238,58 @@ var noteMap = Object.fromEntries(Object.entries(keyMap).map(([k, v]) => ([v, k])
 
 buttons.on('change', function(note) {  
 
-    if (!note) {return;}
-
-   ;
+    if (!note) {return};
+   
     
     let currentKey = '#key_' +note.note;
     currentKey = $(currentKey);
+    console.log(currentKey)
     
 
     if (!$('.piano-menu__played').hasClass('active') && !$('.piano-menu__song').hasClass('active')){
         $('.piano-menu__played').addClass('active').siblings().removeClass('active');
 
     }
-
-    if (note.state === true) {        
+    
+    if (note.state === true) {      
+           
         
         pianO.triggerAttack(Tone.Frequency(note.note + parseInt(transValue), "midi").toNote());      
         currentKey.parent().parent().addClass('span-pressed');
 
         
+        if ($('.piano-menu__played').hasClass('active')){
+            
+            if (tpCache.touches.length > 1){
+                console.log(tpCache.touches)
+             $('#piano-chord').html(Tone.Frequency(note.note, "midi").toNote());
+             $('#piano-key').html(noteMap[note.note]);  
+             $('#piano-key-history').append('<span>'+noteMap[note.note]+'</span>'); 
+
+            } else {
+                console.log('aa')
+                $('#piano-chord').html(Tone.Frequency(note.note, "midi").toNote());
+                $('#piano-key').html(noteMap[note.note]);  
+                $('#piano-key-history').append('<span>'+noteMap[note.note]+'</span>'); 
+
+            }
+
+         
+             var scrollHistory = document.getElementById('piano-key-history').lastChild;
+                 scrollHistory.parentNode.scrollTop = scrollHistory.offsetTop - scrollHistory.parentNode.offsetTop;      			
+           }
+             
+
+        
                     
     } else if (note.state === false) {
-
+    
         currentKey.parent().parent().removeClass('span-pressed');
 
         if (sustClicked){
             pianO.triggerRelease(Tone.Frequency(note.note + parseInt(transValue), "midi").toNote());    
         } 
 
-        if ($('.piano-menu__played').hasClass('active')){    
-           if (tpCache.touches.length > 1) { };
-
-                $('#piano-chord').html(Tone.Frequency(note.note, "midi").toNote());
-                $('#piano-key').html(noteMap[note.note]);  
-                $('#piano-key-history').append('<span>'+noteMap[note.note]+'</span>');    
-
-         
-            
-    
-            var scrollHistory = document.getElementById('piano-key-history').lastChild;
-              scrollHistory.parentNode.scrollTop = scrollHistory.offsetTop - scrollHistory.parentNode.offsetTop;      			
-            }
 
 
     }

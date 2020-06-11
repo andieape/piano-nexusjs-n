@@ -4505,7 +4505,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				
 				if (!key) { return };
 
-				if (e.touches.length > 0){
+				if (e.touches.length > 1){
 
 					for (let z=0;z<e.touches.length;z++){						
 						tpCache.touches.push(e.touches[z]);	
@@ -4535,9 +4535,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
 				if (!element){ return; };
 				if (tpCache.touches.length > 1) {return};
-				var key = _this.keys[element.index];
-				
-				if (!key){ return; };
+				var key = _this.keys[element.index];				
   
 				if (element.index !== _this.currentElement) {
 				  if (_this.currentElement) {
@@ -4557,26 +4555,34 @@ return /******/ (function(modules) { // webpackBootstrap
 				// no touches to calculate because none remaining				
 				
 				var key = _this.keys[_this.currentElement];				
-				let tr;
+
 				if (!key) { return };
 				
 				if (tpCache.touches.length > 1){
+					
 					for (let i = 0; i<tpCache.targets.length; i++){
-						tr = tpCache.targets[i]
+						let tr = tpCache.targets[i]
+						console.log(_this.keys[tr]);
 						key = _this.keys[tr];
-						console.log(tr)						
 						key.up();
-						tr = false;				
-						
+						tr = false;
+						tr = false;
+						_this.interacting = false;
 					}
+					
+					tpCache.touches = new Array();
+					tpCache.targets = new Array();	
 				} else {
 					key.up();
+					_this.interacting = false;
+					_this.currentElement = false;
+					
 				}
+				
 				tpCache.touches = new Array();
-				tpCache.targets = new Array();			
+				tpCache.targets = new Array();	
 
-				_this.interacting = false;
-				_this.currentElement = false;
+
 				
 			
 

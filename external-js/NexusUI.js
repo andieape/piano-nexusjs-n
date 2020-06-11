@@ -4489,7 +4489,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    },
 	    addTouchListeners: {
 			value: function addTouchListeners() {
-			  var _this = this;
+			 var _this = this;
 	  
 			  this.preClick = this.preMove = this.preRelease = function () {};
 			  this.click = this.move = this.release = function () {};
@@ -4498,8 +4498,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	  
 			  this.currentElement = false;
 	  
-			  this.element.addEventListener("touchstart", function (e) {
+	/*		  this.element.addEventListener("touchstart", function (e) {
 				$('#logg').empty();
+
+				$('#logg').append('x')
 				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
 				var key = _this.keys[element.index];				
 				
@@ -4516,7 +4518,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			//  e.stopPropagation();
 			//	e.stopImmediatePropagation();
 				
-				setTimeout(() => {
+			
 					if (e.touches.length > 0){
 
 						for (let z=0;z<e.touches.length;z++){						
@@ -4545,12 +4547,12 @@ return /******/ (function(modules) { // webpackBootstrap
 					//	return;
 					}	
 					
-				}, 50);
+			
 		
 				
 
 
-			  });
+			  });*/
 	  
 			  this.element.addEventListener("touchmove", function (e) {
 
@@ -4587,7 +4589,7 @@ return /******/ (function(modules) { // webpackBootstrap
 					
 					for (let i = 0; i<tpCache.targets.length; i++){
 						let tr = tpCache.targets[i]
-						
+						console.log(tr)						
 						key = _this.keys[tr];
 						console.log(key)
 						key.up();

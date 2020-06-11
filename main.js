@@ -48,7 +48,7 @@ Nexus.colors.mediumLight = "transparent";
 
 var buttons = new Nexus.Piano('#Keyboard', {
     'size': [1262, 212],
-    'mode': 'button', // 'button', 'toggle', or 'impulse'
+    'mode': 'impulse', // 'button', 'toggle', or 'impulse'
     'lowNote': 24,
     'highNote': 85
 });
@@ -310,19 +310,13 @@ document.addEventListener("keydown", (e) => {
 
     
     if (e.repeat) { return };   
-
     if ($('.piano-menu__search-box').hasClass('active')) { return };
-
     if (!keyMap[e.key] && e.keyCode != 32  && e.keyCode != 8 && e.keyCode != 13 ) { return };
-    
     if (keyMap[e.key] == 'key_undefined') { return };
-
        if (e.keyCode >= 48 && e.keyCode <= 90)  {
 
         keysPressed[e.key] = true;
-
-        noteModified = e.getModifierState("Shift");
-        
+        noteModified = e.getModifierState("Shift");        
         animateKey(keyMap[e.key]);
         
         pianO.triggerAttack(Tone.Frequency(keyMap[e.key]  + parseInt(transValue), "midi").toNote());  
@@ -344,7 +338,7 @@ document.addEventListener("keydown", (e) => {
 
 });
 
-    document.addEventListener("keyup", (e) => {
+document.addEventListener("keyup", (e) => {
         if (e.repeat) { return };
        
         if (!keyMap[e.key] && e.keyCode != 32  && e.keyCode != 8 && e.keyCode != 13 && e.keyCode != 219 && e.keyCode != 221 && e.keyCode != 220 ) { return };
@@ -449,7 +443,29 @@ document.addEventListener("keydown", (e) => {
         }, 150);
        
 
-    });
+});
+
+$('#Keyboard rect').on("touchstart", (e) => {
+    keyNow = e.target.id.split('_')[1];
+
+    pianO.triggerAttack(Tone.Frequency(parseInt(keyNow) + parseInt(transValue), "midi").toNote());      
+
+    animateKey(keyNow);
+    $('#logg').append(e);
+    
+    e.preventDefault();
+
+});
+
+$('#Keyboard rect').on("touchend", (e) => {
+    keyNow = e.target.id.split('_')[1];
+
+    animateKey(keyNow);
+    $('#logg').append(e);
+    
+    e.preventDefault();
+
+});
 
 
 

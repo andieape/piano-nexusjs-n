@@ -940,3 +940,46 @@ $('.song-hamburger').click(function () {
 $('.close-song-menu').click(function () {
     $('.piano-menu__song-menu').removeClass('active');
 })
+
+
+$('#Keyboard rect').on('touchstart', function (e) {
+
+    if (e.touches.length == 1){
+         
+    let currentKey = '#' + e.currentTarget.id;
+    currentKey = $(currentKey);
+  
+    let key = e.currentTarget.id.split('_')[1]
+    animateKey(key)    
+
+    if (!$('.piano-menu__played').hasClass('active') && !$('.piano-menu__song').hasClass('active')){
+        $('.piano-menu__played').addClass('active').siblings().removeClass('active');
+    }   
+        
+       pianO.triggerAttack(Tone.Frequency(parseInt(key) + parseInt(transValue), "midi").toNote());      
+    //    currentKey.parent().parent().addClass('span-pressed');
+
+    }
+    e.preventDefault();
+    e.stopPropagation();
+});
+$('#Keyboard rect').on('touchend', function (e) { 
+
+    console.log(e.changedTouches[0].target.id)
+         
+    let currentKey = '#' + e.currentTarget.id;
+    let lastKey = '#'+e.changedTouches[0].target.id;
+    currentKey = $(currentKey);
+    lastKey = $(lastKey)
+  
+    let key = e.currentTarget.id.split('_')[1]
+    animateKey(key);    
+  //  animateKey(lastKey);
+    
+    currentKey.parent().parent().removeClass('span-pressed');
+    lastKey.parent().parent().removeClass('span-pressed');
+    if (sustClicked){
+        pianO.triggerRelease(Tone.Frequency(parseInt(key) + parseInt(transValue), "midi").toNote());    
+    } 
+    
+});

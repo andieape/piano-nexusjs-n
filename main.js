@@ -289,7 +289,7 @@ buttons.on('change', function(note) {
         } 
 
 
-        tpCache.targets = new Array();
+        
 
 
     }

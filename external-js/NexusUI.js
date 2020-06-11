@@ -4554,7 +4554,9 @@ return /******/ (function(modules) { // webpackBootstrap
 		   //   key.up();
 		   
 	          _this.interacting = false;
-	          _this.currentElement = false;
+			  _this.currentElement = false;
+			  
+			  tpCache.targets = new Array();
 	          e.preventDefault();
 	          e.stopPropagation();
 			  });

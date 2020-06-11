@@ -4505,7 +4505,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				
 				if (!key) { return };
 
-				if (e.touches.length > 1){
+				if (e.touches.length >= 1){
 
 					for (let z=0;z<e.touches.length;z++){						
 						tpCache.touches.push(e.touches[z]);	
@@ -4567,7 +4567,7 @@ return /******/ (function(modules) { // webpackBootstrap
 						key = _this.keys[tr];
 						console.log(key)
 						key.up();
-						$('logg').append(tr+'up')
+						$('#logg').append(tr+'up')
 						tr = false;
 						
 						
@@ -4576,7 +4576,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				//	tpCache.touches = new Array();
 				//	tpCache.targets = new Array();	
 				} else {
-					key.up();
+				//	key.up();
 				//	_this.interacting = false;
 				//	_this.currentElement = false;
 					

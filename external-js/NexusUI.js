@@ -4554,7 +4554,19 @@ return /******/ (function(modules) { // webpackBootstrap
 
 			  });*/
 	  
-			  this.element.addEventListener("touchmove", function (e) {
+			  $(this.element).on("touchmove", function (e) {
+
+				//if ()
+				var myLocation = e.originalEvent.changedTouches[0];
+				var realTarget = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
+				
+				if (e.target.id == realTarget.id){
+					console.log("no!")
+					return;
+				}
+				console.log('aha');
+				//console.log(e.changedTouches[0].target.id)
+				//console.log(e.targetTouches[0].target.id)
 
 				var element = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
 				if (!element){ return; };
@@ -4562,7 +4574,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				if (e.touches.length > 1) {return};
 				var key = _this.keys[element.index];		
 				if (!key) { return };		
-				console.log(e.changedTouches)
+				
 				if (element.index !== _this.currentElement) {
 				  if (_this.currentElement) {
 					var pastKey = _this.keys[_this.currentElement];

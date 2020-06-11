@@ -447,8 +447,7 @@ document.addEventListener("keyup", (e) => {
 
 $('#Keyboard rect').on("touchstart", (e) => {
     keyNow = e.target.id.split('_')[1];
-
-   
+    console.log(e.originalEvent.target);
 
     pianO.triggerAttack(Tone.Frequency(parseInt(keyNow) + parseInt(transValue), "midi").toNote());      
 
@@ -463,7 +462,7 @@ $('#Keyboard rect').on("touchstart", (e) => {
 
 $('#Keyboard rect').on("touchend", (e) => {
     keyNow = e.target.id.split('_')[1];
-
+    
     animateKey(keyNow);
     $('#logg').append(e);
     

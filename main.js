@@ -303,7 +303,10 @@ buttons.on('change', function(note) {
 
 function playInput(buttons){
 
-document.addEventListener("keydown", (e) => {      
+document.addEventListener("keydown", (e) => {    
+    
+    e.stopPropagation();
+    e.stopImmediatePropagation();
 
     
     if (e.repeat) { return };   
@@ -337,6 +340,7 @@ document.addEventListener("keydown", (e) => {
         } else if (e.keyCode == 32){
             e.preventDefault();
         }
+      
 
 });
 

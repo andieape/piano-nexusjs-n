@@ -4511,37 +4511,42 @@ return /******/ (function(modules) { // webpackBootstrap
 					
 
 				}
+
+				e.preventDefault();
+			//	e.stopPropagation();
+			//	e.stopImmediatePropagation();
 				
-				
-				if (e.touches.length > 0){
+				setTimeout(() => {
+					if (e.touches.length > 0){
 
-					for (let z=0;z<e.touches.length;z++){						
-						tpCache.touches.push(e.touches[z]);	
-						tpCache.targets.push(element.index);					
-					}
+						for (let z=0;z<e.touches.length;z++){						
+							tpCache.touches.push(e.touches[z]);	
+							tpCache.targets.push(element.index);					
+						}
+	
+						for (let touch of tpCache.touches){
+							element = document.elementFromPoint(touch.clientX, touch.clientY);
+							key = _this.keys[element.index];
+							_this.paintbrush = !key.state;
+							key.down(_this.paintbrush);
+							_this.currentElement = element.index;						
+						}					
+						$('#logg').append(e.touches.length)
 
-					for (let touch of tpCache.touches){
-						element = document.elementFromPoint(touch.clientX, touch.clientY);
-						key = _this.keys[element.index];
-						_this.paintbrush = !key.state;
-						key.down(_this.paintbrush);
-						_this.currentElement = element.index;						
-					}					
-					$('#logg').append(e.touches.length)
-					e.preventDefault();
-					e.stopPropagation();
-					e.stopImmediatePropagation();
-
-					return;
-				} else {
-
-				//	_this.paintbrush = !key.state;
-				//	key.down(_this.paintbrush);
-				//	_this.currentElement = element.index;
-					e.preventDefault();
-					e.stopPropagation();
-				//	return;
-				}			
+	
+						return;
+					} else {
+	
+					//	_this.paintbrush = !key.state;
+					//	key.down(_this.paintbrush);
+					//	_this.currentElement = element.index;
+						e.preventDefault();
+					//	e.stopPropagation();
+					//	return;
+					}	
+					
+				}, 50);
+		
 				
 
 
@@ -4596,8 +4601,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					tpCache.touches = new Array();
 					tpCache.targets = new Array();	
 					e.preventDefault();
-					e.stopPropagation();
-					e.stopImmediatePropagation();
+				//	e.stopPropagation();
+				//	e.stopImmediatePropagation();
 				//	return;
 				} else {
 				//key.up();

@@ -4505,7 +4505,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				
 				if (!key) { return };
 
-				if (e.touches.length >= 1){
+				if (e.touches.length > 1){
 
 					for (let z=0;z<e.touches.length;z++){						
 						tpCache.touches.push(e.touches[z]);	
@@ -4520,14 +4520,20 @@ return /******/ (function(modules) { // webpackBootstrap
 						_this.currentElement = element.index;						
 					}					
 					$('#logg').append(e.touches.length)
+					e.preventDefault();
+					e.stopPropagation();
+					return;
 				} else {
 
-			//		_this.paintbrush = !key.state;
-			//		key.down(_this.paintbrush);
-			//		_this.currentElement = element.index;
-				}				
-				e.preventDefault();
-				e.stopPropagation();
+					_this.paintbrush = !key.state;
+					key.down(_this.paintbrush);
+					_this.currentElement = element.index;
+					e.preventDefault();
+					e.stopPropagation();
+					return;
+				}			
+				
+
 
 			  });
 	  
@@ -4572,29 +4578,21 @@ return /******/ (function(modules) { // webpackBootstrap
 						_this.interacting = false;
 						
 						
-					}
-
+					}					
 					
-					
-				//	tpCache.touches = new Array();
-				//	tpCache.targets = new Array();	
+					tpCache.touches = new Array();
+					tpCache.targets = new Array();	
+					e.preventDefault();
+					e.stopPropagation();
+					return;
 				} else {
-				//	key.up();
-				//	_this.interacting = false;
-				//	_this.currentElement = false;
-					
-				}
-				
-				tpCache.touches = new Array();
-				tpCache.targets = new Array();	
-
-
-				
-			
-
-				e.preventDefault();
-				e.stopPropagation();
-				
+					key.up();
+					_this.interacting = false;
+					_this.currentElement = false;
+					e.preventDefault();
+					e.stopPropagation();
+					return;					
+				}				
 				
 			  });
 			}

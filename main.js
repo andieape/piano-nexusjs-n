@@ -53,7 +53,7 @@ var buttons = new Nexus.Piano('#Keyboard', {
     'highNote': 85
 });
 
-console.log('als')
+
 
 var keysHeight = $('.slider').height();
 $(window).resize(function(){

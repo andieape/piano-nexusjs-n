@@ -4520,7 +4520,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				var element = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
 				if (!element){ return }
 			
-			//	if (e.touches.length > 1) {return};
+				if (e.touches.length > 1) {return};
 				var key = _this.keys[element.index];		
 				if (!key) { return };		
 				

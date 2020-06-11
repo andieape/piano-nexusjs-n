@@ -940,3 +940,5 @@ $('.song-hamburger').click(function () {
 $('.close-song-menu').click(function () {
     $('.piano-menu__song-menu').removeClass('active');
 })
+
+

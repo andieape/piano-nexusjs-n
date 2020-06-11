@@ -4522,6 +4522,8 @@ return /******/ (function(modules) { // webpackBootstrap
 					$('#logg').append(e.touches.length)
 					e.preventDefault();
 					e.stopPropagation();
+					e.stopImmediatePropagation();
+
 					return;
 				} else {
 

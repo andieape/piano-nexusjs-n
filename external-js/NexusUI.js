@@ -4513,7 +4513,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				}
 
 				e.preventDefault();
-			//	e.stopPropagation();
+			//  e.stopPropagation();
 			//	e.stopImmediatePropagation();
 				
 				setTimeout(() => {
@@ -4581,8 +4581,7 @@ return /******/ (function(modules) { // webpackBootstrap
 				var key = _this.keys[_this.currentElement];				
 
 				if (!key) { return };
-
-				console.log(e.changedTouches)
+				
 				
 				if (tpCache.touches.length > 0){
 					
@@ -4592,7 +4591,8 @@ return /******/ (function(modules) { // webpackBootstrap
 						key = _this.keys[tr];
 						console.log(key)
 						key.up();
-						$('#logg').append(tr+'up')
+						$('#logg').append(tr+'ups');
+
 						tr = false;
 						_this.interacting = false;						
 						

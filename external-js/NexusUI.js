@@ -4532,7 +4532,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			  });
 	  
 			  this.element.addEventListener("touchmove", function (e) {
-				  
+
 				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
 				if (!element){ return; };
 				if (tpCache.touches.length > 1) {return};
@@ -4569,20 +4569,20 @@ return /******/ (function(modules) { // webpackBootstrap
 						key.up();
 						tr = false;
 						
-						_this.interacting = false;
+						
 					}
-					
-					tpCache.touches = new Array();
-					tpCache.targets = new Array();	
+					_this.interacting = false;
+				//	tpCache.touches = new Array();
+				//	tpCache.targets = new Array();	
 				} else {
-				//	key.up();
+					key.up();
 				//	_this.interacting = false;
 				//	_this.currentElement = false;
 					
 				}
 				
-		//		tpCache.touches = new Array();
-		//		tpCache.targets = new Array();	
+				tpCache.touches = new Array();
+				tpCache.targets = new Array();	
 
 
 				

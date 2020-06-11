@@ -4532,6 +4532,7 @@ return /******/ (function(modules) { // webpackBootstrap
 			  });
 	  
 			  this.element.addEventListener("touchmove", function (e) {
+				  
 				var element = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
 				if (!element){ return; };
 				if (tpCache.touches.length > 1) {return};
